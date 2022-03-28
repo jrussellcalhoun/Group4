@@ -1,0 +1,114 @@
+﻿<Window x:Class="group4WordGame.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:group4WordGame"
+        mc:Ignorable="d"
+        Title="Group 4 Word Game" Height="1000" Width="1000">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="Coral"/>
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="mainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button x:Name="btn1" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Height="82" Width="91" Click="Button_Click" Grid.Column="2" Grid.Row="2"/>
+        <Button x:Name="btn2" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Column="3" Width="91" Height="82" Click="Button_Click" Grid.Row="2"/>
+        <Button x:Name="btn3" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Column="4" Width="91" Height="82" Click="Button_Click" Grid.Row="2"/>
+        <Button x:Name="btn4" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Column="5" Width="91" Height="82" Click="Button_Click" Grid.Row="2"/>
+        <Button x:Name="btn5" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Column="6" Width="91" Height="82" Click="Button_Click" Grid.Row="2"/>
+
+        <Button x:Name="btn6" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="3" Width="91" Height="82" Click="Button_Click" Grid.Column="2"/>
+        <Button x:Name="btn7" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="3" Grid.Column="3" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn8" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="3" Grid.Column="4" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn9" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="3" Grid.Column="5" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn10" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="3" Grid.Column="6" Width="91" Height="82" Click="Button_Click"/>
+
+        <Button x:Name="btn11" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="4" Width="91" Height="82" Click="Button_Click" Grid.Column="2"/>
+        <Button x:Name="btn12" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="4" Grid.Column="3" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn13" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="4" Grid.Column="4" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn14" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="4" Grid.Column="5" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn15" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="4" Grid.Column="6" Width="91" Height="82" Click="Button_Click"/>
+
+        <Button x:Name="btn16" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="5" Width="91" Height="82" Click="Button_Click" Grid.Column="2"/>
+        <Button x:Name="btn17" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="5" Grid.Column="3" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn18" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="5" Grid.Column="4" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn19" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="5" Grid.Column="5" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn20" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="5" Grid.Column="6" Width="91" Height="82" Click="Button_Click"/>
+
+        <Button x:Name="btn21" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="6" Width="91" Height="82" Click="Button_Click" Grid.Column="2"/>
+        <Button x:Name="btn22" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="6" Grid.Column="3" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn23" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="6" Grid.Column="4" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn24" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="6" Grid.Column="5" Width="91" Height="82" Click="Button_Click"/>
+        <Button x:Name="btn25" Content="?" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                FontSize="36" Grid.Row="6" Grid.Column="6" Width="91" Height="82" Click="Button_Click"/>
+        <TextBox x:Name="box" HorizontalAlignment="Center" Grid.Row="7" 
+                 TextWrapping="Wrap" VerticalAlignment="Center" Width="424" 
+                 RenderTransformOrigin="-0.217,-1.187" Height="90" FontSize="20" 
+                 TextAlignment="Center" Grid.ColumnSpan="4" Grid.Column="2" MaxLength="5" BorderThickness="3,3,3,3" IsReadOnly="True" />
+        <TextBox x:Name="Guess_Box" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" 
+                 VerticalAlignment="Top" Width="202" Height="254" Grid.RowSpan="3" BorderThickness="3,3,3,3" 
+                 Text="Guesses:" FontSize="18" IsReadOnly="True" Margin="0,13,0,0"/>
+        <TextBlock x:Name="Guess_Button" Grid.Column="6" HorizontalAlignment="Center" Grid.Row="7" Text="Enter" TextWrapping="Wrap" 
+                   VerticalAlignment="Top" Height="37" Width="45" Background="#FF2BD918" FontWeight="Bold" TextAlignment="Center" 
+                   MouseDown="Guess_Button_MouseDown" Margin="0,10,0,0"/>
+        <TextBlock x:Name="HintBox" HorizontalAlignment="Center" Grid.Row="4" Text="Click For Hint!" 
+                   TextWrapping="Wrap" VerticalAlignment="Top" Width="202" 
+                   Height="240" Background="#FFE8D731" 
+                   MouseDown="HintBox_MouseDown_1" FontSize="16" TextAlignment="Center" Margin="0,75,0,0" Grid.RowSpan="3" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="Reset_Button" Grid.Column="7" HorizontalAlignment="Center" Text="Play Again?" 
+                   TextWrapping="Wrap" VerticalAlignment="Center" Height="90" Width="202" Grid.ColumnSpan="2" 
+                   Background="#FF0AF7F7" FontSize="36" FontWeight="Bold" TextAlignment="Center" Visibility="Hidden" 
+                   MouseDown="Reset_Button_MouseDown"/>
+        <TextBlock x:Name="Backspace" Grid.Column="6" HorizontalAlignment="Center" Grid.Row="7" Text="Backspace" TextWrapping="Wrap" 
+                   VerticalAlignment="Top" Height="37" Width="45" Background="Gray" FontWeight="Bold" TextAlignment="Center" 
+                   MouseDown="Backspace_MouseDown" Margin="0,63,0,0" FontSize="9"/>
+
+    </Grid>
+</Window>
