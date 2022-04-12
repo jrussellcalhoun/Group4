@@ -53,11 +53,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Matth\\source\\repos\\Frame_Test\\Frame_Test\\Frame_Test.csproj",
+      "projectUniqueName": "C:\\Users\\Matth\\source\\repos\\GitHub\\Group4\\Frame_Test\\Frame_Test\\Frame_Test.csproj",
       "projectName": "Frame_Test",
-      "projectPath": "C:\\Users\\Matth\\source\\repos\\Frame_Test\\Frame_Test\\Frame_Test.csproj",
+      "projectPath": "C:\\Users\\Matth\\source\\repos\\GitHub\\Group4\\Frame_Test\\Frame_Test\\Frame_Test.csproj",
       "packagesPath": "C:\\Users\\Matth\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Matth\\source\\repos\\Frame_Test\\Frame_Test\\obj\\",
+      "outputPath": "C:\\Users\\Matth\\source\\repos\\GitHub\\Group4\\Frame_Test\\Frame_Test\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Matth\\AppData\\Roaming\\NuGet\\NuGet.Config",
