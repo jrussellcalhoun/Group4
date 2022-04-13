@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Frame_Test
+namespace Word_Game
 {
     /// <summary>
     /// Interaction logic for App.xaml

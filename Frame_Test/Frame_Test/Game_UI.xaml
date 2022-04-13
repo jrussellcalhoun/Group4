@@ -1,9 +1,9 @@
-﻿<Page x:Class="Frame_Test.Page1"
+﻿<Page x:Class="Word_Game.Game_UI"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Frame_Test"
+      xmlns:local="clr-namespace:Word_Game"
       mc:Ignorable="d" 
       d:DesignHeight="1000" d:DesignWidth="1000"
       Title="Group 4 Word Project">
@@ -13,7 +13,7 @@
             <Setter Property="Background" Value="#8eecf5"/>
         </Style>
     </Page.Resources>
-    <Grid x:Name="mainGrid" Background="Black">
+    <Grid x:Name="MainGrid" Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -90,11 +90,11 @@
                 FontSize="36" Grid.Row="6" Grid.Column="5" Width="91" Height="82" Click="Button_Click" IsEnabled="False"/>
         <Button x:Name="btn25" Content="" HorizontalAlignment="Center" VerticalAlignment="Center" 
                 FontSize="36" Grid.Row="6" Grid.Column="6" Width="91" Height="82" Click="Button_Click" IsEnabled="False"/>
-        <TextBox x:Name="box" HorizontalAlignment="Center" Grid.Row="7" 
+        <TextBox x:Name="CurrentGuessBox" HorizontalAlignment="Center" Grid.Row="7" 
                  TextWrapping="Wrap" VerticalAlignment="Center" Width="424" 
                  RenderTransformOrigin="-0.217,-1.187" Height="90" FontSize="20" 
                  TextAlignment="Center" Grid.ColumnSpan="4" Grid.Column="2" MaxLength="5" BorderThickness="3,3,3,3" IsReadOnly="True" Background="#FFCFBAF0" />
-        <TextBox x:Name="Guess_Box" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" 
+        <TextBox x:Name="GuessesBox" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" 
                  VerticalAlignment="Top" Width="202" Height="254" Grid.RowSpan="3" BorderThickness="3,3,3,3" 
                  Text="Guesses:" FontSize="22" IsReadOnly="True" Margin="0,13,0,0" Background="#FFCFBAF0"/>
         <TextBlock x:Name="Guess_Button" Grid.Column="6" HorizontalAlignment="Center" Grid.Row="7" Text="Enter" TextWrapping="Wrap" Width="45" Background="#FFB9FBC0" FontWeight="Bold" TextAlignment="Center" 
@@ -110,8 +110,8 @@
         <TextBlock x:Name="Backspace" Grid.Column="6" HorizontalAlignment="Center" Grid.Row="7" Text="Backspace" TextWrapping="Wrap" 
                    VerticalAlignment="Top" Height="37" Width="45" Background="#FF98F5E1" FontWeight="Bold" TextAlignment="Center" 
                    MouseDown="Backspace_MouseDown" Margin="0,63,0,0" FontSize="9" IsEnabled="True" Foreground="Black"/>
-        <TextBlock x:Name="timer_GO_box" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="312" Height="56" Background="#FFCFBAF0" FontSize="36" TextAlignment="Center" Margin="0,44,0,0" Grid.ColumnSpan="3" Text="START" MouseDown="timer_GO_box_MouseDown"/>
-        <TextBlock x:Name="resetUnfinishedGame" Text="Reset Game" TextWrapping="Wrap" Background="#FFCFBAF0" FontSize="20" TextAlignment="Center" FontWeight="Bold" MouseDown="resetUnfinishedGame_MouseDown" VerticalAlignment="Top" Height="56" HorizontalAlignment="Center" Width="111" Grid.Column="8"/>
+        <TextBlock x:Name="StartRoundBox" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="312" Height="56" Background="#FFCFBAF0" FontSize="36" TextAlignment="Center" Margin="0,44,0,0" Grid.ColumnSpan="3" Text="START" MouseDown="StartRoundBox_MouseDown"/>
+        <TextBlock x:Name="resetUnfinishedGame" Text="Reset Game" TextWrapping="Wrap" Background="#FFCFBAF0" FontSize="20" TextAlignment="Center" FontWeight="Bold" MouseDown="ResetUnfinishedGame_MouseDown" VerticalAlignment="Top" Height="56" HorizontalAlignment="Center" Width="111" Grid.Column="8"/>
         <ComboBox x:Name="combo" Grid.Column="7" Margin="0,0,111,55" Grid.ColumnSpan="2" Background="#FFCFBAF0" Width="111" Height="56" >
             <RadioButton x:Name="song_one" Content="Electronic" Checked="RadioButton_Checked"/>
             <RadioButton x:Name="song_two" Content="Jeperdy" Checked="RadioButton_Checked"/>

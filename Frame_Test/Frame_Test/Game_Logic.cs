@@ -1,48 +1,40 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Media;
-using System.Net;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Frame_Test
+namespace Word_Game
 {
-    /// <summary>
-    /// Interaction logic for Page1.xaml
-    /// </summary>
-    public partial class Page1 : Page
+    public class Game_Logic
     {
-        public string winning_word = ChooseWord();
-        public Button first_letter;
-        public List<Button> is_in = new List<Button>();
-        public List<Button> guessed = new List<Button>();
-        public List<Button> winning_guess = new List<Button>();
-        public List<Button> guessed_word_buttons = new List<Button>();
-        public DispatcherTimer _timer;
-        public TimeSpan _time;
-        public Brush my_brush = new SolidColorBrush(Color.FromArgb(0xFF, 0x8E, 0xEC, 0xF5));
-        public string total_time = "00:00:00";
-        public int total_tries = 0;
-        public int total_wins;
-        public bool game_won = false;
-        string song1, song2, song3;
+        // Properties
+        public bool Won { get; set; }
+        public bool GameOver { get; set; }
+        public bool NewRound { get; set; }
+        public bool RoundStart { get; set; }
+        public bool Exit { get; set; }
+        public int Wins { get; set; }
+        public int Tries { get; set; }
+        public string TotalTime { get; set; }
+        public string WinningWord { get; set; }
+        public Dictionary<string, string> Words { get; set; }
 
+        // Fields
+        private DispatcherTimer _round_timer;
+        private TimeSpan _round_time;
 
-        public Page1(int wins)
+        public Game_Logic()
         {
-            InitializeComponent();
-            total_wins = wins;
+            Wins = 0;
+            Tries = 0;
+            TotalTime = "00:00:00";
+            WinningWord = ChooseWord();
+            Won = false;
+            GameOver = false;
+            NewRound = false;
+            RoundStart = false;
         }
 
         //Randomly chooses a word from a list of well known words and assigns that word to "winning_word"
@@ -79,130 +71,7 @@ namespace Frame_Test
             return words[random.Next(words.Count)];
         }
 
-        // Calls the load_letter, start_timer, and sound function to begin the game.
-        private void SetUpGame()
-        {
-            Load_Letters();
-            Start_Timer();
-            song_one.IsChecked = true;
-        }
-
-        // Randomly assigns letters to the buttons(no repeats) and enables the buttons.
-        private void Load_Letters()
-        {
-            List<string> letters = new List<string>()
-            {
-                "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-                "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y"
-            };
-
-            Random random = new Random();
-
-            foreach (Button button in mainGrid.Children.OfType<Button>())
-            {
-                button.IsEnabled = true;
-                int index = random.Next(letters.Count);
-                string nextLetter = letters[index];
-                button.Content = nextLetter;
-                letters.RemoveAt(index);
-            }
-        }
-
-        // Starts the countdown timer, probably going to be set to 5, 3, or 1.5 minutes.
-        private void Start_Timer()
-        {
-            _time = TimeSpan.FromSeconds(90);
-
-            _timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
-            {
-                timer_GO_box.Text = _time.ToString("c");
-                if (_time == TimeSpan.Zero)
-                {
-                    _timer.Stop();
-                    total_time = _time.ToString("c");
-                    change_page();
-                }
-                _time = _time.Add(TimeSpan.FromSeconds(-1));
-            }, Application.Current.Dispatcher);
-
-            _timer.Start();
-        }
-
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            RadioButton radioButton = sender as RadioButton;
-            song1 = "ForThePoor.wav";
-            song2 = "Jeopardy-theme-song.wav";
-            song3 = "Beam.wav";
-            if (radioButton == song_one) { Sound(song1); }
-            else if (radioButton == song_two) { Sound(song2); }
-            else if (radioButton == song_three) { Sound(song3); }
-            else if (radioButton == no_sound) { Sound("stop"); }
-        }
-
-        // Plays the music for the game.
-        private void Sound(string song)
-        {
-            SoundPlayer player = new SoundPlayer();
-            if (song != "stop")
-            {
-                player.SoundLocation = song;
-                player.Load();
-                player.Play();
-            }
-            else
-            {
-                player.Stop();
-            }
-        }
-
-        // Adds button to guessed_word_buttons and displays the buttons content the the textbox below the buttons.
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = sender as Button;
-            button.Background = Brushes.Blue;
-            guessed_word_buttons.Add(button);
-            box.Text += button.Content;
-        }
-
-        private void Guess_Button_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (box.Text.Length < 5)
-            {
-                return;
-            }
-            else if (Approved() && box.Text == winning_word)
-            {
-                total_wins++;
-                total_tries++;
-                total_time = _time.ToString("c");
-                game_won = true;
-                change_page();
-            }
-            else if (Approved())
-            {
-                total_tries++;
-                Guess_Box.Text += "\n" + box.Text;
-                sort();
-                ChangeColor();
-                Clear_guesses();
-            }
-            else
-            {
-                foreach (Button button in guessed_word_buttons) 
-                {
-                    if (!(first_letter == button || is_in.Contains(button) || guessed.Contains(button)))
-                    {
-                        button.Background = my_brush;
-                    }
-                }
-                Clear_guesses();
-                ChangeColor();
-            }
-
-        }
-        
-        private bool Approved()
+        public static bool Approved(string check)
         {
             string[] words = {
             
@@ -337,147 +206,44 @@ namespace Frame_Test
                 /* ┃13800 - 13899┃ */ "youse", "yowed", "yowes", "yowie", "yowls", "yowza", "yrapt", "yrent", "yrivd", "yrneh", "ysame", "ytost", "yuans", "yucas", "yucca", "yucch", "yucko", "yucks", "yucky", "yufts", "yugas", "yuked", "yukes", "yukky", "yukos", "yulan", "yules", "yummo", "yummy", "yumps", "yupon", "yuppy", "yurta", "yurts", "yuzus", "zabra", "zacks", "zaida", "zaidy", "zaire", "zakat", "zaman", "zambo", "zamia", "zanja", "zante", "zanza", "zanze", "zappy", "zarfs", "zaris", "zatis", "zaxes", "zayin", "zazen", "zeals", "zebec", "zebub", "zebus", "zedas", "zeins", "zendo", "zerda", "zerks", "zeros", "zests", "zetas", "zexes", "zezes", "zhomo", "zibet", "ziffs", "zigan", "zilas", "zilch", "zilla", "zills", "zimbi", "zimbs", "zinco", "zincs", "zincy", "zineb", "zines", "zings", "zingy", "zinke", "zinky", "zippo", "zippy", "ziram", "zitis", "zizel", "zizit", "zlote", "zloty", "zoaea", "zobos", "zobus", "zocco",
                 /* ┃13900 - 13999┃ */ "zoeae", "zoeal", "zoeas", "zoism", "zoist", "zombi", "zonae", "zonda", "zoned", "zoner", "zones", "zonks", "zooea", "zooey", "zooid", "zooks", "zooms", "zoons", "zooty", "zoppa", "zoppo", "zoril", "zoris", "zorro", "zouks", "zowee", "zowie", "zulus", "zupan", "zupas", "zuppa", "zurfs", "zuzim", "zygal", "zygon", "zymes", "zymic" };
 
-            if (words.Contains(box.Text)) { return true; }
-            else { return false; }
-            word.Contains(box.Text) ? true : false;
+            return words.Contains(check);
         }
 
-        private void ChangeColor()
+        // Starts the countdown timer, probably going to be set to 5, 3, or 1.5 minutes.
+        public void Start_Round_Timer()
         {
-            if (first_letter != null) { first_letter.Background = Brushes.Red; }
-            foreach (Button button in is_in) { button.Background = Brushes.Green; }
-            foreach (Button button in guessed) { button.Background = Brushes.LightGray; }
-        }
-        
-        private void sort()
-        {
-            foreach (Button button in guessed_word_buttons)
+            _round_time = TimeSpan.FromSeconds(10);
+
+            _round_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
             {
-                if (winning_word[0].ToString() == button.Content.ToString())
+                if (_round_time == TimeSpan.Zero)
                 {
-                    first_letter = button;
-                    winning_guess.Add(button);
+                    _round_timer.Stop();
+                    TotalTime = _round_time.ToString("c");
+                    GameOver = true;
                 }
-                else if (winning_word.Contains(button.Content.ToString()))
-                {
-                    is_in.Add(button);
-                    winning_guess.Add(button);
-                }
-                else
-                {
-                    guessed.Add(button);
-                }
-            }
+                _round_time = _round_time.Add(TimeSpan.FromSeconds(-1));
+            }, Application.Current.Dispatcher);
+
+            _round_timer.Start();
         }
 
-        private void Clear_guesses()
+        public void UpdateTotalTime()
         {
-            guessed_word_buttons.Clear();
-            box.Text = "";
-        }
-        
-        private void HintBox_MouseDown_1(object sender, MouseButtonEventArgs e)
-        {
-            WebClient client = new WebClient();
-            string strPageCode = client.DownloadString("https://api.dictionaryapi.dev/api/v2/entries/en/" + winning_word);
-
-            dynamic dobj = JsonConvert.DeserializeObject<dynamic>(strPageCode);
-
-            string definition = dobj[0]["meanings"][0]["definitions"][0]["definition"].ToString();
-
-            HintBox.Text = definition;
+            TotalTime = _round_time.ToString("c");
         }
 
-        //I believe these 2 are unnecessary. I'll delete after the github is connected.
-        /*public void EndGame(bool won)
+        public string FetchRoundTime()
         {
-            if (won)
-            {
-                game_won = true;
-                totalTime = _time.ToString("c");
-                _timer.Stop();
-                timer_GO_box.Text = "YOU WON :D";
-                foreach (Button button in winning_guess) { button.Background = Brushes.Plum; }
-            }
-            else
-            {
-                game_won = false;
-                timer_GO_box.Text = "YOU LOSE :(";
-                foreach (Button button in mainGrid.Children.OfType<Button>()) { button.Background = Brushes.DarkRed; }
-            }
-            firstLetter = null;
-            guessed_word_buttons.Clear();
-            isIn.Clear();
-            guessed.Clear();
-            Reset_Button.Visibility = Visibility.Visible;
-            change_page();
-            
-            
-        }*/
-        /*private void Reset_Button_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            timer_GO_box.Text = "START";
-            Guess_Box.Text = "Guesses: ";
-            box.Clear();
-            HintBox.Text = "Click For Hint";
-            foreach (Button button in mainGrid.Children.OfType<Button>())
-            {
-                button.Background = myBrush;
-            }
-            Reset_Button.Visibility = Visibility.Hidden;
-        }*/
-
-        private void Backspace_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (first_letter == guessed_word_buttons[^1])
-            {
-                guessed_word_buttons[^1].Background = Brushes.Red;
-            }
-            else if (is_in.Contains(guessed_word_buttons[^1]))
-            {
-                guessed_word_buttons[^1].Background = Brushes.Green;
-            } 
-            else if (guessed.Contains(guessed_word_buttons[^1])) 
-            {
-                guessed_word_buttons[^1].Background = Brushes.LightGray;
-            }
-            else
-            {
-                guessed_word_buttons[^1].Background = my_brush;
-            }
-            guessed_word_buttons.RemoveAt(guessed_word_buttons.Count - 1);
-            box.Text = box.Text.Remove(box.Text.Length - 1);
+            return _round_time.ToString("c");
         }
 
-        private void timer_GO_box_MouseDown(object sender, MouseButtonEventArgs e)
+        public void GameWon(bool flag)
         {
-            if (timer_GO_box.Text == "START")
-            {
-                SetUpGame();
-            }
-            else
-            {
-                return;
-            }
+            Won = flag;
+            Wins++;
         }
 
-        private void resetUnfinishedGame_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            timer_GO_box.Text = "START";
-            Guess_Box.Text = "Guesses: ";
-            HintBox.Text = "Click For Hint";
-            box.Clear();
-            foreach (Button button in mainGrid.Children.OfType<Button>())
-            {
-                button.Background = my_brush;
-            }
-            _timer.Stop();
-        }
 
-        private void change_page()
-        { 
-            var window = (MainWindow)Application.Current.MainWindow;
-            window.Frame.Content = new Page2(game_won, total_time, total_tries, winning_word, total_wins);
-        }
     }
 }
