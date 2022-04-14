@@ -16,5 +16,5 @@
 *.cache
 bin/
 obj/
-/Frame_Test/Frame_Test/bin/*
-/Frame_Test/Frame_Test/obj/*
+/Frame_Test/Frame_Test/bin/**
+/Frame_Test/Frame_Test/obj/**
