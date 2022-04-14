@@ -112,8 +112,9 @@ namespace Word_Game
                         break;
                     case Pages.PLAY_AGAIN:
                         if(_logic.NewRound) 
-                        { 
-                            _ui.ResetGame(_logic.NewRound); 
+                        {
+                            Console.WriteLine("New Round");
+                            _ui.ResetGame(true); 
                             _logic.NewRound = false; 
                             ChangePage(Pages.GAME_UI); 
                         }

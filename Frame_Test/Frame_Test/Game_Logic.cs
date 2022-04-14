@@ -35,6 +35,18 @@ namespace Word_Game
             GameOver = false;
             NewRound = false;
             RoundStart = false;
+
+            _round_time = TimeSpan.FromSeconds(120);
+            _round_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
+            {
+                if (_round_time == TimeSpan.Zero)
+                {
+                    _round_timer.Stop();
+                    TotalTime = _round_time.ToString("c");
+                    GameOver = true;
+                }
+                _round_time = _round_time.Add(TimeSpan.FromSeconds(-1));
+            }, Application.Current.Dispatcher);
         }
 
         //Randomly chooses a word from a list of well known words and assigns that word to "winning_word"
@@ -212,19 +224,7 @@ namespace Word_Game
         // Starts the countdown timer, probably going to be set to 5, 3, or 1.5 minutes.
         public void Start_Round_Timer()
         {
-            _round_time = TimeSpan.FromSeconds(10);
-
-            _round_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
-            {
-                if (_round_time == TimeSpan.Zero)
-                {
-                    _round_timer.Stop();
-                    TotalTime = _round_time.ToString("c");
-                    GameOver = true;
-                }
-                _round_time = _round_time.Add(TimeSpan.FromSeconds(-1));
-            }, Application.Current.Dispatcher);
-
+            _round_time = TimeSpan.FromSeconds(120);
             _round_timer.Start();
         }
 

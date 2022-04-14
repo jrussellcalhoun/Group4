@@ -57,6 +57,7 @@ namespace Word_Game
             //window.ChangePage(MainWindow.Pages.GAME_UI);
             _logic.NewRound = true;
             _logic.Won = false;
+            _logic.GameOver = false;
         }
 
         private void exit_button_Click(object sender, RoutedEventArgs e)

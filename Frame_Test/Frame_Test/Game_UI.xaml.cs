@@ -53,7 +53,7 @@ namespace Word_Game
             _logic = logic;
 
             // Initialize UI elements here
-            ResetGame(_logic.NewRound);
+            ResetGame(true);
         }
 
         public void ResetGame(bool newRound)
