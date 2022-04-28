@@ -4,52 +4,377 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
+using System.Net;
+using System.Windows.Input;
+using System.Net.Http;
+using System.Diagnostics;
+using System.Text.Json;
+
+using Word_Game.Utilities;
+
+// Ctrl + M followed by Ctrl + S to collapse current region | Ctrl + M followed by Ctrl + E to expand current region.
+#region Operators Used In This Program
+/*  The following are intermediate to advanced concepts of C#7 and higher and .Net 6.0 and higher that are not covered in the C# class.
+    The short explanation of these concepts below is for the benefit of other programmers who may not be familiar with these more advanced concepts.
+    Links are provided in some instances to MSDN documentation. */
+
+// Pseudo code in these descriptions are surrounded with double angle brackets <<pseudo-code>>
+
+/*  Null Coallescing Operator
+    
+    Online Documentation: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator
+    
+    Syntax: <<left-hand-operand>> ?? <<right-hand-operand>> 
+
+    This operator returns the value of the left-hand-operand if it is not null, otherwise it returns the value of the right-hand-operand
+    Operands must be a Nullable Type (see below) or a Reference value    
+    This is a shorter way of coding something like: 
+
+    return <<left-hand-operand>> != null ? <<left-hand-operand>> : new <<left-hand-operand-type-instance>>; 
+
+    or:
+    
+    if(<<left-hand-operand>> == null) 
+    { 
+       return <<left-hand-operand>>;
+    }
+    else
+    {
+        return new <<left-hand-operand-type-instance>>; 
+    }
+*/
+
+/*  Null Coallescing Assignment Operator
+    
+    Online Documentation: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-coalescing-operator
+    
+    Syntax: <<left-hand-operand>> ??= <<right-hand-operand>> 
+
+    This operator returns the value of the left-hand-operand if it is not null, otherwise it returns the value of the right-hand-operand
+    Operands must be a Nullable Type (see below) or a Reference value
+    This is a shorter way of coding things like: 
+    
+    if(<<left-hand-operand>> == null) 
+    { 
+       <<left-hand-operand>> = new <<left-hand-operand-type-instance>>; 
+    }
+*/
+
+/*  Nullable Types
+ *  
+    Online Documentation: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/nullable-value-types
+    
+    Syntax: <<type>>? <<variable-name>>
+*/
+
+#endregion // End Operators Used In This Program
+
 
 namespace Word_Game
-{
-    public class Game_Logic
+{ 
+    public class Game_Logic : ObservableObject
     {
-        // Properties
-        public bool Won { get; set; }
-        public bool GameOver { get; set; }
-        public bool NewRound { get; set; }
-        public bool RoundStart { get; set; }
-        public bool Exit { get; set; }
-        public int Wins { get; set; }
-        public int Tries { get; set; }
-        public string TotalTime { get; set; }
-        public string WinningWord { get; set; }
-        public Dictionary<string, string> Words { get; set; }
+        #region Fields
+        /// <summary>
+        /// Holds the current main window frame page state. This indicates which page is currently focused by the UI.
+        /// </summary>
+        public PageState _current_page;
 
-        // Fields
-        private DispatcherTimer _round_timer;
+
+        /// <summary>
+        /// Holds the ammount of time left for the player to guess the correct word.
+        /// </summary>
         private TimeSpan _round_time;
 
+        /// <summary>
+        /// Holds the last checked interval of time between the current time and _round_time. 
+        /// Used to check if one second has elapsed.
+        /// </summary>
+        private TimeSpan _check_second;
+
+        /// <summary>
+        /// Game logic ticker, targeted to be called every 20 milliseconds or 50 times per second.
+        /// The resolution of DispatchTimer is not reliable beyond 20 milliseconds.
+        /// </summary>
+        private DispatcherTimer _tick_timer;
+
+        private string _hint;
+        private string _winning_word;
+
+        private int _wins;
+        private int _tries;
+
+        private bool _won;
+        private bool _game_over;
+        private bool _new_round;
+        private bool _round_start;
+        private bool _quit;
+
+        private TimeSpan _total_time;
+
+        private List<string> _letters;
+        private readonly string[] _index_letters;
+        private ObservableCollection<bool> _is_in_word_source;
+
+        #endregion // End Fields
+
+        #region Properties
+
+        public List<string> Letters
+        {
+            get => _letters;
+            private set => SetProperty(ref _letters, value);
+        }
+        
+        public bool Won 
+        {
+            get => _won;
+            private set => SetProperty(ref _won, value);
+        }
+
+        public bool GameOver 
+        {
+            get => _game_over;
+            private set => SetProperty(ref _game_over, value);
+        }
+        
+        public bool NewRound 
+        {
+            get => _new_round;
+            private set => SetProperty(ref _new_round, value);
+        }
+        
+        public bool RoundStart 
+        { 
+            get => _round_start;
+            private set => SetProperty(ref _round_start, value);
+        }
+        
+        public bool Quit 
+        {
+            get => _quit;
+            private set => SetProperty(ref _quit, value);
+        }
+
+        public string Hint
+        {
+            get => _hint;
+            private set => SetProperty(ref _hint, value);
+        }
+
+        public ObservableCollection<bool> IsInWordSource 
+        { 
+            get => _is_in_word_source; 
+            private set => SetProperty(ref _is_in_word_source, value); 
+        }
+
+        /// <summary>
+        /// The total number of rounds the player has won. Displayed on the End Round Page.
+        /// </summary>
+        public int Wins 
+        {
+            get => _wins;
+            private set => SetProperty(ref _wins, value);
+        }
+
+        /// <summary>
+        /// The total number of tries used during the current round. Displayed on the End Round Page.
+        /// </summary>
+        public int Tries
+        {
+            get => _tries;
+            private set => SetProperty(ref _tries, value);
+        }
+
+        /// <summary>
+        /// The total time used by the player during the current round. Displayed on the End Round Page.
+        /// </summary>
+        public TimeSpan TotalTime
+        {
+            get => _total_time;
+            private set => SetProperty(ref _total_time, value);
+        }
+
+        /// <summary>
+        /// The word the player needed to guess to win the round. Displayed on the End Round Page.
+        /// </summary>
+        public string WinningWord
+        {
+            get => _winning_word;
+            private set => SetProperty(ref _winning_word, value);
+        }
+
+        public TimeSpan RoundTime
+        {
+            get => _round_time;
+            private set => SetProperty(ref _round_time, value);
+        }
+
+        /// <summary>
+        /// Not yet implemented! Will eventually hold the Dictionary of (keys=words, values=hints) when we have created our database files.
+        /// </summary>
+        public Dictionary<string, string> Words { get; private set; }
+
+        /// <summary>
+        /// Used to keep track of our in game round timer.
+        /// </summary>
+        private DateTime TimeElapsed { get; set; }
+
+        #endregion // End Properties
+
+        #region Events and Commands
+        public event ChangePageEventDelegate ChangePageEvent;
+
+
+        private ICommand _get_hint_command;
+        private ICommand _letter_button_clicked_command;
+        private ICommand _start_round_command;
+
+        public ICommand GetHintCommand
+        {
+            get
+            {
+                Trace.WriteLine("GetHint");
+                
+                if(_get_hint_command == null)
+                {
+                    _get_hint_command = new RelayCommand(param => GetHint(), param => CanGetHint());
+                }
+                return _get_hint_command;
+
+                //return _get_hint_command ??= new ForwardCommand(param => this.GetHint(), param => this.CanGetHint());
+            }
+        }
+
+        public ICommand LetterButtonClickedCommand
+        {
+            get => _letter_button_clicked_command ??= new RelayCommand(param => LetterButtonClicked(param), param => LetterButtonCanBeClicked(param));
+        }
+
+        public ICommand StartRoundCommand
+        {
+            get => _start_round_command ??= new RelayCommand(param => StartRound(), param => CanStartRound());
+        }
+        
+        #endregion // End Events
+
+        // Constants
+        //======================================================================================================================================
+        // TODO: Move these to load from a configuration file and change through a setting page.
+        // 120 Seconds per game round.
+        private const int c_Starting_Round_Seconds = 120;
+
+        #region Game Logic Member Methods
         public Game_Logic()
         {
+            _tick_timer = new DispatcherTimer();
+            _round_time = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
+
+            // Anything that is exposed by INotifyPropertyChanged should be assigned to using the Property member not the Field.
             Wins = 0;
             Tries = 0;
-            TotalTime = "00:00:00";
-            WinningWord = ChooseWord();
+            TotalTime = TimeSpan.Zero;
+            WinningWord = "";
+            Hint = "";
             Won = false;
             GameOver = false;
             NewRound = false;
             RoundStart = false;
 
-            _round_time = TimeSpan.FromSeconds(120);
-            _round_timer = new DispatcherTimer(new TimeSpan(0, 0, 1), DispatcherPriority.Normal, delegate
-            {
-                if (_round_time == TimeSpan.Zero)
-                {
-                    _round_timer.Stop();
-                    TotalTime = _round_time.ToString("c");
-                    GameOver = true;
-                }
-                _round_time = _round_time.Add(TimeSpan.FromSeconds(-1));
-            }, Application.Current.Dispatcher);
+            // Initialize a list of strings to each of 26 letters in the alphabet.
+            Letters = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                                          "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+
+            // This readonly array (immutable after instantiation) will be used to reference the index of the letters in the alphabet.
+            _index_letters = new string[26] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+                                          "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+
+            // Initialize to false for each of 26 letters in the alphabet (and our button grid)
+            IsInWordSource = new ObservableCollection<bool> { false, false, false, false, false, false, false, false, false, false, false, false, false,
+                                                                  false, false, false, false, false, false, false, false, false, false, false, false, false };
+
+            // Start the program. Only called once.
+            Start();
         }
 
-        //Randomly chooses a word from a list of well known words and assigns that word to "winning_word"
+        // Runs once at the start of the game.
+        public void Start()
+        {
+            // Assign the tick event handler to the "Run" method. This is our GameLoop, where logic should be updated each tick.
+            // Game Logic ticks every 0.02 seconds i.e. a target of 50 executions per second. Dispatch timer interval resolution is only reliable up to 20 miliseconds.
+            // Start the timer. We will use DispatchTimer.Stop() later to clean up when the GameLoop is finished executing (right before the application exits.
+            _tick_timer.Tick += Run;
+            _tick_timer.Interval = TimeSpan.FromMilliseconds(20);
+            _tick_timer.Start();
+        }
+
+        // Runs every tick of the game (Every 20 milliseconds).
+        public void Run(object sender, EventArgs e)
+        {
+            if (Quit)
+            {
+                End();
+            }
+            else
+            {
+                switch (_current_page)
+                {
+                    case PageState.PAGE_LOGIN:
+                        break;
+
+                    case PageState.PAGE_SETTINGS:
+                        break;
+
+                    case PageState.PAGE_NEW_ROUND:
+
+                        if (Won || GameOver)
+                        {
+                            if (ChangePageEvent != null)
+                            {
+                                ChangePageEvent(this, new ChangePageEventArgs(PageState.PAGE_PLAY_AGAIN));
+                                break;
+                            }
+                        }
+
+                        UpdateRoundTime();
+                        break;
+
+                    case PageState.PAGE_PLAY_AGAIN:
+                        if (NewRound)
+                        {
+                            Console.WriteLine("New Round");
+                            NewRound = false;
+
+                            if (ChangePageEvent != null)
+                            {
+                                ChangePageEvent(this, new ChangePageEventArgs(PageState.PAGE_NEW_ROUND));
+                                break;
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Runs once at the end of the game.
+        /// </summary>
+        public void End()
+        {
+            _tick_timer.Stop();
+            Application.Current.Shutdown();
+        }
+
+        /// <summary>
+        /// A static method that randomly chooses a word string from a list of well known words.
+        /// </summary>
+        /// <returns> A randomly chosen word string from the array of words. </returns>
         public static string ChooseWord()
         {
             List<string> words = new List<string>
@@ -221,29 +546,116 @@ namespace Word_Game
             return words.Contains(check);
         }
 
-        // Starts the countdown timer, probably going to be set to 5, 3, or 1.5 minutes.
-        public void Start_Round_Timer()
+        public void StartRound()
         {
-            _round_time = TimeSpan.FromSeconds(120);
-            _round_timer.Start();
+            // Randomize the letters.
+            var random = new Random();
+            Letters = Letters.OrderBy(item => random.Next()).ToList();
+
+            // Get the winning word for this round.
+            WinningWord = ChooseWord();
+
+            RoundTime = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
+
+            // Set our flags before we start the round.
+            NewRound = false;
+            Won = false;
+            RoundStart = true;
+            TimeElapsed = DateTime.UtcNow;
         }
 
-        public void UpdateTotalTime()
+        public bool CanStartRound()
         {
-            TotalTime = _round_time.ToString("c");
+            return true;
         }
 
-        public string FetchRoundTime()
+        public void UpdateRoundTime()
         {
-            return _round_time.ToString("c");
+            _check_second = DateTime.UtcNow - TimeElapsed;
+            if (_check_second < TimeSpan.FromSeconds(1))
+            {
+                RoundTime = RoundTime - TimeSpan.FromSeconds(1);
+
+                //if (TimerSecondElapsedEvent != null)
+                //    TimerSecondElapsedEvent(this, new TimerSecondElapsedEventArgs(_round_time));
+
+                if (RoundTime == TimeSpan.Zero)
+                {
+                    TotalTime += (TimeSpan.FromSeconds(c_Starting_Round_Seconds) - RoundTime);
+                    GameOver = true;
+                }
+            }
+        }
+
+        public void GetHint()
+        {
+            if (WinningWord == "")
+            {
+                Trace.WriteLine("WinningWord is: " + WinningWord + " and Not Set.");
+                return;
+            }
+
+            Trace.WriteLine("WinningWord is: " + WinningWord);
+
+            HttpClient client = new HttpClient();
+
+            var url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + WinningWord;
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Content = new StringContent(String.Empty);
+            var lookup = client.Send(request);
+
+            var reader = new Utf8JsonReader(lookup.Content.ReadAsByteArrayAsync().GetAwaiter().GetResult());
+            var word = System.Text.Json.JsonSerializer.Deserialize<List<DictionaryWord>>(ref reader, new JsonSerializerOptions { WriteIndented = true, IncludeFields = true})?[0];
+            Hint = word.Meanings[0].Type[0].Definition;
+
+            Trace.WriteLine("Hint:" + Hint);
+
+        }
+        private bool CanGetHint()
+        {
+            if (Hint != "")
+            {
+                return false;
+            }
+            else if (String.IsNullOrEmpty(WinningWord))
+            {
+                Trace.WriteLine("Can not get hint! Winning Word is Null.");
+                return false;
+            }
+            else
+            {
+                Trace.WriteLine("Hint can be retrieved!");
+                return true;
+            }
+        }
+
+        private void LetterButtonClicked(object param)
+        {
+            var letter = param as string;
+
+            if (WinningWord.Contains(letter.ToLower()))
+            {
+                int i = Array.FindIndex(_index_letters, x => x == letter);
+                _is_in_word_source[i] = true;
+            }
+        }
+
+        private bool LetterButtonCanBeClicked(object param)
+        {
+            if(RoundStart)
+                return true;
+            else
+                return false;
         }
 
         public void GameWon(bool flag)
         {
+            Hint = "";
             Won = flag;
             Wins++;
         }
 
-
+        #endregion // End Game Logic Member Methods
     }
 }

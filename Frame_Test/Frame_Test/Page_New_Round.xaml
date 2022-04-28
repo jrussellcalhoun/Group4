@@ -1,0 +1,199 @@
+﻿<Page x:Class="Word_Game.Page_New_Round"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Word_Game"
+      xmlns:tools="clr-namespace:Word_Game.Tools"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance Type=local:Game_Logic, IsDesignTimeCreatable=True}"
+      MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
+      MinWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
+      Title="Group 4 Word Game">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="WordGameResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid x:Name="MainGrid" Background="{StaticResource CetaceanBlue}">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.03'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.03'}"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.075'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+        </Grid.RowDefinitions>
+
+        <Border x:Name="NewRoundBorder" 
+                Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="14" Grid.RowSpan="11"
+                BorderThickness="8"
+                BorderBrush="DarkOrange"/>
+
+        <!--                                                                                Grid Coordinates                            -->
+        <!--                                                                                X             Y                             -->
+        <Button  x:Name="LetterButton1"  Content="{Binding Path=Letters[0]}"   Grid.Column="3"  Grid.Row="2" Style="{StaticResource LB1}"/>
+        <Button  x:Name="LetterButton2"  Content="{Binding Path=Letters[1]}"   Grid.Column="4"  Grid.Row="2" Style="{StaticResource LB2}"/>
+        <Button  x:Name="LetterButton3"  Content="{Binding Path=Letters[2]}"   Grid.Column="5"  Grid.Row="2" Style="{StaticResource LB3}"/>
+        <Button  x:Name="LetterButton4"  Content="{Binding Path=Letters[3]}"   Grid.Column="2"  Grid.Row="3" Style="{StaticResource LB4}"/>
+        <Button  x:Name="LetterButton5"  Content="{Binding Path=Letters[4]}"   Grid.Column="3"  Grid.Row="3" Style="{StaticResource LB5}"/>
+        <Button  x:Name="LetterButton6"  Content="{Binding Path=Letters[5]}"   Grid.Column="4"  Grid.Row="3" Style="{StaticResource LB6}"/>
+        <Button  x:Name="LetterButton7"  Content="{Binding Path=Letters[6]}"   Grid.Column="5"  Grid.Row="3" Style="{StaticResource LB7}"/>
+        <Button  x:Name="LetterButton8"  Content="{Binding Path=Letters[7]}"   Grid.Column="6"  Grid.Row="3" Style="{StaticResource LB8}"/>
+        <Button  x:Name="LetterButton9"  Content="{Binding Path=Letters[8]}"   Grid.Column="2"  Grid.Row="4" Style="{StaticResource LB9}"/>
+        <Button  x:Name="LetterButton10" Content="{Binding Path=Letters[9]}"   Grid.Column="3"  Grid.Row="4" Style="{StaticResource LB10}"/>
+        <Button  x:Name="LetterButton11" Content="{Binding Path=Letters[10]}"  Grid.Column="4"  Grid.Row="4" Style="{StaticResource LB11}"/>
+        <Button  x:Name="LetterButton12" Content="{Binding Path=Letters[11]}"  Grid.Column="5"  Grid.Row="4" Style="{StaticResource LB12}"/>
+        <Button  x:Name="LetterButton13" Content="{Binding Path=Letters[12]}"  Grid.Column="6"  Grid.Row="4" Style="{StaticResource LB13}"/>
+        <Button  x:Name="LetterButton14" Content="{Binding Path=Letters[13]}"  Grid.Column="2"  Grid.Row="5" Style="{StaticResource LB14}"/>
+        <Button  x:Name="LetterButton15" Content="{Binding Path=Letters[14]}"  Grid.Column="3"  Grid.Row="5" Style="{StaticResource LB15}"/>
+        <Button  x:Name="LetterButton16" Content="{Binding Path=Letters[15]}"  Grid.Column="4"  Grid.Row="5" Style="{StaticResource LB16}"/>
+        <Button  x:Name="LetterButton17" Content="{Binding Path=Letters[16]}"  Grid.Column="5"  Grid.Row="5" Style="{StaticResource LB17}"/>
+        <Button  x:Name="LetterButton18" Content="{Binding Path=Letters[17]}"  Grid.Column="6"  Grid.Row="5" Style="{StaticResource LB18}"/>
+        <Button  x:Name="LetterButton19" Content="{Binding Path=Letters[18]}"  Grid.Column="2"  Grid.Row="6" Style="{StaticResource LB19}"/>
+        <Button  x:Name="LetterButton20" Content="{Binding Path=Letters[19]}"  Grid.Column="3"  Grid.Row="6" Style="{StaticResource LB20}"/>
+        <Button  x:Name="LetterButton21" Content="{Binding Path=Letters[20]}"  Grid.Column="4"  Grid.Row="6" Style="{StaticResource LB21}"/>
+        <Button  x:Name="LetterButton22" Content="{Binding Path=Letters[21]}"  Grid.Column="5"  Grid.Row="6" Style="{StaticResource LB22}"/>
+        <Button  x:Name="LetterButton23" Content="{Binding Path=Letters[22]}"  Grid.Column="6"  Grid.Row="6" Style="{StaticResource LB23}"/>
+        <Button  x:Name="LetterButton24" Content="{Binding Path=Letters[23]}"  Grid.Column="3"  Grid.Row="7" Style="{StaticResource LB24}"/>
+        <Button  x:Name="LetterButton25" Content="{Binding Path=Letters[24]}"  Grid.Column="4"  Grid.Row="7" Style="{StaticResource LB25}"/>
+        <Button  x:Name="LetterButton26" Content="{Binding Path=Letters[25]}"  Grid.Column="5"  Grid.Row="7" Style="{StaticResource LB26}"/>
+
+        <Button  x:Name="GuessButton1"     Grid.Column="2"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
+        <Button  x:Name="GuessButton2"     Grid.Column="3"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
+        <Button  x:Name="GuessButton3"     Grid.Column="4"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
+        <Button  x:Name="GuessButton4"     Grid.Column="5"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
+        <Button  x:Name="GuessButton5"     Grid.Column="6"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
+
+        <Border  x:Name="PreviousGuess1"   Grid.Column="8"  Grid.Row="3" Grid.ColumnSpan="5" Grid.RowSpan="5" BorderThickness="4" BorderBrush="DarkOrange" CornerRadius="24"/>
+        <TextBox x:Name="PreviousGuess1_1" Grid.Column="8"  Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess1_2" Grid.Column="9"  Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess1_3" Grid.Column="10" Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess1_4" Grid.Column="11" Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess1_5" Grid.Column="12" Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
+
+        <TextBox x:Name="PreviousGuess2_1" Grid.Column="8"  Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess2_2" Grid.Column="9"  Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess2_3" Grid.Column="10" Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess2_4" Grid.Column="11" Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess2_5" Grid.Column="12" Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
+
+        <TextBox x:Name="PreviousGuess3_1" Grid.Column="8"  Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess3_2" Grid.Column="9"  Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess3_3" Grid.Column="10" Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess3_4" Grid.Column="11" Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess3_5" Grid.Column="12" Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
+
+        <TextBox x:Name="PreviousGuess4_1" Grid.Column="8"  Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess4_2" Grid.Column="9"  Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess4_3" Grid.Column="10" Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess4_4" Grid.Column="11" Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess4_5" Grid.Column="12" Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
+
+        <TextBox x:Name="PreviousGuess5_1" Grid.Column="8"  Grid.Row="7" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess5_2" Grid.Column="9"  Grid.Row="7" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess5_3" Grid.Column="10" Grid.Row="7" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess5_4" Grid.Column="11" Grid.Row="7" Style="{StaticResource PreviousGuessBox}"/>
+        <TextBox x:Name="PreviousGuess5_5" Grid.Column="12" Grid.Row="7" Style="{StaticResource PreviousGuessBox}"/>
+
+        <Button x:Name="GuessButton" Content="Enter" 
+                   Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" 
+                   MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
+                   MinWidth="{Binding  Source={x:Static SystemParameters.PrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
+                   Style="{StaticResource ActionButton}" 
+                   MouseDown="GuessButton_MouseDown"/>
+
+        <Button x:Name="HintButton" Content="Click For A Hint!"
+                 Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
+                 MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                 MinWidth="{Binding  Source={x:Static SystemParameters.PrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
+                 Style="{StaticResource ActionButton}" 
+                 Command="{Binding Path=GetHintCommand}"/>
+
+        <TextBlock x:Name="HintBox" Text="{Binding Path=Hint, UpdateSourceTrigger=PropertyChanged}"
+                   Grid.Row="3" Grid.RowSpan="6" Grid.ColumnSpan="2"
+                   MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.5'}" 
+                   MinWidth="{Binding  Source={x:Static SystemParameters.PrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
+                   Style="{StaticResource HintBox}"/>
+
+        <Button x:Name="StartRoundButton" Content="START ROUND"
+                Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" 
+                MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                MinWidth="{Binding  Source={x:Static SystemParameters.PrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
+                Style="{StaticResource ActionButton}"
+                Command="{Binding Path=StartRoundCommand}"/>
+
+        <Button x:Name="ResetGameButton" Content="Reset Game" 
+                Grid.Column="11" Grid.Row="0" Grid.ColumnSpan="2"
+                MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
+                MinWidth="{Binding  Source={x:Static SystemParameters.PrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.05'}"
+                Style="{StaticResource ActionButton}"
+                MouseDown="ResetGame_MouseDown"/>
+
+        <ComboBox x:Name="MusicComboBox"
+                  Grid.Column="9" Grid.ColumnSpan="2"
+                  MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
+                  MaxWidth="{Binding  Source={x:Static SystemParameters.PrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.1'}"
+                  FontFamily="Consolas" FontSize="30" FontWeight="Bold"
+                  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                  SelectionChanged="MusicComboBox_SelectionChanged">
+            <ComboBoxItem x:Name="song_one"   Content="Electronic" IsSelected="False"/>
+            <ComboBoxItem x:Name="song_two"   Content="Jeopardy"   IsSelected="True"/>
+            <ComboBoxItem x:Name="song_three" Content="Smooth"     IsSelected="False"/>
+            <ComboBoxItem x:Name="no_sound"   Content="No sound"   IsSelected="False"/>
+        </ComboBox>
+
+        <Border x:Name="VolumeSliderRegion" 
+                Grid.Row="0" Grid.Column="7" Grid.RowSpan="3" Grid.ColumnSpan="2"
+                Height="180" Width="100" Background="Transparent" MouseEnter="VolumeSliderUncollapse_MouseEnter" MouseLeave="VolumeSliderCollapse_MouseLeave"/>
+        
+        <Label Content="Volume" Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="2" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               FontSize="36" FontFamily="Consolas" FontWeight="Medium" Foreground="GhostWhite"/>
+
+        <Slider x:Name="VolumeSlider"
+            Grid.Column="7" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="0,20,0,0"
+            Value="50" Minimum="0" Maximum="100" 
+            TickFrequency="10" TickPlacement="BottomRight" 
+            SmallChange="5" LargeChange="10"
+            Orientation="Vertical" Height="150" Width="30" 
+            Foreground="White" Background="#3F2A00"
+            DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:Page_New_Round}, Path=Self}"
+            Visibility="{Binding Path=VolumeSliderVisibility}"/>
+            <!--" Expander x:Name="ExpansionPanel" Header="Settings" 
+                  Grid.Column="0" Grid.Row="0" Height="Auto" ExpandDirection="Down"
+                  VerticalAlignment="Stretch" HorizontalAlignment="Left"
+                  Foreground="GhostWhite" Background="#4C5466" 
+                  FontFamily="Consolas" FontSize="36" FontWeight="Medium">
+            <TextBlock x:Name="VolumeLabel" Foreground="GhostWhite" FontSize="36" FontWeight="Medium" FontFamily="Consolas"/>
+            
+        </Expander-->
+    </Grid>
+</Page>

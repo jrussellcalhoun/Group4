@@ -13,124 +13,67 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Data;
+using System.Diagnostics;
 
 
 namespace Word_Game
 {
+    public enum PageState
+    {
+        MAIN_MENU, PAGE_NEW_ROUND, PAGE_PLAY_AGAIN, PAGE_SETTINGS, PAGE_LOGIN
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Objects relevant to the entire lifetime of the game should be declared here.
-        private Game_Logic _logic;
-        private DispatcherTimer _tick_timer;
-
         // Frame Pages
         //private Settings    _settings;
         //private Login       _login;
-        private Game_UI     _ui;
-        private Play_Again  _play_again;
+        private Page_New_Round  _page_new_round;
+        private Page_End_Round  _page_end_round;
 
-        public enum Pages
-        {
-            MAIN_MENU, GAME_UI, PLAY_AGAIN, SETTINGS, LOGIN
-        }
-
-        private Pages _current_page;
+        private PageState _current_page;
 
         public MainWindow()
         {
             // Initialization of internal WPF controls. Always make sure this is called first.
             InitializeComponent();
-            
-            // Initialize references to lifetime game objects.
-            _current_page = Pages.MAIN_MENU;
-            _tick_timer = new DispatcherTimer();
-            _logic = new Game_Logic();
-            _ui = new Game_UI(_logic);
-            _play_again = new Play_Again(_logic);
 
-            Start();
+            //SetBinding(WidthProperty, new Binding("ScreenWidth") { Source = this, Mode=BindingMode.TwoWay});
+            //SetBinding(HeightProperty, new Binding("ScreenHeight") { Source = this, Mode = BindingMode.TwoWay });
+
+            // Initialize references to lifetime game objects.
+            _current_page = PageState.MAIN_MENU;
+            _page_new_round = new Page_New_Round();
+            _page_end_round = new Page_End_Round();
+            Trace.Write("System Width: " + SystemParameters.PrimaryScreenWidth + "\n" + "System Height: " + SystemParameters.PrimaryScreenHeight + "\n");
         }
 
-        public void ChangePage(Pages page)
+        public void ChangePage(object sender, EventArgs e)
         {
-            switch (page)
+            var args = e as ChangePageEventArgs;
+            switch (args.CurrentPage)
             {
-                case Pages.LOGIN:
+                case PageState.PAGE_LOGIN:
                     //Frame.Content = _login;
                     break;
-                case Pages.SETTINGS:
+                case PageState.PAGE_SETTINGS:
                     //Frame.Content = _settings;
                     break;
-                case Pages.GAME_UI:
-                    Frame.Content = _ui;
-                    _current_page = Pages.GAME_UI;
+                case PageState.PAGE_NEW_ROUND:
+                    Frame.Content = _page_new_round;
+                    _current_page = PageState.PAGE_NEW_ROUND;
                     break;
-                case Pages.PLAY_AGAIN:
-                    Frame.Content = _play_again;
-                    _current_page = Pages.PLAY_AGAIN;
+                case PageState.PAGE_PLAY_AGAIN:
+                    Frame.Content = _page_end_round;
+                    _current_page = PageState.PAGE_PLAY_AGAIN;
                     break;
                 default:
                     break;
             }
-        }
-
-        // Runs once at the start of the game.
-        public void Start()
-        {
-            _tick_timer.Tick += Run;
-            _tick_timer.Interval = TimeSpan.FromMilliseconds(20);
-            _tick_timer.Start();
-
-
-        }
-
-        // Runs every tick of the game (Every 20 milliseconds).
-        public void Run(object sender, EventArgs e)
-        {
-            if(_logic.Exit)
-            { 
-                End(); 
-            }
-            else
-            {
-                switch (_current_page)
-                {
-                    case Pages.LOGIN:
-                        break;
-                    case Pages.SETTINGS:
-                        break;
-                    case Pages.GAME_UI:
-                        if (_logic.Won || _logic.GameOver) 
-                        { 
-                            ChangePage(Pages.PLAY_AGAIN);
-                        }
-                        
-                        _ui.Update();
-                        break;
-                    case Pages.PLAY_AGAIN:
-                        if(_logic.NewRound) 
-                        {
-                            Console.WriteLine("New Round");
-                            _ui.ResetGame(true); 
-                            _logic.NewRound = false; 
-                            ChangePage(Pages.GAME_UI); 
-                        }
-                        _play_again.Update();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        // Runs once at the end of the game.
-        public void End()
-        {
-            _tick_timer.Stop();
-            Application.Current.Shutdown();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -138,8 +81,30 @@ namespace Word_Game
             title_box.Visibility = Visibility.Hidden;
             instruction_box.Visibility = Visibility.Hidden;
             newGame_button.Visibility = Visibility.Hidden;
-
-            ChangePage(Pages.GAME_UI);
+            Frame.Content = _page_new_round;
+            _current_page = PageState.PAGE_NEW_ROUND;
         }
+
+        //private void Frame_Navigated(object sender, NavigationEventArgs e)
+        //{
+        //    ((FrameworkElement)e.Content).DataContext = this.DataContext;
+        //}
+
+        private void Frame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            UpdateFrameDataContext(sender, null);
+        }
+        private void Frame_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            UpdateFrameDataContext(sender, e);
+        }
+        private void UpdateFrameDataContext(object sender, NavigationEventArgs e)
+        {
+            var content = Frame.Content as FrameworkElement;
+            if (content == null)
+                return;
+            content.DataContext = Frame.DataContext;
+        }
+
     }
 }

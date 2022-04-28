@@ -17,17 +17,13 @@ namespace Word_Game
     /// <summary>
     /// Interaction logic for Page2.xaml
     /// </summary>
-    public partial class Play_Again : Page
+    public partial class Page_End_Round : Page
     {
-        private Game_Logic _logic;
-        private const string you_lose = "YOU LOSE :P", you_won = "YOU WON :D";
+        private const string YOU_LOSE = "YOU LOSE :P", YOU_WON = "YOU WON :D";
 
-
-        public Play_Again(Game_Logic logic)
+        public Page_End_Round()
         {
             InitializeComponent();
-
-            _logic = logic;
 
             win_or_lose_box.Text = "";
             game_info.Text = "";
@@ -35,34 +31,34 @@ namespace Word_Game
 
         public void Update()
         {
-            if (_logic.Won)
-            {
-                win_or_lose_box.Text = you_won;
+            //if (_logic.Won)
+            //{
+            //    win_or_lose_box.Text = YOU_WON;
+            //
+            //}
+            //else
+            //{
+            //    win_or_lose_box.Text = YOU_LOSE;
+            //}
 
-            }
-            else
-            {
-                win_or_lose_box.Text = you_lose;
-            }
-
-            game_info.Text = $"Winning Word: {_logic.WinningWord}\n" +
-                             $"Time Remaining: {_logic.TotalTime}\n" +
-                             $"Guesses Used: {_logic.Tries}\n"       +
-                             $"Total Wins: {_logic.Wins}";
+            //game_info.Text = $"Winning Word: {_logic.WinningWord}\n" +
+            //                 $"Time Remaining: {_logic.TotalTime}\n" +
+            //                 $"Guesses Used: {_logic.Tries}\n"       +
+            //                 $"Total Wins: {_logic.Wins}";
         }
 
         private void new_round_button_Click(object sender, RoutedEventArgs e)
         {
             //var window = Application.Current.MainWindow as MainWindow;
             //window.ChangePage(MainWindow.Pages.GAME_UI);
-            _logic.NewRound = true;
-            _logic.Won = false;
-            _logic.GameOver = false;
+            //_logic.NewRound = true;
+            //_logic.Won = false;
+            //_logic.GameOver = false;
         }
 
         private void exit_button_Click(object sender, RoutedEventArgs e)
         {
-            _logic.Exit = true;
+            //_logic.Quit = true;
         }
 
         private void settings_button_Click(object sender, RoutedEventArgs e)
