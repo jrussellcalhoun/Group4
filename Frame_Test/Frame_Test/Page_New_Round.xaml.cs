@@ -38,10 +38,12 @@ namespace Word_Game
         private Brush _letter_in_word_brush;
         private Brush _letter_correct_position_brush;
 
-        // TODO: FIX ME
-        // Need to change this code to use a MediaElement Control instead.
-        // MediaPlayer is more for creating custom video players!
-        private MediaPlayer _media_player;
+        // Music variables
+        private bool _stop_music = false;
+        private readonly string c_Directory;
+        private const string c_Song1 = @"Assets\ForThePoor.wav", c_Song2 = @"Assets\Jeopardy-theme-song.wav", c_Song3 = @"Assets\Beam.wav", c_Song4 = "stop";
+        private const string c_Start = "START", c_Guesses = "Guesses: ", c_Hint = "Click for Hint";
+        private string _song;
 
         // This probably should be seperated out into a seperate class because we are using INotifyPropertyChanged which should not be directly on the UI code itself.
         private Visibility _volume_slider_visibility;
@@ -51,11 +53,20 @@ namespace Word_Game
             private set { _volume_slider_visibility = value; OnPropertyChanged(); }
         }
 
-        // Music variables
-        private bool _stop_music = false;
-        private readonly string c_Directory;
-        private const string c_Song1 = @"Assets\ForThePoor.wav", c_Song2 = @"Assets\Jeopardy-theme-song.wav", c_Song3 = @"Assets\Beam.wav", c_Song4 = "stop";
-        private const string c_Start = "START", c_Guesses = "Guesses: ", c_Hint = "Click for Hint";
+        private double _volume;
+
+        public double Volume
+        {
+            get => _volume;
+            set { _volume = value; OnPropertyChanged(); }
+        }
+
+        public string Song
+        {
+            get => _song;
+            private set { _song = value; OnPropertyChanged(); }
+        }
+
 
         public event HintRequestDelegate HintRequestMade;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -97,15 +108,12 @@ namespace Word_Game
             _guessed_word_buttons = new List<Button>();
             _letter_default_brush = new SolidColorBrush(Color.FromArgb(0xFF, 0x8E, 0xEC, 0xF5));
 
-            // TODO: FIX ME
-            // Need to change this code to use a MediaElement Control instead.
-            // MediaPlayer is more for creating custom video players!
-            //_media_player = new MediaPlayer();
+            Volume = 50.0;
+            Song = c_Song2;
+            SongPlayer.Stop();
 
             c_Directory = AppDomain.CurrentDomain.BaseDirectory;
             Debug.WriteLine("AppDomain: " + c_Directory);
-
-            ResetGame(true);
         }
 
         public void ResetGame(bool newRound)
@@ -134,32 +142,10 @@ namespace Word_Game
         {
             ComboBoxItem item = sender as ComboBoxItem;
 
-            // Sentinel (stop_music) remembers player's choice of no music between game rounds.
-                 if (item == song_one)   { _stop_music = false; PlayMusic(c_Song1); }
-            else if (item == song_two)   { _stop_music = false; PlayMusic(c_Song2); }
-            else if (item == song_three) { _stop_music = false; PlayMusic(c_Song3); }
-            else if (item == no_sound)   { _stop_music = true;  PlayMusic(c_Song4); }
-        }
-
-        // Plays the music for the game.
-        private void PlayMusic(string song)
-        {
-            if (song != c_Song4)
-            {
-                // TODO: FIX ME
-                // Need to change this code to use a MediaElement Control instead.
-                // MediaPlayer is more for creating custom video players!
-
-                //var tmp = AppDomain.CurrentDomain.BaseDirectory + song;
-                //Debug.WriteLine(tmp);
-                //var uri = new Uri(tmp);
-                //_media_player.Open(uri);
-                //_media_player.Play();
-            }
-            else
-            {
-                //_media_player.Stop();
-            }
+                 if (item == song_one)   { Song = c_Song1; SongPlayer.Play(); }
+            else if (item == song_two)   { Song = c_Song2; SongPlayer.Play(); }
+            else if (item == song_three) { Song = c_Song3; SongPlayer.Play(); }
+            else if (item == no_sound)   { Song = c_Song4; SongPlayer.Stop(); }
         }
 
         private void ChangeColor()
@@ -177,13 +163,12 @@ namespace Word_Game
         }
 
         // Adds button to guessed_word_buttons and displays the buttons content the the textbox below the buttons.
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = sender as Button;
-            button.Background = Brushes.Blue;
-            _guessed_word_buttons.Add(button);
-            //CurrentGuessBox.Text += button.Content;
-        }
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button button = sender as Button;
+        //    button.Background = Brushes.Blue;
+        //    _guessed_word_buttons.Add(button);
+        //}
 
         private void GuessButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -225,20 +210,14 @@ namespace Word_Game
         //    }
         //}
 
-        private void StartRoundButton_MouseDown(object sender, MouseButtonEventArgs e)
+        private void StartRoundButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (StartRoundBox.Text == c_Start)
-            //{
-            //    //_logic.StartRoundTimer();
-            //    //_logic.RoundStart = true;
-            //}
-            //else
-            //{
-            //    return;
-            //}
+            var btn = sender as Button;
+            SongPlayer.Play();
+            btn.Command.Execute(btn.CommandParameter);
         }
 
-        private void ResetGame_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ResetGame_Click(object sender, RoutedEventArgs e)
         {
             ResetGame(false);
         }

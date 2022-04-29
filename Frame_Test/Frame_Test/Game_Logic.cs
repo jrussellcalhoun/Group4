@@ -235,18 +235,7 @@ namespace Word_Game
 
         public ICommand GetHintCommand
         {
-            get
-            {
-                Trace.WriteLine("GetHint");
-                
-                if(_get_hint_command == null)
-                {
-                    _get_hint_command = new RelayCommand(param => GetHint(), param => CanGetHint());
-                }
-                return _get_hint_command;
-
-                //return _get_hint_command ??= new ForwardCommand(param => this.GetHint(), param => this.CanGetHint());
-            }
+            get => _get_hint_command ??= new RelayCommand(param => GetHint(), param => CanGetHint());
         }
 
         public ICommand LetterButtonClickedCommand

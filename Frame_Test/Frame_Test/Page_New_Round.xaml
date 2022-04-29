@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Word_Game"
       xmlns:tools="clr-namespace:Word_Game.Tools"
+      xmlns:sys="clr-namespace:System;assembly=mscorlib" 
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance Type=local:Game_Logic, IsDesignTimeCreatable=True}"
       MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
@@ -148,6 +149,7 @@
                 MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
                 MinWidth="{Binding  Source={x:Static SystemParameters.PrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
                 Style="{StaticResource ActionButton}"
+                Button.Click="StartRoundButton_Click"
                 Command="{Binding Path=StartRoundCommand}"/>
 
         <Button x:Name="ResetGameButton" Content="Reset Game" 
@@ -155,7 +157,30 @@
                 MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
                 MinWidth="{Binding  Source={x:Static SystemParameters.PrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.05'}"
                 Style="{StaticResource ActionButton}"
-                MouseDown="ResetGame_MouseDown"/>
+                MouseDown="ResetGame_Click"/>
+
+        <Border x:Name="VolumeSliderRegion" 
+                Grid.Row="0" Grid.Column="7" Grid.RowSpan="3" Grid.ColumnSpan="2"
+                Height="180" Width="100" Background="Transparent" MouseEnter="VolumeSliderUncollapse_MouseEnter" MouseLeave="VolumeSliderCollapse_MouseLeave"/>
+
+        <Label Content="Volume" Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="2" 
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               FontSize="36" FontFamily="Consolas" FontWeight="Medium" Foreground="GhostWhite"/>
+
+        <Slider x:Name="VolumeSlider"
+            Grid.Column="7" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="0,20,0,0"
+            TickFrequency="10" TickPlacement="BottomRight" 
+            SmallChange="5" LargeChange="10"
+            Orientation="Vertical" Height="150" Width="30" 
+            Foreground="White" Background="#3F2A00"
+            DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:Page_New_Round}}"
+            Value="{Binding Path=Volume}" Minimum="0" Maximum="100" 
+            Visibility="{Binding Path=VolumeSliderVisibility}"/>
+
+        <MediaElement x:Name="SongPlayer" 
+                      LoadedBehavior="Manual" UnloadedBehavior="Stop"
+                      DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:Page_New_Round}}"
+                      Source="{Binding Path=Song}" Volume="{Binding Path=Volume, Converter={tools:RatioConverter}, ConverterParameter='0.01'}"/>
 
         <ComboBox x:Name="MusicComboBox"
                   Grid.Column="9" Grid.ColumnSpan="2"
@@ -169,31 +194,6 @@
             <ComboBoxItem x:Name="song_three" Content="Smooth"     IsSelected="False"/>
             <ComboBoxItem x:Name="no_sound"   Content="No sound"   IsSelected="False"/>
         </ComboBox>
-
-        <Border x:Name="VolumeSliderRegion" 
-                Grid.Row="0" Grid.Column="7" Grid.RowSpan="3" Grid.ColumnSpan="2"
-                Height="180" Width="100" Background="Transparent" MouseEnter="VolumeSliderUncollapse_MouseEnter" MouseLeave="VolumeSliderCollapse_MouseLeave"/>
-        
-        <Label Content="Volume" Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="2" 
-               HorizontalAlignment="Center" VerticalAlignment="Center"
-               FontSize="36" FontFamily="Consolas" FontWeight="Medium" Foreground="GhostWhite"/>
-
-        <Slider x:Name="VolumeSlider"
-            Grid.Column="7" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="0,20,0,0"
-            Value="50" Minimum="0" Maximum="100" 
-            TickFrequency="10" TickPlacement="BottomRight" 
-            SmallChange="5" LargeChange="10"
-            Orientation="Vertical" Height="150" Width="30" 
-            Foreground="White" Background="#3F2A00"
-            DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:Page_New_Round}, Path=Self}"
-            Visibility="{Binding Path=VolumeSliderVisibility}"/>
-            <!--" Expander x:Name="ExpansionPanel" Header="Settings" 
-                  Grid.Column="0" Grid.Row="0" Height="Auto" ExpandDirection="Down"
-                  VerticalAlignment="Stretch" HorizontalAlignment="Left"
-                  Foreground="GhostWhite" Background="#4C5466" 
-                  FontFamily="Consolas" FontSize="36" FontWeight="Medium">
-            <TextBlock x:Name="VolumeLabel" Foreground="GhostWhite" FontSize="36" FontWeight="Medium" FontFamily="Consolas"/>
-            
-        </Expander-->
+  
     </Grid>
 </Page>

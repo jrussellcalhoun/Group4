@@ -5,6 +5,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                     xmlns:local="clr-namespace:Word_Game"
                     xmlns:tools="clr-namespace:Word_Game.Tools"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     mc:Ignorable="d">
 
     <!--<Color x:Key="CBlackRussian">#0F0F2D</Color>
@@ -12,6 +13,32 @@
     <Color x:Key="CCinder">#24282B</Color-->
 
     <Brush x:Key="CetaceanBlue">#001440</Brush>
+
+    <sys:UInt32 x:Key="L1" >1</sys:UInt32>
+    <sys:UInt32 x:Key="L2" >2</sys:UInt32>
+    <sys:UInt32 x:Key="L3" >3</sys:UInt32>
+    <sys:UInt32 x:Key="L4" >4</sys:UInt32>
+    <sys:UInt32 x:Key="L5" >5</sys:UInt32>
+    <sys:UInt32 x:Key="L6" >6</sys:UInt32>
+    <sys:UInt32 x:Key="L7" >7</sys:UInt32>
+    <sys:UInt32 x:Key="L8" >8</sys:UInt32>
+    <sys:UInt32 x:Key="L9" >9</sys:UInt32>
+    <sys:UInt32 x:Key="L10">10</sys:UInt32>
+    <sys:UInt32 x:Key="L11">11</sys:UInt32>
+    <sys:UInt32 x:Key="L12">12</sys:UInt32>
+    <sys:UInt32 x:Key="L13">13</sys:UInt32>
+    <sys:UInt32 x:Key="L14">14</sys:UInt32>
+    <sys:UInt32 x:Key="L15">15</sys:UInt32>
+    <sys:UInt32 x:Key="L16">16</sys:UInt32>
+    <sys:UInt32 x:Key="L17">17</sys:UInt32>
+    <sys:UInt32 x:Key="L18">18</sys:UInt32>
+    <sys:UInt32 x:Key="L19">19</sys:UInt32>
+    <sys:UInt32 x:Key="L20">20</sys:UInt32>
+    <sys:UInt32 x:Key="L21">21</sys:UInt32>
+    <sys:UInt32 x:Key="L22">22</sys:UInt32>
+    <sys:UInt32 x:Key="L23">23</sys:UInt32>
+    <sys:UInt32 x:Key="L24">24</sys:UInt32>
+    <sys:UInt32 x:Key="L26">25</sys:UInt32>
 
     <Style x:Key="DefaultButtonStyle" TargetType="{x:Type Button}" >
         <Setter Property="Template">
