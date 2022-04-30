@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Data;
 using System.Diagnostics;
 
+using Word_Game.Utilities;
 
 namespace Word_Game
 {
@@ -41,9 +30,6 @@ namespace Word_Game
         {
             // Initialization of internal WPF controls. Always make sure this is called first.
             InitializeComponent();
-
-            //SetBinding(WidthProperty, new Binding("ScreenWidth") { Source = this, Mode=BindingMode.TwoWay});
-            //SetBinding(HeightProperty, new Binding("ScreenHeight") { Source = this, Mode = BindingMode.TwoWay });
 
             // Initialize references to lifetime game objects.
             _current_page = PageState.MAIN_MENU;
@@ -85,11 +71,8 @@ namespace Word_Game
             _current_page = PageState.PAGE_NEW_ROUND;
         }
 
-        //private void Frame_Navigated(object sender, NavigationEventArgs e)
-        //{
-        //    ((FrameworkElement)e.Content).DataContext = this.DataContext;
-        //}
-
+        // The following are navigation events for the Frame element (and it's pages).
+        // Here we are manually setting the DataContext of the frames to be our Game_Logic instance (so that it's shared).
         private void Frame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             UpdateFrameDataContext(sender, null);
@@ -106,5 +89,13 @@ namespace Word_Game
             content.DataContext = Frame.DataContext;
         }
 
+        // Haven't decided if I want to keep this yet, uncomment to remove the border and system menu on the window.
+        //private void Window_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    Trace.WriteLine("Window Loaded");
+        //    IntPtr window_handle = new WindowInteropHelper(this).Handle;
+        //    int current_style = InteropHelper.GetWindowLongPtr(window_handle, GWL.GWL_STYLE).ToInt32();
+        //    InteropHelper.SetWindowLongPtr(window_handle, GWL.GWL_STYLE, new IntPtr(current_style & (~(WS_STYLE.WS_BORDER | WS_STYLE.WS_SYSMENU) | WS_STYLE.WS_POPUP)));
+        //}
     }
 }

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Word_Game.Utilities
 {
@@ -17,7 +14,7 @@ namespace Word_Game.Utilities
         [DllImport("kernel32.dll")]
         public static extern Boolean FreeConsole();
 
-        [Conditional("Debug")]
+        [Conditional("DEBUG")]
         public static void CreateDebugConsole()
         {
             ConsoleHelper.AllocConsole();
@@ -26,7 +23,7 @@ namespace Word_Game.Utilities
             Trace.Listeners.Add(writer);
         }
 
-        [Conditional("Debug")]
+        [Conditional("DEBUG")]
         public static void ShutdownDebugConsole()
         {
             Console.WriteLine("Console Shutdown");

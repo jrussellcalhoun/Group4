@@ -6,8 +6,8 @@
       xmlns:local="clr-namespace:Word_Game"
       xmlns:tools="clr-namespace:Word_Game.Tools"
       mc:Ignorable="d" 
-      MinHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
-      MinWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
+      MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
+      MinWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
       Title="Page2">
 
     <Page.Resources>
