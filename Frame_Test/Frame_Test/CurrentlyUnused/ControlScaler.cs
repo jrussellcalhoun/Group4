@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
-namespace Word_Game.Tools
+namespace WordGame.Tools
 {
     public class ControlScaler : INotifyPropertyChanged
     {

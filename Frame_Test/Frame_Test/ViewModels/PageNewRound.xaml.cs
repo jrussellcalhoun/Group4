@@ -19,12 +19,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Word_Game
+namespace WordGame
 {
     /// <summary>
     /// Interaction logic for Page1.xaml
     /// </summary>
-    public partial class Page_New_Round : Page, INotifyPropertyChanged
+    public partial class PageNewRound : Page, INotifyPropertyChanged
     {
         // Fields are set to private by design they are for internal class use only.
 
@@ -44,17 +44,16 @@ namespace Word_Game
         private const string c_Song1 = @"Assets\ForThePoor.wav", c_Song2 = @"Assets\Jeopardy-theme-song.wav", c_Song3 = @"Assets\Beam.wav", c_Song4 = "stop";
         private const string c_Start = "START", c_Guesses = "Guesses: ", c_Hint = "Click for Hint";
         private string _song;
+        private double _volume;
 
-        // This probably should be seperated out into a seperate class because we are using INotifyPropertyChanged which should not be directly on the UI code itself.
+        // This probably should be seperated out into a seperate class because we are using
+        // INotifyPropertyChanged which should not be directly on the UI code itself.
         private Visibility _volume_slider_visibility;
         public Visibility VolumeSliderVisibility 
         {
             get => _volume_slider_visibility;
             private set { _volume_slider_visibility = value; OnPropertyChanged(); }
         }
-
-        private double _volume;
-
         public double Volume
         {
             get => _volume;
@@ -73,31 +72,13 @@ namespace Word_Game
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            // If we have any listeners to the PropertyChanged event then call the PropertyChanged event handler for that event.
+            // If we have any listeners to the PropertyChanged event then call the
+            // PropertyChanged event handler for that event.
             // This utilizes reflection to update the UI with our logic properties.
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        //private bool _should_reset_brush;
-        //
-        //// Properties are public by design. These are used for data binding and external access by other classes.
-        //public bool ShouldResetLetterButtonBackground
-        //{
-        //    get { return _should_reset_brush; }
-        //    set 
-        //    { 
-        //        OnPropertyChanged(nameof(ShouldResetLetterButtonBackground));
-        //        OnPropertyChanged(nameof(LetterButtonBackground));
-        //    }
-        //}
-        //
-        //public Brush LetterButtonBackground => ShouldResetLetterButtonBackground ? _letter_default_brush : Brushes.Pink;
-        //
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //protected void OnPropertyChanged(string propertyName) =>
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        public Page_New_Round()
+        public PageNewRound()
         {
             // Setup for WPF component controls always make sure this is called first.
             InitializeComponent();
@@ -108,7 +89,7 @@ namespace Word_Game
             _guessed_word_buttons = new List<Button>();
             _letter_default_brush = new SolidColorBrush(Color.FromArgb(0xFF, 0x8E, 0xEC, 0xF5));
 
-            Volume = 50.0;
+            Volume = 10.0;
             Song = c_Song2;
             SongPlayer.Stop();
 
@@ -147,76 +128,28 @@ namespace Word_Game
             else if (item == song_three) { Song = c_Song3; SongPlayer.Play(); }
             else if (item == no_sound)   { Song = c_Song4; SongPlayer.Stop(); }
         }
-
         private void ChangeColor()
         {
             if (_first_letter != null) { _first_letter.Background = Brushes.Red; }
             foreach (Button button in _is_in) { button.Background = Brushes.Green; }
             foreach (Button button in _guessed) { button.Background = Brushes.LightGray; }
         }
-
         private void ClearGuesses()
         {
             _guessed_word_buttons.Clear();
             _is_in.Clear();
             _winning_guess.Clear();
         }
-
-        // Adds button to guessed_word_buttons and displays the buttons content the the textbox below the buttons.
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Button button = sender as Button;
-        //    button.Background = Brushes.Blue;
-        //    _guessed_word_buttons.Add(button);
-        //}
-
         private void GuessButton_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
         }
-
-        private void HintButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            HintRequestMade(this, null);
-        }
-
-        //private void Backspace_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (_guessed_word_buttons.Count == 0)
-        //    { 
-        //        return; 
-        //    }
-        //    else
-        //    {
-        //        if (_first_letter == _guessed_word_buttons[^1])
-        //        {
-        //            _guessed_word_buttons[^1].Background = Brushes.Red;
-        //        }
-        //        else if (_is_in.Contains(_guessed_word_buttons[^1]))
-        //        {
-        //            _guessed_word_buttons[^1].Background = Brushes.Green;
-        //        }
-        //        else if (_guessed.Contains(_guessed_word_buttons[^1]))
-        //        {
-        //            _guessed_word_buttons[^1].Background = Brushes.LightGray;
-        //        }
-        //        else
-        //        {
-        //            _guessed_word_buttons[^1].Background = _letter_default_brush;
-        //        }
-        //
-        //        _guessed_word_buttons.RemoveAt(_guessed_word_buttons.Count - 1);
-        //        CurrentGuessBox.Text = CurrentGuessBox.Text.Remove(CurrentGuessBox.Text.Length - 1);
-        //    }
-        //}
-
         private void StartRoundButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
             SongPlayer.Play();
             btn.Command.Execute(btn.CommandParameter);
         }
-
         private void ResetGame_Click(object sender, RoutedEventArgs e)
         {
             ResetGame(false);
@@ -226,26 +159,9 @@ namespace Word_Game
         {
             VolumeSliderVisibility = Visibility.Visible;
         }
-
         private void VolumeSliderCollapse_MouseLeave(object sender, MouseEventArgs e)
         {
             VolumeSliderVisibility = Visibility.Collapsed;
         }
-
-        //public void TimerSecondElapsed(object sender, EventArgs e)
-        //{
-        //    var args = e as TimerSecondElapsedEventArgs;
-        //
-        //    StartRoundBox.Text = args.TimeLeft.ToString();
-        //}
-
-        //public void Update()
-        //{
-        //    if (_logic.RoundStart) { StartRoundBox.Text = _logic.FetchRoundTime(); }
-        //}
-
-        // Randomly assigns letters to the buttons(no repeats) and enables the buttons.
-
-
     }
 }

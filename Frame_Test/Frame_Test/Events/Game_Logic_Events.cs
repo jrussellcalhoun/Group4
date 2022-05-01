@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 
-namespace Word_Game
+namespace WordGame
 {
     // Game Logic Event System
     //======================================================================================================================================

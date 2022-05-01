@@ -1,26 +1,18 @@
-﻿<Page x:Class="Word_Game.Page_New_Round"
+﻿<Page x:Class="WordGame.PageNewRound"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Word_Game"
-      xmlns:tools="clr-namespace:Word_Game.Tools"
+      xmlns:local="clr-namespace:WordGame"
+      xmlns:tools="clr-namespace:WordGame.Tools"
       xmlns:sys="clr-namespace:System;assembly=mscorlib" 
       mc:Ignorable="d"
-      d:DataContext="{d:DesignInstance Type=local:Game_Logic, IsDesignTimeCreatable=True}"
+      d:DataContext="{d:DesignInstance Type=local:GameLogic, IsDesignTimeCreatable=True}"
       Height="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
       Width="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
       MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
       MinWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
       Title="Group 4 Word Game">
-
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="WordGameResourceDictionary.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
 
     <Grid x:Name="MainGrid" Background="{StaticResource CetaceanBlue}">
 
@@ -57,38 +49,38 @@
 
         <!--                                                                                Grid Coordinates                            -->
         <!--                                                                                X             Y                             -->
-        <Button  x:Name="LetterButton1"  Content="{Binding Path=Letters[0]}"   Grid.Column="3"  Grid.Row="2" Style="{StaticResource LB1}"/>
-        <Button  x:Name="LetterButton2"  Content="{Binding Path=Letters[1]}"   Grid.Column="4"  Grid.Row="2" Style="{StaticResource LB2}"/>
-        <Button  x:Name="LetterButton3"  Content="{Binding Path=Letters[2]}"   Grid.Column="5"  Grid.Row="2" Style="{StaticResource LB3}"/>
-        <Button  x:Name="LetterButton4"  Content="{Binding Path=Letters[3]}"   Grid.Column="2"  Grid.Row="3" Style="{StaticResource LB4}"/>
-        <Button  x:Name="LetterButton5"  Content="{Binding Path=Letters[4]}"   Grid.Column="3"  Grid.Row="3" Style="{StaticResource LB5}"/>
-        <Button  x:Name="LetterButton6"  Content="{Binding Path=Letters[5]}"   Grid.Column="4"  Grid.Row="3" Style="{StaticResource LB6}"/>
-        <Button  x:Name="LetterButton7"  Content="{Binding Path=Letters[6]}"   Grid.Column="5"  Grid.Row="3" Style="{StaticResource LB7}"/>
-        <Button  x:Name="LetterButton8"  Content="{Binding Path=Letters[7]}"   Grid.Column="6"  Grid.Row="3" Style="{StaticResource LB8}"/>
-        <Button  x:Name="LetterButton9"  Content="{Binding Path=Letters[8]}"   Grid.Column="2"  Grid.Row="4" Style="{StaticResource LB9}"/>
-        <Button  x:Name="LetterButton10" Content="{Binding Path=Letters[9]}"   Grid.Column="3"  Grid.Row="4" Style="{StaticResource LB10}"/>
-        <Button  x:Name="LetterButton11" Content="{Binding Path=Letters[10]}"  Grid.Column="4"  Grid.Row="4" Style="{StaticResource LB11}"/>
-        <Button  x:Name="LetterButton12" Content="{Binding Path=Letters[11]}"  Grid.Column="5"  Grid.Row="4" Style="{StaticResource LB12}"/>
-        <Button  x:Name="LetterButton13" Content="{Binding Path=Letters[12]}"  Grid.Column="6"  Grid.Row="4" Style="{StaticResource LB13}"/>
-        <Button  x:Name="LetterButton14" Content="{Binding Path=Letters[13]}"  Grid.Column="2"  Grid.Row="5" Style="{StaticResource LB14}"/>
-        <Button  x:Name="LetterButton15" Content="{Binding Path=Letters[14]}"  Grid.Column="3"  Grid.Row="5" Style="{StaticResource LB15}"/>
-        <Button  x:Name="LetterButton16" Content="{Binding Path=Letters[15]}"  Grid.Column="4"  Grid.Row="5" Style="{StaticResource LB16}"/>
-        <Button  x:Name="LetterButton17" Content="{Binding Path=Letters[16]}"  Grid.Column="5"  Grid.Row="5" Style="{StaticResource LB17}"/>
-        <Button  x:Name="LetterButton18" Content="{Binding Path=Letters[17]}"  Grid.Column="6"  Grid.Row="5" Style="{StaticResource LB18}"/>
-        <Button  x:Name="LetterButton19" Content="{Binding Path=Letters[18]}"  Grid.Column="2"  Grid.Row="6" Style="{StaticResource LB19}"/>
-        <Button  x:Name="LetterButton20" Content="{Binding Path=Letters[19]}"  Grid.Column="3"  Grid.Row="6" Style="{StaticResource LB20}"/>
-        <Button  x:Name="LetterButton21" Content="{Binding Path=Letters[20]}"  Grid.Column="4"  Grid.Row="6" Style="{StaticResource LB21}"/>
-        <Button  x:Name="LetterButton22" Content="{Binding Path=Letters[21]}"  Grid.Column="5"  Grid.Row="6" Style="{StaticResource LB22}"/>
-        <Button  x:Name="LetterButton23" Content="{Binding Path=Letters[22]}"  Grid.Column="6"  Grid.Row="6" Style="{StaticResource LB23}"/>
-        <Button  x:Name="LetterButton24" Content="{Binding Path=Letters[23]}"  Grid.Column="3"  Grid.Row="7" Style="{StaticResource LB24}"/>
-        <Button  x:Name="LetterButton25" Content="{Binding Path=Letters[24]}"  Grid.Column="4"  Grid.Row="7" Style="{StaticResource LB25}"/>
-        <Button  x:Name="LetterButton26" Content="{Binding Path=Letters[25]}"  Grid.Column="5"  Grid.Row="7" Style="{StaticResource LB26}"/>
+        <Button  x:Name="LetterButton1"  Tag="0"  Content="{Binding Path=Letters[0 ]}"  Grid.Column="3"  Grid.Row="2" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton2"  Tag="1"  Content="{Binding Path=Letters[1 ]}"  Grid.Column="4"  Grid.Row="2" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton3"  Tag="2"  Content="{Binding Path=Letters[2 ]}"  Grid.Column="5"  Grid.Row="2" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton4"  Tag="3"  Content="{Binding Path=Letters[3 ]}"  Grid.Column="2"  Grid.Row="3" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton5"  Tag="4"  Content="{Binding Path=Letters[4 ]}"  Grid.Column="3"  Grid.Row="3" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton6"  Tag="5"  Content="{Binding Path=Letters[5 ]}"  Grid.Column="4"  Grid.Row="3" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton7"  Tag="6"  Content="{Binding Path=Letters[6 ]}"  Grid.Column="5"  Grid.Row="3" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton8"  Tag="7"  Content="{Binding Path=Letters[7 ]}"  Grid.Column="6"  Grid.Row="3" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton9"  Tag="8"  Content="{Binding Path=Letters[8 ]}"  Grid.Column="2"  Grid.Row="4" Style="{StaticResource LB}"  Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton10" Tag="9"  Content="{Binding Path=Letters[9 ]}"  Grid.Column="3"  Grid.Row="4" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton11" Tag="10" Content="{Binding Path=Letters[10]}"  Grid.Column="4"  Grid.Row="4" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton12" Tag="11" Content="{Binding Path=Letters[11]}"  Grid.Column="5"  Grid.Row="4" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton13" Tag="12" Content="{Binding Path=Letters[12]}"  Grid.Column="6"  Grid.Row="4" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton14" Tag="13" Content="{Binding Path=Letters[13]}"  Grid.Column="2"  Grid.Row="5" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton15" Tag="14" Content="{Binding Path=Letters[14]}"  Grid.Column="3"  Grid.Row="5" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton16" Tag="15" Content="{Binding Path=Letters[15]}"  Grid.Column="4"  Grid.Row="5" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton17" Tag="16" Content="{Binding Path=Letters[16]}"  Grid.Column="5"  Grid.Row="5" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton18" Tag="17" Content="{Binding Path=Letters[17]}"  Grid.Column="6"  Grid.Row="5" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton19" Tag="18" Content="{Binding Path=Letters[18]}"  Grid.Column="2"  Grid.Row="6" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton20" Tag="19" Content="{Binding Path=Letters[19]}"  Grid.Column="3"  Grid.Row="6" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton21" Tag="20" Content="{Binding Path=Letters[20]}"  Grid.Column="4"  Grid.Row="6" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton22" Tag="21" Content="{Binding Path=Letters[21]}"  Grid.Column="5"  Grid.Row="6" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton23" Tag="22" Content="{Binding Path=Letters[22]}"  Grid.Column="6"  Grid.Row="6" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton24" Tag="23" Content="{Binding Path=Letters[23]}"  Grid.Column="3"  Grid.Row="7" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton25" Tag="24" Content="{Binding Path=Letters[24]}"  Grid.Column="4"  Grid.Row="7" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterButton26" Tag="25" Content="{Binding Path=Letters[25]}"  Grid.Column="5"  Grid.Row="7" Style="{StaticResource LB}" Command="{Binding Path=LetterSelectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
 
-        <Button  x:Name="GuessButton1"     Grid.Column="2"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
-        <Button  x:Name="GuessButton2"     Grid.Column="3"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
-        <Button  x:Name="GuessButton3"     Grid.Column="4"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
-        <Button  x:Name="GuessButton4"     Grid.Column="5"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
-        <Button  x:Name="GuessButton5"     Grid.Column="6"  Grid.Row="9" Style="{StaticResource LetterButton}"/>
+        <Button  x:Name="LetterGuessButton1" Tag="0" Content="{Binding Path=GuessedLetters[0], UpdateSourceTrigger=PropertyChanged}" Grid.Column="2"  Grid.Row="9" Style="{StaticResource LetterButton}" Command="{Binding Path=LetterDeselectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterGuessButton2" Tag="1" Content="{Binding Path=GuessedLetters[1], UpdateSourceTrigger=PropertyChanged}" Grid.Column="3"  Grid.Row="9" Style="{StaticResource LetterButton}" Command="{Binding Path=LetterDeselectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterGuessButton3" Tag="2" Content="{Binding Path=GuessedLetters[2], UpdateSourceTrigger=PropertyChanged}" Grid.Column="4"  Grid.Row="9" Style="{StaticResource LetterButton}" Command="{Binding Path=LetterDeselectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterGuessButton4" Tag="3" Content="{Binding Path=GuessedLetters[3], UpdateSourceTrigger=PropertyChanged}" Grid.Column="5"  Grid.Row="9" Style="{StaticResource LetterButton}" Command="{Binding Path=LetterDeselectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+        <Button  x:Name="LetterGuessButton5" Tag="4" Content="{Binding Path=GuessedLetters[4], UpdateSourceTrigger=PropertyChanged}" Grid.Column="6"  Grid.Row="9" Style="{StaticResource LetterButton}" Command="{Binding Path=LetterDeselectedCommand}" CommandParameter="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
 
         <Border  x:Name="PreviousGuess1"   Grid.Column="8"  Grid.Row="3" Grid.ColumnSpan="5" Grid.RowSpan="5" BorderThickness="4" BorderBrush="DarkOrange" CornerRadius="24"/>
         <TextBox x:Name="PreviousGuess1_1" Grid.Column="8"  Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
@@ -170,13 +162,13 @@
             SmallChange="5" LargeChange="10"
             Orientation="Vertical" Height="150" Width="30" 
             Foreground="White" Background="#3F2A00"
-            DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:Page_New_Round}}"
+            DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PageNewRound}}"
             Value="{Binding Path=Volume}" Minimum="0" Maximum="100" 
             Visibility="{Binding Path=VolumeSliderVisibility}"/>
 
         <MediaElement x:Name="SongPlayer" 
                       LoadedBehavior="Manual" UnloadedBehavior="Stop"
-                      DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:Page_New_Round}}"
+                      DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PageNewRound}}"
                       Source="{Binding Path=Song}" Volume="{Binding Path=Volume, Converter={tools:RatioConverter}, ConverterParameter='0.01'}"/>
 
         <ComboBox x:Name="MusicComboBox"

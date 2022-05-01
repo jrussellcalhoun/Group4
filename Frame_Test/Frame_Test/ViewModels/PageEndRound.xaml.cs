@@ -12,39 +12,21 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace Word_Game
+namespace WordGame
 {
     /// <summary>
     /// Interaction logic for Page2.xaml
     /// </summary>
-    public partial class Page_End_Round : Page
+    public partial class PageEndRound : Page
     {
         private const string YOU_LOSE = "YOU LOSE :P", YOU_WON = "YOU WON :D";
 
-        public Page_End_Round()
+        public PageEndRound()
         {
             InitializeComponent();
 
             win_or_lose_box.Text = "";
             game_info.Text = "";
-        }
-
-        public void Update()
-        {
-            //if (_logic.Won)
-            //{
-            //    win_or_lose_box.Text = YOU_WON;
-            //
-            //}
-            //else
-            //{
-            //    win_or_lose_box.Text = YOU_LOSE;
-            //}
-
-            //game_info.Text = $"Winning Word: {_logic.WinningWord}\n" +
-            //                 $"Time Remaining: {_logic.TotalTime}\n" +
-            //                 $"Guesses Used: {_logic.Tries}\n"       +
-            //                 $"Total Wins: {_logic.Wins}";
         }
 
         private void new_round_button_Click(object sender, RoutedEventArgs e)

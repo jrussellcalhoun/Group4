@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Word_Game.Utilities
+namespace WordGame.Objects
 {
     public abstract class ObservableObject : INotifyPropertyChanged
     {

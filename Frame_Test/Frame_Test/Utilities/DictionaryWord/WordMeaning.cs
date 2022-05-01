@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.Json.Serialization;
 
-namespace Word_Game.Utilities
+namespace WordGame.Utilities
 {
     public class WordMeaning
     {

@@ -4,9 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using System.Diagnostics;
 
-using Word_Game.Utilities;
+using WordGame.Utilities;
 
-namespace Word_Game
+namespace WordGame
 {
     public enum PageState
     {
@@ -21,8 +21,8 @@ namespace Word_Game
         // Frame Pages
         //private Settings    _settings;
         //private Login       _login;
-        private Page_New_Round  _page_new_round;
-        private Page_End_Round  _page_end_round;
+        private PageNewRound  _page_new_round;
+        private PageEndRound  _page_end_round;
 
         private PageState _current_page;
 
@@ -33,8 +33,8 @@ namespace Word_Game
 
             // Initialize references to lifetime game objects.
             _current_page = PageState.MAIN_MENU;
-            _page_new_round = new Page_New_Round();
-            _page_end_round = new Page_End_Round();
+            _page_new_round = new PageNewRound();
+            _page_end_round = new PageEndRound();
             Trace.Write("System Width: " + SystemParameters.PrimaryScreenWidth + "\n" + "System Height: " + SystemParameters.PrimaryScreenHeight + "\n");
         }
 

@@ -1,8 +1,0 @@
-﻿<Application x:Class="Word_Game.WordGameApp"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Word_Game">
-    <Application.Resources>
-        <!--local:Game_Logic x:Key="Logic"/-->
-    </Application.Resources>
-</Application>

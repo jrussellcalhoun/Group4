@@ -1,25 +1,18 @@
-﻿<Window x:Class="Word_Game.MainWindow"
+﻿<Window x:Class="WordGame.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Word_Game"
-        xmlns:tools="clr-namespace:Word_Game.Tools" 
+        xmlns:local="clr-namespace:WordGame"
+        xmlns:tools="clr-namespace:WordGame.Tools" 
         mc:Ignorable="d"
         MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
         MinWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
         Top="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}"
         Left="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
-        Title="MainWindow" Visibility="Visible"
-        Loaded="Window_Loaded">
-
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="WordGameResourceDictionary.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
+        Title="MainWindow" Visibility="Visible">
+    <!--Uncomment the event handler below if you want use the native methods in code behind to change the window's hardcoded visuals.-->
+    <!--Loaded="Window_Loaded"-->
 
     <Grid>
         <Grid.RowDefinitions>

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
-namespace Word_Game.Utilities
+using WordGame.Objects;
+
+namespace WordGame.Utilities
 {
     /// <summary>
     /// This is a command which routes command execution to other objects.

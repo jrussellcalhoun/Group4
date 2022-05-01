@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 
-namespace Word_Game.Utilities
+namespace WordGame.Utilities
 {
     public static class ConsoleHelper
     {

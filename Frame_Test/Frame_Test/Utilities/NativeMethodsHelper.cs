@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Word_Game.Utilities
+namespace WordGame.Utilities
 {
     /*  The following flag values and code snippets were adapted from MSDN Documentation
         and pinvoke.net which is a website dedicated to documenting invokation of external 
@@ -60,7 +60,7 @@ namespace Word_Game.Utilities
 
     // This is a static class containing helper functions loaded from Windows standard assembly.
     // They assist in changing hardcoded properties of already created Windows.
-    public static class InteropHelper
+    public static class NativeMethodsHelper
     { 
 
         // The following code utilizes the keyword extern, which tells the compiler (I promise this exists and is defined in another assembly).

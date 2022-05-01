@@ -8,16 +8,16 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 
-using Word_Game.Utilities;
+using WordGame.Utilities;
 
-namespace Word_Game
+namespace WordGame
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class WordGameApp : Application
     {
-        public Game_Logic Logic { get; private set; }
+        public GameLogic Logic { get; private set; }
         public MainWindow WordGameMainWindow { get; private set; }
         //public static double SystemWidthDPIAware { get; private set; }
         //public static double SystemHeightDPIAware { get; private set; }
@@ -27,7 +27,7 @@ namespace Word_Game
 
             ConsoleHelper.CreateDebugConsole();
 
-            Logic = new Game_Logic();
+            Logic = new GameLogic();
             WordGameMainWindow = new MainWindow { DataContext = Logic };
             Logic.ChangePageEvent += WordGameMainWindow.ChangePage;
             WordGameMainWindow.Show();

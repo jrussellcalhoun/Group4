@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 // Tutorial on this code: https://ramihikmat.net/Article/2021-implementing-a-dictionary-api-using-real-world-best-practices-using-c%23
 
-namespace Word_Game.Utilities
+namespace WordGame.Utilities
 {
     public class DictionaryWord
     {

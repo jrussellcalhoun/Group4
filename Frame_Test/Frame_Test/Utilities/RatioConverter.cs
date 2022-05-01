@@ -3,10 +3,11 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Word_Game.Tools
+// Namespace WordGame.Tools should contain utility classes which provide specific solutions to UI element use cases.
+namespace WordGame.Tools
 {
-    // This is a helpful tool code snippet I found on stackoverflow to resolve the issue of being able to bind ratios of the given value.
-    // This will ease the process of making controls relative to a given value by a certain ratio directly in the xaml markup code.
+    // This is a ratio converter used to scale our UI elements to be a portion of some value and return that value
+    // with a type that can be consumed by xaml control elements.
     [ValueConversion(typeof(string), typeof(string))]
     public class RatioConverter : MarkupExtension, IValueConverter
     {

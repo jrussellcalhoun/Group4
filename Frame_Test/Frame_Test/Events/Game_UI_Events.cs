@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace Word_Game
+namespace WordGame
 {
     // Game UI Event System
     //======================================================================================================================================

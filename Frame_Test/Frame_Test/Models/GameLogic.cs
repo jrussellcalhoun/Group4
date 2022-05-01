@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Threading;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
-using System.Net;
 using System.Windows.Input;
 using System.Net.Http;
 using System.Diagnostics;
 using System.Text.Json;
 
-using Word_Game.Utilities;
+using WordGame.Objects;
+using WordGame.Utilities;
 
 // Ctrl + M followed by Ctrl + S to collapse current region | Ctrl + M followed by Ctrl + E to expand current region.
 #region Operators Used In This Program
@@ -73,9 +70,9 @@ using Word_Game.Utilities;
 #endregion // End Operators Used In This Program
 
 
-namespace Word_Game
-{ 
-    public class Game_Logic : ObservableObject
+namespace WordGame
+{
+    public class GameLogic : ObservableObject
     {
         #region Fields
         /// <summary>
@@ -115,20 +112,36 @@ namespace Word_Game
 
         private TimeSpan _total_time;
 
-        private List<string> _letters;
-        private readonly string[] _index_letters;
-        private ObservableCollection<bool> _is_in_word_source;
+        private readonly string[] _default_letters = new string[26] 
+        { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+          "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+
+        private ObservableCollection<string> _letters;
+        private ObservableCollection<string> _guessed_letters;
+        
+        private ObservableCollection<int> _selected_state;
+        private ObservableCollection<int> _letters_state;
+
+        private int[] _selected_indices;
+
+        private int _current_letter_guesses;
 
         #endregion // End Fields
 
         #region Properties
 
-        public List<string> Letters
+        public ObservableCollection<string> Letters
         {
             get => _letters;
             private set => SetProperty(ref _letters, value);
         }
-        
+
+        public ObservableCollection<string> GuessedLetters
+        {
+            get => _guessed_letters;
+            private set => SetProperty(ref _guessed_letters, value);
+        }
+
         public bool Won 
         {
             get => _won;
@@ -165,10 +178,22 @@ namespace Word_Game
             private set => SetProperty(ref _hint, value);
         }
 
-        public ObservableCollection<bool> IsInWordSource 
+        public ObservableCollection<int> SelectedState 
         { 
-            get => _is_in_word_source; 
-            private set => SetProperty(ref _is_in_word_source, value); 
+            get => _selected_state; 
+            private set => SetProperty(ref _selected_state, value); 
+        }
+
+        public int[] SelectedIndices
+        {
+            get => _selected_indices;
+            private set => SetProperty(ref _selected_indices, value);
+        }
+
+        public ObservableCollection<int> LettersState
+        {
+            get => _letters_state;
+            private set => SetProperty(ref _letters_state, value);
         }
 
         /// <summary>
@@ -228,9 +253,9 @@ namespace Word_Game
         #region Events and Commands
         public event ChangePageEventDelegate ChangePageEvent;
 
-
         private ICommand _get_hint_command;
-        private ICommand _letter_button_clicked_command;
+        private ICommand _letter_selected_command;
+        private ICommand _letter_deselected_command;
         private ICommand _start_round_command;
 
         public ICommand GetHintCommand
@@ -238,9 +263,13 @@ namespace Word_Game
             get => _get_hint_command ??= new RelayCommand(param => GetHint(), param => CanGetHint());
         }
 
-        public ICommand LetterButtonClickedCommand
+        public ICommand LetterSelectedCommand
         {
-            get => _letter_button_clicked_command ??= new RelayCommand(param => LetterButtonClicked(param), param => LetterButtonCanBeClicked(param));
+            get => _letter_selected_command ??= new RelayCommand(param => LetterSelected(param), param => LetterCanBeSelected(param));
+        }
+        public ICommand LetterDeselectedCommand
+        {
+            get => _letter_deselected_command ??= new RelayCommand(param => LetterDeselected(param), param => LetterCanBeDeselected(param));
         }
 
         public ICommand StartRoundCommand
@@ -257,7 +286,7 @@ namespace Word_Game
         private const int c_Starting_Round_Seconds = 120;
 
         #region Game Logic Member Methods
-        public Game_Logic()
+        public GameLogic()
         {
             _tick_timer = new DispatcherTimer();
             _round_time = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
@@ -274,16 +303,19 @@ namespace Word_Game
             RoundStart = false;
 
             // Initialize a list of strings to each of 26 letters in the alphabet.
-            Letters = new List<string> { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-                                          "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+            Letters = new ObservableCollection<string>( _default_letters.ToList() );
 
-            // This readonly array (immutable after instantiation) will be used to reference the index of the letters in the alphabet.
-            _index_letters = new string[26] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-                                          "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+            GuessedLetters = new ObservableCollection<string> { "", "", "", "", "" };
+            _current_letter_guesses = 0;
 
-            // Initialize to false for each of 26 letters in the alphabet (and our button grid)
-            IsInWordSource = new ObservableCollection<bool> { false, false, false, false, false, false, false, false, false, false, false, false, false,
-                                                                  false, false, false, false, false, false, false, false, false, false, false, false, false };
+            // Initialize the states for each of 26 letters in the alphabet.
+            SelectedState = new ObservableCollection<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
+            SelectedIndices = new int[5] { 0, 0, 0, 0, 0 };
+
+            LettersState = new ObservableCollection<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
             // Start the program. Only called once.
             Start();
@@ -535,14 +567,37 @@ namespace Word_Game
             return words.Contains(check);
         }
 
+        public void Shuffle( int passes = 1 )
+        {
+            var random = new Random();
+            int current_idx = 0, new_idx = 0;
+
+            for (int p = 0; p < passes; p++)
+            {
+                for (int i = 0; i < Letters.Count; i++)
+                {
+                    current_idx = i;
+                    new_idx = i;
+
+                    while (current_idx == new_idx)
+                        new_idx = random.Next(0, Letters.Count);
+
+                    Letters.Move(current_idx, new_idx);
+                }
+            }
+        }
+
+
         public void StartRound()
         {
             // Randomize the letters.
             var random = new Random();
-            Letters = Letters.OrderBy(item => random.Next()).ToList();
+            //Letters = Letters.OrderBy(item => random.Next());
+            Shuffle();
 
             // Get the winning word for this round.
             WinningWord = ChooseWord();
+            Trace.WriteLine("WinningWord is: " + WinningWord);
 
             RoundTime = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
 
@@ -565,9 +620,6 @@ namespace Word_Game
             {
                 RoundTime = RoundTime - TimeSpan.FromSeconds(1);
 
-                //if (TimerSecondElapsedEvent != null)
-                //    TimerSecondElapsedEvent(this, new TimerSecondElapsedEventArgs(_round_time));
-
                 if (RoundTime == TimeSpan.Zero)
                 {
                     TotalTime += (TimeSpan.FromSeconds(c_Starting_Round_Seconds) - RoundTime);
@@ -583,8 +635,6 @@ namespace Word_Game
                 Trace.WriteLine("WinningWord is: " + WinningWord + " and Not Set.");
                 return;
             }
-
-            Trace.WriteLine("WinningWord is: " + WinningWord);
 
             HttpClient client = new HttpClient();
 
@@ -619,23 +669,56 @@ namespace Word_Game
             }
         }
 
-        private void LetterButtonClicked(object param)
+        private void LetterSelected(object param)
         {
-            var letter = param as string;
+            int idx = Convert.ToInt32(param);
+            var letter = Letters[idx];
+            _current_letter_guesses++;
 
-            if (WinningWord.Contains(letter.ToLower()))
-            {
-                int i = Array.FindIndex(_index_letters, x => x == letter);
-                _is_in_word_source[i] = true;
-            }
+            Trace.WriteLine("Player selected the letter: " + letter + ", current number of letter guesses: " + _current_letter_guesses);
+
+            int i = GuessedLetters.IndexOf("");
+            GuessedLetters[i] = letter;
+            SelectedIndices[i] = idx;
+            SelectedState[idx] += 1;
+
+            Trace.WriteLine("Selected State of index: " + idx + " is at: " + SelectedState[idx]);
+
+            Trace.WriteLine("The index of the last guessed letter is: " + i + " and the letter in the array is: " + GuessedLetters[i]);
         }
 
-        private bool LetterButtonCanBeClicked(object param)
+        private bool LetterCanBeSelected(object param)
         {
-            if(RoundStart)
+            if (RoundStart && _current_letter_guesses < 5)
                 return true;
-            else
-                return false;
+
+            return false;
+        }
+
+        private void LetterDeselected(object param)
+        {
+            int idx = Convert.ToInt32(param);
+
+            Trace.WriteLine("Player deselected the letter at index: " + idx);
+
+            GuessedLetters[idx] = "";
+            // This should probably be done with a custom data container class, but I don't have the time to implement it at the moment.
+            SelectedState[SelectedIndices[idx]] -= 1;
+
+            Trace.WriteLine("Selected State of index: " + idx + " is at: " + SelectedState[idx]);
+
+            _current_letter_guesses--;
+
+        }
+
+        private bool LetterCanBeDeselected(object param)
+        {
+            int idx = Convert.ToInt32(param);
+
+            if (RoundStart && _current_letter_guesses > 0 && GuessedLetters[idx] != "")
+                return true;
+
+            return false;
         }
 
         public void GameWon(bool flag)

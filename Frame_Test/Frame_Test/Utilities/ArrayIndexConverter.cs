@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
 
-namespace Word_Game
+namespace WordGame
 {
     public class ArrayIndexConverter : IMultiValueConverter
     {
