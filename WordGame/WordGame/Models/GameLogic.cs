@@ -330,8 +330,6 @@ namespace WordGame
                     ls.HasZeroCount = true;
                 }
 
-                Shuffle();
-
                 foreach (var gls in GuessedLetterStates)
                 {
                     gls.Letter = "";
@@ -340,7 +338,7 @@ namespace WordGame
                     gls.HasZeroCount = true;
                 }
 
-                foreach(var pgls in PreviouslyGuessedLetterStates)
+                foreach (var pgls in PreviouslyGuessedLetterStates)
                 {
                     pgls.Letter = "";
                     pgls.State = 0;
@@ -595,6 +593,7 @@ namespace WordGame
             return words.Contains(check);
         }
 
+        // Custom shuffle algorithm because the use of ObservableCollections requires the use of ObservableCollection.Move in order to produce data binding updates.
         public void Shuffle( int passes = 1 )
         {
             var random = new Random();
@@ -616,25 +615,21 @@ namespace WordGame
             }
         }
 
-
         public void StartRound()
         {
-            // Randomize the letters.
-            var random = new Random();
-            //Letters = Letters.OrderBy(item => random.Next());
+            // Reset all the variables needed for a new round.
+            Reset();
+            // Shuffle the letters in our collection.
             Shuffle();
 
             // Get the winning word for this round.
             WinningWord = ChooseWord();
             Trace.WriteLine($"The WinningWord is: {WinningWord}");
 
+            // These should be reset in this order.
             RoundTime = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
-
-            // Set our flags before we start the round.
-            NewRound = false;
-            Won = false;
-            RoundInProgress = true;
             TimeElapsed = DateTime.UtcNow;
+            RoundInProgress = true;
         }
 
         public bool CanStartRound()
@@ -775,6 +770,7 @@ namespace WordGame
 
         private void Guess()
         {
+            int previous_guess_index = 5 * Tries;
             Tries++;
             var guess = GuessedLetterStates.LettersToString().ToLower();
             Trace.WriteLine($"Guess made: {guess}, Tries left: {Tries}.");
@@ -837,7 +833,7 @@ namespace WordGame
             {
                 // Need to subtract 1 from the number of tries to make the math work here.
                 // This is because we increment Tries before we get here so that we can take advantage of short cirtuiting behavior.
-                PreviouslyGuessedLetterStates[idx + (5 * (Tries - 1))].Letter = GuessedLetterStates[idx].Letter;
+                PreviouslyGuessedLetterStates[idx + previous_guess_index].Letter = GuessedLetterStates[idx].Letter;
                 GuessedLetterStates[idx].Letter = "";
                 LetterStates[GuessedLetterStates[idx].State].Count = 0;
                 LetterStates[GuessedLetterStates[idx].State].HasZeroCount = true;
