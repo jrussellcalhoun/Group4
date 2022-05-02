@@ -14,6 +14,7 @@
         <Setter Property="Width"  Value="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.04'}"/>
         <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontSize" Value="36"/>
+        <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Visibility" Value="Visible"/>
@@ -45,5 +46,24 @@
             </Style>
         </Style.Resources>
     </Style>
-    
+
+    <Style x:Key="TimerStyle" BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="40"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="Background" Value="DarkOrange"/>
+        <Setter Property="Foreground" Value="GhostWhite"/>
+        <Setter Property="Visibility" Value="Visible"/>
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="GhostWhite"/>
+                <Setter Property="BorderThickness" Value="4"/>
+                <Setter Property="CornerRadius" Value="8,8,8,8"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+
 </ResourceDictionary>

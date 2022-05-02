@@ -12,8 +12,8 @@
     <Color x:Key="CMaire">#2B2A24</Color>
     <Color x:Key="CCinder">#24282B</Color-->
 
-    <local:IntToBoolStateConverter x:Name="IntToBoolStateConverterName" x:Key="IntToBoolStateConverter"/>
-    <local:IntStateConverter x:Name="IntStateConverterName" x:Key="IntStateConverter"/>
+    <local:LetterStateToBoolStateConverter x:Name="LetterStateToBoolStateConverterName" x:Key="LetterStateToBoolStateConverter"/>
+    <local:LetterStateConverter x:Name="IntStateConverterName" x:Key="IntStateConverter"/>
     <tools:RatioConverter x:Name="RatioConverterName" x:Key="RatioConverter"/>
     
     <Brush x:Key="CetaceanBlue">#001440</Brush>

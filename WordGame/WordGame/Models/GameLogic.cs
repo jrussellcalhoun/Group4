@@ -72,6 +72,7 @@ using WordGame.Utilities;
 
 namespace WordGame
 {
+    [Serializable]
     public class GameLogic : ObservableObject
     {
         #region Fields
@@ -103,12 +104,14 @@ namespace WordGame
 
         private int _wins;
         private int _tries;
+        private int _letters_in_guess_count;
 
         private bool _won;
         private bool _game_over;
         private bool _new_round;
         private bool _round_start;
         private bool _quit;
+        private bool _is_first_round;
 
         private TimeSpan _total_time;
 
@@ -116,30 +119,28 @@ namespace WordGame
         { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
           "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
-        private ObservableCollection<string> _letters;
-        private ObservableCollection<string> _guessed_letters;
-        
-        private ObservableCollection<int> _selected_state;
-        private ObservableCollection<int> _letters_state;
-
-        private int[] _selected_indices;
-
-        private int _current_letter_guesses;
+        private LetterStateCollection _letter_states;
+        private LetterStateCollection _guessed_letter_states;
+        private LetterStateCollection _previously_guessed_letter_states;
 
         #endregion // End Fields
 
         #region Properties
 
-        public ObservableCollection<string> Letters
+        public LetterStateCollection LetterStates
         {
-            get => _letters;
-            private set => SetProperty(ref _letters, value);
+            get => _letter_states;
+            set => SetProperty(ref _letter_states, value);
         }
-
-        public ObservableCollection<string> GuessedLetters
+        public LetterStateCollection GuessedLetterStates
         {
-            get => _guessed_letters;
-            private set => SetProperty(ref _guessed_letters, value);
+            get => _guessed_letter_states;
+            set => SetProperty(ref _guessed_letter_states, value);
+        }
+        public LetterStateCollection PreviouslyGuessedLetterStates
+        {
+            get => _previously_guessed_letter_states;
+            set => SetProperty(ref _previously_guessed_letter_states, value);
         }
 
         public bool Won 
@@ -160,7 +161,7 @@ namespace WordGame
             private set => SetProperty(ref _new_round, value);
         }
         
-        public bool RoundStart 
+        public bool RoundInProgress 
         { 
             get => _round_start;
             private set => SetProperty(ref _round_start, value);
@@ -176,24 +177,6 @@ namespace WordGame
         {
             get => _hint;
             private set => SetProperty(ref _hint, value);
-        }
-
-        public ObservableCollection<int> SelectedState 
-        { 
-            get => _selected_state; 
-            private set => SetProperty(ref _selected_state, value); 
-        }
-
-        public int[] SelectedIndices
-        {
-            get => _selected_indices;
-            private set => SetProperty(ref _selected_indices, value);
-        }
-
-        public ObservableCollection<int> LettersState
-        {
-            get => _letters_state;
-            private set => SetProperty(ref _letters_state, value);
         }
 
         /// <summary>
@@ -257,6 +240,8 @@ namespace WordGame
         private ICommand _letter_selected_command;
         private ICommand _letter_deselected_command;
         private ICommand _start_round_command;
+        private ICommand _guess_command;
+        private ICommand _reset_game_command;
 
         public ICommand GetHintCommand
         {
@@ -277,6 +262,16 @@ namespace WordGame
             get => _start_round_command ??= new RelayCommand(param => StartRound(), param => CanStartRound());
         }
         
+        public ICommand GuessCommand
+        {
+            get => _guess_command ??= new RelayCommand(param => Guess(), param => GuessCanBeMade());
+        }
+
+        public ICommand ResetGameCommand
+        {
+            get => _reset_game_command ??= new RelayCommand(param => ResetGame(), param => CanResetGame());
+        }
+
         #endregion // End Events
 
         // Constants
@@ -289,37 +284,73 @@ namespace WordGame
         public GameLogic()
         {
             _tick_timer = new DispatcherTimer();
-            _round_time = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
-
-            // Anything that is exposed by INotifyPropertyChanged should be assigned to using the Property member not the Field.
-            Wins = 0;
-            Tries = 0;
             TotalTime = TimeSpan.Zero;
-            WinningWord = "";
-            Hint = "";
-            Won = false;
-            GameOver = false;
-            NewRound = false;
-            RoundStart = false;
+            Wins = 0;
+            _is_first_round = true;      
 
-            // Initialize a list of strings to each of 26 letters in the alphabet.
-            Letters = new ObservableCollection<string>( _default_letters.ToList() );
+            // Initialize a collection of states which will keep track off our logical letters values.
+            LetterStates = new LetterStateCollection { { 0, 0, 0, "A" }, { 1, 0, 0, "B" }, { 2, 0, 0, "C" }, { 3, 0, 0, "D" }, { 4, 0, 0, "E" }, { 5, 0, 0, "F" }, { 6, 0, 0,"G" }, { 7, 0, 0,"H" }, { 8, 0, 0,"I" }, { 9, 0, 0,"J" }, { 10, 0, 0,"K" }, { 11, 0, 0,"L" }, { 12, 0, 0,"M" },
+                                                         { 13, 0, 0,"N" }, { 14, 0, 0,"O" }, { 15, 0, 0,"P" }, { 16, 0, 0,"Q" }, { 17, 0, 0,"R" }, { 18, 0, 0,"S" }, { 19, 0, 0,"T" }, { 20, 0, 0,"U" }, { 21, 0, 0,"V" }, { 22, 0, 0,"W" }, { 23, 0, 0,"X" }, { 24, 0, 0,"Y" }, { 25, 0, 0,"Z" } };
+            // Initialize a collection of states which will keep track off our logical guessed letter values.
+            GuessedLetterStates = new LetterStateCollection { { 0, 0, 0, "" }, { 1, 0, 0, "" }, { 2, 0, 0, "" }, { 3, 0, 0, "" }, { 4, 0, 0, "" } };
+            // Initialize a collection of states which will keep track of our previous word guesses.
+            PreviouslyGuessedLetterStates = new LetterStateCollection { { 0, 0, 0, ""},  { 1, 0, 0, "" },  { 2, 0, 0, "" },  { 3, 0, 0, "" },  { 4, 0, 0, "" },
+                                                                        { 5, 0, 0, ""},  { 6, 0, 0, "" },  { 7, 0, 0, "" },  { 8, 0, 0, "" },  { 9, 0, 0, "" },
+                                                                        { 10, 0, 0, ""}, { 11, 0, 0, "" }, { 12, 0, 0, "" }, { 13, 0, 0, "" }, { 14, 0, 0, "" },
+                                                                        { 15, 0, 0, ""}, { 16, 0, 0, "" }, { 17, 0, 0, "" }, { 18, 0, 0, "" }, { 19, 0, 0, "" },
+                                                                        { 20, 0, 0, ""}, { 21, 0, 0, "" }, { 22, 0, 0, "" }, { 23, 0, 0, "" }, { 24, 0, 0, "" } };
 
-            GuessedLetters = new ObservableCollection<string> { "", "", "", "", "" };
-            _current_letter_guesses = 0;
-
-            // Initialize the states for each of 26 letters in the alphabet.
-            SelectedState = new ObservableCollection<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                                            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-            SelectedIndices = new int[5] { 0, 0, 0, 0, 0 };
-
-            LettersState = new ObservableCollection<int> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            // Reset is called when we need to reset values which do not need to persist between rounds, but still need to be reset.
+            Reset();
 
             // Start the program. Only called once.
             Start();
         }
+
+        public void Reset()
+        {
+            RoundTime = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
+            WinningWord = "";
+            Hint = "";
+            Tries = 0;
+            Won = false;
+            GameOver = false;
+            NewRound = false;
+            RoundInProgress = false;
+            _letters_in_guess_count = 0;
+
+            // This is just here to keep from reseting our collections to default values because we already set them in the constructor. (Probably a better way to do this.)
+            if (!_is_first_round)
+            {
+                // Don't reset the letters for this one, they are just going to get shuffled again anyways.
+                foreach(var ls in LetterStates)
+                {
+                    ls.State = 0;
+                    ls.Count = 0;
+                    ls.HasZeroCount = true;
+                }
+
+                Shuffle();
+
+                foreach (var gls in GuessedLetterStates)
+                {
+                    gls.Letter = "";
+                    gls.State = 0;
+                    gls.Count = 0;
+                    gls.HasZeroCount = true;
+                }
+
+                foreach(var pgls in PreviouslyGuessedLetterStates)
+                {
+                    pgls.Letter = "";
+                    pgls.State = 0;
+                    pgls.Count = 0;
+                    pgls.HasZeroCount = true;
+                }
+            }
+        }
+        public void ResetGame() { _is_first_round = false; Reset(); }
+        public bool CanResetGame() => true;
 
         // Runs once at the start of the game.
         public void Start()
@@ -353,27 +384,24 @@ namespace WordGame
 
                         if (Won || GameOver)
                         {
-                            if (ChangePageEvent != null)
-                            {
-                                ChangePageEvent(this, new ChangePageEventArgs(PageState.PAGE_PLAY_AGAIN));
-                                break;
-                            }
+                            _is_first_round = false;
+                            Trace.WriteLine("Changing Page to Play Again.");
+                            ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_END_ROUND));
+                            break;
                         }
 
-                        UpdateRoundTime();
+                        if (RoundInProgress)
+                            UpdateRoundTime();
+
                         break;
 
-                    case PageState.PAGE_PLAY_AGAIN:
+                    case PageState.PAGE_END_ROUND:
                         if (NewRound)
                         {
-                            Console.WriteLine("New Round");
+                            Trace.WriteLine("Starting a new round.");
                             NewRound = false;
-
-                            if (ChangePageEvent != null)
-                            {
-                                ChangePageEvent(this, new ChangePageEventArgs(PageState.PAGE_NEW_ROUND));
-                                break;
-                            }
+                            ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_NEW_ROUND));
+                            break;
                         }
                         break;
 
@@ -574,15 +602,16 @@ namespace WordGame
 
             for (int p = 0; p < passes; p++)
             {
-                for (int i = 0; i < Letters.Count; i++)
+                for(int i = 0; i < LetterStates.Count; i++)
                 {
                     current_idx = i;
-                    new_idx = i;
+                    new_idx = current_idx;
 
                     while (current_idx == new_idx)
-                        new_idx = random.Next(0, Letters.Count);
+                        new_idx = random.Next(0, LetterStates.Count);
 
-                    Letters.Move(current_idx, new_idx);
+                    LetterStates[i].Index = new_idx;
+                    LetterStates.Move(current_idx, new_idx);
                 }
             }
         }
@@ -597,33 +626,41 @@ namespace WordGame
 
             // Get the winning word for this round.
             WinningWord = ChooseWord();
-            Trace.WriteLine("WinningWord is: " + WinningWord);
+            Trace.WriteLine($"The WinningWord is: {WinningWord}");
 
             RoundTime = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
 
             // Set our flags before we start the round.
             NewRound = false;
             Won = false;
-            RoundStart = true;
+            RoundInProgress = true;
             TimeElapsed = DateTime.UtcNow;
         }
 
         public bool CanStartRound()
         {
-            return true;
+            // If the round is not in progress then we can start the round.
+            if (!RoundInProgress)
+                return true;
+
+            // Otherwise we have already started a round and can not start another one (use reset game button for debugging).
+            return false;
         }
 
         public void UpdateRoundTime()
         {
             _check_second = DateTime.UtcNow - TimeElapsed;
-            if (_check_second < TimeSpan.FromSeconds(1))
+            if (_check_second >= TimeSpan.FromSeconds(1))
             {
-                RoundTime = RoundTime - TimeSpan.FromSeconds(1);
+                TimeElapsed = DateTime.UtcNow;
+                RoundTime -= TimeSpan.FromSeconds(1);
 
                 if (RoundTime == TimeSpan.Zero)
                 {
+                    Trace.WriteLine("Out of Time! Game Over!");
                     TotalTime += (TimeSpan.FromSeconds(c_Starting_Round_Seconds) - RoundTime);
                     GameOver = true;
+                    RoundInProgress = false;
                 }
             }
         }
@@ -632,7 +669,7 @@ namespace WordGame
         {
             if (WinningWord == "")
             {
-                Trace.WriteLine("WinningWord is: " + WinningWord + " and Not Set.");
+                Trace.WriteLine($"WinningWord is empty");
                 return;
             }
 
@@ -648,7 +685,7 @@ namespace WordGame
             var word = System.Text.Json.JsonSerializer.Deserialize<List<DictionaryWord>>(ref reader, new JsonSerializerOptions { WriteIndented = true, IncludeFields = true})?[0];
             Hint = word.Meanings[0].Type[0].Definition;
 
-            Trace.WriteLine("Hint:" + Hint);
+            Trace.WriteLine($"Hint: {Hint}");
 
         }
         private bool CanGetHint()
@@ -671,25 +708,34 @@ namespace WordGame
 
         private void LetterSelected(object param)
         {
-            int idx = Convert.ToInt32(param);
-            var letter = Letters[idx];
-            _current_letter_guesses++;
 
-            Trace.WriteLine("Player selected the letter: " + letter + ", current number of letter guesses: " + _current_letter_guesses);
+            // This will convert the passed param object, which corresponds to the tag property on our button control elements from a string into an int.
+            // Then we will use that converted value to retrieve the correct letter state with the corresponding index.
+            int idx_ls = Convert.ToInt32(param);
+            var ls = LetterStates[idx_ls];
+            // Find the first instance of a guessed letter state where the letter property is empty.
+            int idx_gls = GuessedLetterStates.First(x => x.Letter == "").Index;
+            var gls = GuessedLetterStates[idx_gls];
 
-            int i = GuessedLetters.IndexOf("");
-            GuessedLetters[i] = letter;
-            SelectedIndices[i] = idx;
-            SelectedState[idx] += 1;
+            // Assign the letter from the sent letter state to the next empty index of the GuessedLetters LetterStatesCollection.
+            // Then Store the index from this LetterState in this GuessedLetterState for fast and easy lookup later.
+            // Lastly, increment the state count property for the newly guessed letter and the total number of letter guesses.
+            gls.Letter = ls.Letter;
+            gls.State = idx_ls;
+            ls.Count++;
+            ls.HasZeroCount = ls.Count == 0;
+            _letters_in_guess_count++;
 
-            Trace.WriteLine("Selected State of index: " + idx + " is at: " + SelectedState[idx]);
+            Trace.WriteLine($"\tThe guessed letter index is: {gls.State}.\n\tThe letter added to the current guess is is: {gls.Letter}.\n\tThe selection count of the letter is: {ls.Count}.\n\tThe current number of letter guesses is {_letters_in_guess_count}.\n\tThe flag HasZeroCount is {ls.HasZeroCount}");
 
-            Trace.WriteLine("The index of the last guessed letter is: " + i + " and the letter in the array is: " + GuessedLetters[i]);
+            // Assign modified temporaries back to the correct states.
+            LetterStates[idx_ls] = ls;
+            GuessedLetterStates[idx_gls] = gls;
         }
 
         private bool LetterCanBeSelected(object param)
         {
-            if (RoundStart && _current_letter_guesses < 5)
+            if (RoundInProgress && _letters_in_guess_count < 5)
                 return true;
 
             return false;
@@ -697,37 +743,119 @@ namespace WordGame
 
         private void LetterDeselected(object param)
         {
-            int idx = Convert.ToInt32(param);
+            // Cache local copies of our states so we are not doing so many collection lookups each time we process something and improved readability.
+            int deselected_letter_index = Convert.ToInt32(param);
+            var gls = GuessedLetterStates[deselected_letter_index];
+            var ls = LetterStates[gls.State];
 
-            Trace.WriteLine("Player deselected the letter at index: " + idx);
+            Trace.WriteLine($"Player deselected the letter at index: {deselected_letter_index}");
 
-            GuessedLetters[idx] = "";
-            // This should probably be done with a custom data container class, but I don't have the time to implement it at the moment.
-            SelectedState[SelectedIndices[idx]] -= 1;
+            // Set the deselected guessed letter to empty and decrement the selection count of the letter state.
+            gls.Letter = "";
+            ls.Count--;
+            ls.HasZeroCount = ls.Count == 0;
 
-            Trace.WriteLine("Selected State of index: " + idx + " is at: " + SelectedState[idx]);
+            Trace.WriteLine($"The letter {ls.Letter} has been selected {ls.Count} times. The flag HasZeroCount is {ls.HasZeroCount}");
 
-            _current_letter_guesses--;
-
+            // Assign modified temporaries back to the correct states.
+            LetterStates[gls.State] = ls;
+            GuessedLetterStates[deselected_letter_index] = gls;
+            --_letters_in_guess_count;
         }
 
         private bool LetterCanBeDeselected(object param)
         {
-            int idx = Convert.ToInt32(param);
+            int letter_to_check_index = Convert.ToInt32(param);
 
-            if (RoundStart && _current_letter_guesses > 0 && GuessedLetters[idx] != "")
+            if (RoundInProgress && _letters_in_guess_count > 0 && GuessedLetterStates[letter_to_check_index].Letter != "")
                 return true;
 
             return false;
         }
 
-        public void GameWon(bool flag)
+        private void Guess()
         {
-            Hint = "";
-            Won = flag;
-            Wins++;
+            Tries++;
+            var guess = GuessedLetterStates.LettersToString().ToLower();
+            Trace.WriteLine($"Guess made: {guess}, Tries left: {Tries}.");
+
+            // Player wins so we set the appropriate flags, which will be picked up by the rest of our logic automatically in the game loop.
+            if (WinningWord == guess)
+            {
+                Trace.WriteLine($"Player Won! Current Number of Wins: {Wins}");
+                Hint = "";
+                Tries = 0;
+                Won = true;
+                Wins++;
+                RoundInProgress = false;
+            }
+
+            // The player only gets 6 tries per round so if this is true it's game over.
+            // So if this is try number 6 and it wasn't the winning word then we don't need to evaluate the rest.
+            if (Tries > 5)
+            {
+                Trace.WriteLine($"Out of Tries... Game Over!");
+                Hint = "";
+                GameOver = true;
+                RoundInProgress = false;
+                return;
+            }
+
+
+            // If we get to here that means we still have tries left but the guess wasn't the winning word.
+            // So we need to do some checking to see which letters should be highlighted.
+            for (int idx = 0; idx < guess.Length; idx++)
+            {
+                char c = guess[idx];
+
+                if (WinningWord.Contains(c))
+                {
+                    if(c == WinningWord[idx])
+                    {
+                        // The letter is in the word and in the correct location within the word.
+                        LetterStates[GuessedLetterStates[idx].State].State = 3; // Green
+                        Trace.WriteLine($"The Letter {c} is in the WinningWord and in the correct location.");
+                    }
+                    else
+                    {
+                        // The letter is in the word but not in the correct location within the word.
+                        LetterStates[GuessedLetterStates[idx].State].State = 2; // Yellow
+                        Trace.WriteLine($"The Letter {c} is in the WinningWord but not in the correct location.");
+                    }
+                }
+                else
+                {
+                    // Not in the word but has been tested.
+                    LetterStates[GuessedLetterStates[idx].State].State = 1; // Gray
+                    Trace.WriteLine($"The Letter {c} is not in the WinningWord.");
+                }
+            }
+
+            // After we are done checking for needed changes to the LetterStates we pass the letters in the current guess into our PreviouslyGuessedLetterStates collection.
+            // Then we reset letters in the GuessedLetterStates collection and clear the count of the letters in the LetterStates collection.
+            for (int idx = 0; idx < GuessedLetterStates.Count; idx++)
+            {
+                // Need to subtract 1 from the number of tries to make the math work here.
+                // This is because we increment Tries before we get here so that we can take advantage of short cirtuiting behavior.
+                PreviouslyGuessedLetterStates[idx + (5 * (Tries - 1))].Letter = GuessedLetterStates[idx].Letter;
+                GuessedLetterStates[idx].Letter = "";
+                LetterStates[GuessedLetterStates[idx].State].Count = 0;
+                LetterStates[GuessedLetterStates[idx].State].HasZeroCount = true;
+            }
+
+            // Also reset the letter guess count otherwise the player won't be able to make any more guesses.
+            _letters_in_guess_count = 0;
         }
 
+        private bool GuessCanBeMade()
+        {
+            var guess = GuessedLetterStates.LettersToString().ToLower();
+
+            if (RoundInProgress && _letters_in_guess_count == 5 && Approved(guess))
+                return true;
+
+            return false;
+        }
         #endregion // End Game Logic Member Methods
     }
 }

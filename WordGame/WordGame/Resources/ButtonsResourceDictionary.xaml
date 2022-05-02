@@ -64,7 +64,7 @@
         <Setter Property="FontFamily" Value="Consolas" />
     </Style>
 
-    <Style x:Key="LetterButton" BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+    <Style x:Name="LetterButton" x:Key="LetterButton" BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
         <Setter Property="Content" Value=""/>
         <Setter Property="Height" Value="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.07'}"/>
         <Setter Property="Width" Value="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}"/>
@@ -83,12 +83,12 @@
         </Style.Resources>
     </Style>
 
-    <Style x:Key="LB" TargetType="{x:Type Button}" BasedOn="{StaticResource LetterButton}">
+    <!--Style x:Key="LB" TargetType="{x:Type Button}" BasedOn="{StaticResource LetterButton}">
         <Style.Triggers>
             <DataTrigger Value="0">
                 <DataTrigger.Binding>
                     <MultiBinding Converter="{StaticResource IntStateConverter}">
-                        <Binding Path="LettersState" UpdateSourceTrigger="PropertyChanged"/>
+                        <Binding Path="LetterStates" UpdateSourceTrigger="PropertyChanged"/>
                         <Binding Path="Tag" RelativeSource="{RelativeSource Self}"/>
                     </MultiBinding>
                 </DataTrigger.Binding>
@@ -99,7 +99,7 @@
             <DataTrigger Value="1">
                 <DataTrigger.Binding>
                     <MultiBinding Converter="{StaticResource IntStateConverter}">
-                        <Binding Path="LettersState" UpdateSourceTrigger="PropertyChanged"/>
+                        <Binding Path="LetterStates" UpdateSourceTrigger="PropertyChanged"/>
                         <Binding Path="Tag" RelativeSource="{RelativeSource Self}"/>
                     </MultiBinding>
                 </DataTrigger.Binding>
@@ -110,7 +110,7 @@
             <DataTrigger Value="2">
                 <DataTrigger.Binding>
                     <MultiBinding Converter="{StaticResource IntStateConverter}">
-                        <Binding Path="LettersState" UpdateSourceTrigger="PropertyChanged"/>
+                        <Binding Path="LetterStates" UpdateSourceTrigger="PropertyChanged"/>
                         <Binding Path="Tag" RelativeSource="{RelativeSource Self}"/>
                     </MultiBinding>
                 </DataTrigger.Binding>
@@ -121,7 +121,7 @@
             <DataTrigger Value="3">
                 <DataTrigger.Binding>
                     <MultiBinding Converter="{StaticResource IntStateConverter}">
-                        <Binding Path="SelectedState" UpdateSourceTrigger="PropertyChanged"/>
+                        <Binding Path="LetterStates" UpdateSourceTrigger="PropertyChanged"/>
                         <Binding Path="Tag" RelativeSource="{RelativeSource Self}"/>
                     </MultiBinding>
                 </DataTrigger.Binding>
@@ -132,8 +132,8 @@
 
             <DataTrigger Value="true">
                 <DataTrigger.Binding>
-                    <MultiBinding Converter="{StaticResource IntToBoolStateConverter}">
-                        <Binding Path="SelectedState" UpdateSourceTrigger="PropertyChanged"/>
+                    <MultiBinding Converter="{StaticResource LetterStateToBoolStateConverter}">
+                        <Binding Path="LetterStates" UpdateSourceTrigger="PropertyChanged"/>
                         <Binding Path="Tag" RelativeSource="{RelativeSource Self}"/>
                     </MultiBinding>
                 </DataTrigger.Binding>
@@ -143,8 +143,8 @@
             </DataTrigger>
             <DataTrigger Value="false">
                 <DataTrigger.Binding>
-                    <MultiBinding Converter="{StaticResource IntToBoolStateConverter}">
-                        <Binding Path="SelectedState" UpdateSourceTrigger="PropertyChanged"/>
+                    <MultiBinding Converter="{StaticResource LetterStateToBoolStateConverter}">
+                        <Binding Path="LetterStates" UpdateSourceTrigger="PropertyChanged"/>
                         <Binding Path="Tag" RelativeSource="{RelativeSource Self}"/>
                     </MultiBinding>
                 </DataTrigger.Binding>
@@ -414,7 +414,7 @@
                 <Setter Property="BorderBrush" Value="RoyalBlue"/>
             </DataTrigger>
         </Style.Triggers>
-    </Style>
+    </Style-->
 
     <Style x:Key="ActionButton" BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
         <Setter Property="VerticalAlignment" Value="Center"/>

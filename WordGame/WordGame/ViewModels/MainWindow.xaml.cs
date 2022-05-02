@@ -10,7 +10,7 @@ namespace WordGame
 {
     public enum PageState
     {
-        MAIN_MENU, PAGE_NEW_ROUND, PAGE_PLAY_AGAIN, PAGE_SETTINGS, PAGE_LOGIN
+        MAIN_MENU, PAGE_NEW_ROUND, PAGE_END_ROUND, PAGE_SETTINGS, PAGE_LOGIN
     }
 
     /// <summary>
@@ -26,15 +26,22 @@ namespace WordGame
 
         private PageState _current_page;
 
+        public PageState Current_Page
+        {
+            get => _current_page;
+            set => _current_page = value;
+        }
+
         public MainWindow()
         {
             // Initialization of internal WPF controls. Always make sure this is called first.
             InitializeComponent();
 
             // Initialize references to lifetime game objects.
-            _current_page = PageState.MAIN_MENU;
+            Current_Page = PageState.MAIN_MENU;
             _page_new_round = new PageNewRound();
             _page_end_round = new PageEndRound();
+
             Trace.Write("System Width: " + SystemParameters.PrimaryScreenWidth + "\n" + "System Height: " + SystemParameters.PrimaryScreenHeight + "\n");
         }
 
@@ -50,12 +57,16 @@ namespace WordGame
                     //Frame.Content = _settings;
                     break;
                 case PageState.PAGE_NEW_ROUND:
-                    Frame.Content = _page_new_round;
-                    _current_page = PageState.PAGE_NEW_ROUND;
+                    Trace.WriteLine("Navigating to New Round.");
+                    Current_Page = PageState.PAGE_NEW_ROUND;
+                    (DataContext as GameLogic)._current_page = Current_Page;
+                    Frame.Navigate(_page_new_round);
                     break;
-                case PageState.PAGE_PLAY_AGAIN:
-                    Frame.Content = _page_end_round;
-                    _current_page = PageState.PAGE_PLAY_AGAIN;
+                case PageState.PAGE_END_ROUND:
+                    Trace.WriteLine("Navigating to Play Again.");
+                    Current_Page = PageState.PAGE_END_ROUND;
+                    Frame.Navigate(_page_end_round);
+                    (DataContext as GameLogic)._current_page = Current_Page;
                     break;
                 default:
                     break;
@@ -67,8 +78,9 @@ namespace WordGame
             title_box.Visibility = Visibility.Hidden;
             instruction_box.Visibility = Visibility.Hidden;
             newGame_button.Visibility = Visibility.Hidden;
-            Frame.Content = _page_new_round;
-            _current_page = PageState.PAGE_NEW_ROUND;
+            Current_Page = PageState.PAGE_NEW_ROUND;
+            (DataContext as GameLogic)._current_page = Current_Page;
+            Frame.Navigate(_page_new_round);
         }
 
         // The following are navigation events for the Frame element (and it's pages).

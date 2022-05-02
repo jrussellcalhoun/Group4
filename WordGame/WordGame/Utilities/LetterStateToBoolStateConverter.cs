@@ -1,30 +1,28 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows.Data;
 //using System.Windows.Markup;
 
+using WordGame.Objects;
+
 namespace WordGame
 {
-    public class IntToBoolStateConverter : IMultiValueConverter
+    public class LetterStateToBoolStateConverter : IMultiValueConverter
     {
-        //private static IntToBoolStateConverter _instance;
-
-        //public IntToBoolStateConverter() { }
-
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            ObservableCollection<int> collection = values[0] as ObservableCollection<int>;
+            var collection = values[0] as LetterStateCollection;
             int idx = System.Convert.ToInt32(values[1]);
-            bool conversion = (collection?[idx] == 0);
-            return conversion;
+            var is_selected_zero_times = collection?[idx].Count != 0;
+            Trace.WriteLine($"Letter {collection?[idx].Letter} is selected {collection?[idx].Count} so the result is {is_selected_zero_times}");
+            return is_selected_zero_times;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
-
-        //public override object ProvideValue(IServiceProvider serviceProvider) => _instance ??= new IntToBoolStateConverter();
     }
 }
