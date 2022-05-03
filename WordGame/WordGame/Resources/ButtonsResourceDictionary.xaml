@@ -66,8 +66,8 @@
 
     <Style x:Name="LetterButton" x:Key="LetterButton" BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
         <Setter Property="Content" Value=""/>
-        <Setter Property="Height" Value="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.07'}"/>
-        <Setter Property="Width" Value="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}"/>
+        <Setter Property="Height" Value="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.07'}"/>
+        <Setter Property="Width" Value="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}"/>
         <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontSize" Value="36"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>

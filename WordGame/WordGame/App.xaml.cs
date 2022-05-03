@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 
 using WordGame.Utilities;
@@ -38,7 +32,6 @@ namespace WordGame
             try
             {
                 ConsoleHelper.ShutdownDebugConsole();
-                //Shutdown(0);
             }
             finally
             {

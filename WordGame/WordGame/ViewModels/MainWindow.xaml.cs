@@ -58,15 +58,15 @@ namespace WordGame
                     break;
                 case PageState.PAGE_NEW_ROUND:
                     Trace.WriteLine("Navigating to New Round.");
-                    Current_Page = PageState.PAGE_NEW_ROUND;
                     (DataContext as GameLogic)._current_page = Current_Page;
+                    Current_Page = PageState.PAGE_NEW_ROUND;
                     Frame.Navigate(_page_new_round);
                     break;
                 case PageState.PAGE_END_ROUND:
                     Trace.WriteLine("Navigating to Play Again.");
                     Current_Page = PageState.PAGE_END_ROUND;
-                    Frame.Navigate(_page_end_round);
                     (DataContext as GameLogic)._current_page = Current_Page;
+                    Frame.Navigate(_page_end_round);
                     break;
                 default:
                     break;
@@ -84,7 +84,7 @@ namespace WordGame
         }
 
         // The following are navigation events for the Frame element (and it's pages).
-        // Here we are manually setting the DataContext of the frames to be our Game_Logic instance (so that it's shared).
+        // Here we are manually setting the DataContext of the frames to be our GameLogic instance (so that it's shared).
         private void Frame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             UpdateFrameDataContext(sender, null);

@@ -10,18 +10,21 @@
     
     <Style x:Key="PreviousGuessBox" BasedOn="{StaticResource {x:Type TextBox}}" TargetType="TextBox">
         <Setter Property="Text"  Value=""/>
-        <Setter Property="Height" Value="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.07'}"/>
-        <Setter Property="Width"  Value="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.04'}"/>
+        <Setter Property="Height" Value="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.07'}"/>
+        <Setter Property="Width"  Value="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.04'}"/>
         <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontSize" Value="36"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="TextAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Visibility" Value="Visible"/>
         <Setter Property="Background" Value="LightBlue"/>
-        <Setter Property="BorderBrush" Value="RoyalBlue"/>
+        <Setter Property="BorderBrush" Value="GhostWhite"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="IsReadOnlyCaretVisible" Value="False"/>
         <Style.Resources>
             <Style TargetType="Border">
                 <Setter Property="CornerRadius" Value="8,8,8,8"/>
@@ -32,19 +35,14 @@
     <Style x:Key="HintBox" BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="50"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="Background" Value="LightBlue"/>
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Visibility" Value="Visible"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
-        <Style.Resources>
-            <Style TargetType="Border">
-                <Setter Property="CornerRadius" Value="8,8,8,8"/>
-            </Style>
-        </Style.Resources>
     </Style>
 
     <Style x:Key="TimerStyle" BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
@@ -54,7 +52,6 @@
         <Setter Property="FontFamily" Value="Consolas"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="Background" Value="DarkOrange"/>
         <Setter Property="Foreground" Value="GhostWhite"/>
         <Setter Property="Visibility" Value="Visible"/>
         <Style.Resources>
