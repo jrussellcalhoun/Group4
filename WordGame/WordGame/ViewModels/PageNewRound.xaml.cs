@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WordGame.Objects;
 
 namespace WordGame
 {
@@ -29,7 +30,6 @@ namespace WordGame
         // Fields are set to private by design they are for internal class use only.
 
         // Music variables
-        private bool _stop_music = false;
         private readonly string c_Directory;
         private const string c_Song1 = @"Assets\ForThePoor.wav", c_Song2 = @"Assets\Jeopardy-theme-song.wav", c_Song3 = @"Assets\Beam.wav", c_Song4 = "stop";
         private const string c_Start = "START", c_Guesses = "Guesses: ", c_Hint = "Click for Hint";
@@ -56,8 +56,6 @@ namespace WordGame
             private set { _song = value; OnPropertyChanged(); }
         }
 
-
-        public event HintRequestDelegate HintRequestMade;
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -74,6 +72,7 @@ namespace WordGame
             InitializeComponent();
 
             Volume = 10.0;
+            VolumeSliderVisibility = Visibility.Collapsed;
             Song = c_Song2;
             SongPlayer.Stop();
 
@@ -83,12 +82,71 @@ namespace WordGame
 
         private void MusicComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            var item = sender as ComboBoxItem;
+            var combo_box = sender as ComboBox;
+            Trace.WriteLine($"MusicComboBox Item selection changes. {combo_box.SelectedValue} is now the current item selection.");
 
-            if (item == song_one) { Song = c_Song1; SongPlayer.Play(); }
-            else if (item == song_two) { Song = c_Song2; SongPlayer.Play(); }
-            else if (item == song_three) { Song = c_Song3; SongPlayer.Play(); }
-            else if (item == no_sound) { Song = c_Song4; SongPlayer.Stop(); }
+            if      (combo_box.SelectedItem == song_one)   { Song = c_Song1; SongPlayer.Stop(); SongPlayer.Play(); }
+            else if (combo_box.SelectedItem == song_two)   { Song = c_Song2; SongPlayer.Stop(); SongPlayer.Play(); }
+            else if (combo_box.SelectedItem == song_three) { Song = c_Song3; SongPlayer.Stop(); SongPlayer.Play(); }
+            else if (combo_box.SelectedItem == no_sound)   { Song = c_Song4; SongPlayer.Stop(); }
+        }
+
+        private void SongPlayer_Ended(object sender, EventArgs e)
+        {
+            if (Song != c_Song4)
+            { 
+                var player = sender as MediaElement;
+                player.Position = TimeSpan.Zero;
+            }
+        }
+
+
+        //var dt1 = new DataTrigger() { Value = "True", Binding = new Binding($"LetterStates[{idx}].HasZeroCount") };
+        //dt1.Setters.Add(new Setter { Property = Border.BorderBrushProperty, Value = Brushes.LightBlue });
+        //var dt2 = new DataTrigger() { Value = "False", Binding = new Binding($"LetterStates[{idx}].HasZeroCount") };
+        //dt2.Setters.Add(new Setter { Property = Border.BorderBrushProperty, Value = Brushes.Red });
+        //var dt3 = new DataTrigger() { Value = 0, Binding = new Binding($"LetterStates[{idx}].State") };
+        //dt3.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.LightBlue });
+        //var dt4 = new DataTrigger() { Value = 1, Binding = new Binding($"LetterStates[{idx}].State") };
+        //dt4.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Gray });
+        //var dt5 = new DataTrigger() { Value = 2, Binding = new Binding($"LetterStates[{idx}].State") };
+        //dt5.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Yellow });
+        //var dt6 = new DataTrigger() { Value = 3, Binding = new Binding($"LetterStates[{idx}].State") };
+        //dt6.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Green });
+        //
+        //Style style = new Style() { BasedOn = based_on_style, TargetType = target_type };
+        //style.Triggers.Add(dt1);
+        //style.Triggers.Add(dt2);
+        //style.Triggers.Add(dt3);
+        //style.Triggers.Add(dt4);
+        //style.Triggers.Add(dt5);
+        //style.Triggers.Add(dt6);
+
+
+        private Style CollectionStateStyleFactory(int idx_of_control, Style based_on_style, Type target_type, Dictionary<string, Dictionary<object, Assignment>> bindings)
+        {
+            var style = new Style() { BasedOn = based_on_style, TargetType = target_type };
+
+            // "CollectionName|Property"
+            foreach (var b in bindings)
+            {
+                string key = b.Key;
+                int sub_index = key.IndexOf('|');
+                if (sub_index == -1) throw new ArgumentException("Invalid string formation of key in StyleFactoryDictionary");
+
+                string collection_name = key.Substring(0, sub_index);
+                var sub_length = key.Length - sub_index;
+                string property_name = key.Substring(sub_index + 1, sub_length - 1);
+
+                foreach (var assignment in b.Value)
+                {
+                    var dt = new DataTrigger() { Value = assignment.Key, Binding = new Binding($"{collection_name}[{idx_of_control}].{property_name}") };
+                    dt.Setters.Add(new Setter { Property = assignment.Value.Dependency, Value = assignment.Value.Value });
+                    style.Triggers.Add(dt);
+                }
+            }
+
+            return style;
         }
 
         private void OnPageLoaded(object sender, RoutedEventArgs e)
@@ -103,29 +161,24 @@ namespace WordGame
                 letter_buttons.ElementAt(idx).SetBinding(ContentProperty, $"LetterStates[{idx}].Letter");
                 Trace.WriteLine($"Button Content: {letter_buttons.ElementAt(idx).Content}, Index: {idx}");
 
-                var dt1 = new DataTrigger() { Value = "True", Binding = new Binding($"LetterStates[{idx}].HasZeroCount") };
-                dt1.Setters.Add(new Setter{ Property = Border.BorderBrushProperty, Value = Brushes.LightBlue });
-                var dt2 = new DataTrigger() { Value = "False", Binding = new Binding($"LetterStates[{idx}].HasZeroCount") };
-                dt2.Setters.Add(new Setter { Property = Border.BorderBrushProperty, Value = Brushes.Red });
-                var dt3 = new DataTrigger() { Value = 0, Binding = new Binding($"LetterStates[{idx}].State") };
-                dt3.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.LightBlue });
-                var dt4 = new DataTrigger() { Value = 1, Binding = new Binding($"LetterStates[{idx}].State") };
-                dt4.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Gray });
-                var dt5 = new DataTrigger() { Value = 2, Binding = new Binding($"LetterStates[{idx}].State") };
-                dt5.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Yellow });
-                var dt6 = new DataTrigger() { Value = 3, Binding = new Binding($"LetterStates[{idx}].State") };
-                dt6.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Green });
+                var assignments_has_zero_count = new Dictionary<object, Assignment> 
+                { 
+                    { "True", new Assignment(Border.BorderBrushProperty, Brushes.RoyalBlue) },
+                    { "False", new Assignment(Border.BorderBrushProperty, Brushes.Red) }
+                };
 
-                Style style = new Style() { BasedOn = letter_buttons.ElementAt(idx).Style, TargetType = typeof(Button) };    
-                style.Triggers.Add(dt1);
-                style.Triggers.Add(dt2);
-                style.Triggers.Add(dt3);
-                style.Triggers.Add(dt4);
-                style.Triggers.Add(dt5);
-                style.Triggers.Add(dt6);
+                var assignments_state = new Dictionary<object, Assignment>
+                {
+                    { 0, new Assignment(Button.BackgroundProperty, Brushes.LightBlue) },
+                    { 1, new Assignment(Button.BackgroundProperty, Brushes.Gray) },
+                    { 2, new Assignment(Button.BackgroundProperty, Brushes.Yellow) },
+                    { 3, new Assignment(Button.BackgroundProperty, Brushes.Green) }
+                };
 
-                letter_buttons.ElementAt(idx).Style = style;
-
+                letter_buttons.ElementAt(idx).Style = CollectionStateStyleFactory(idx, letter_buttons.ElementAt(idx).Style, typeof(Button),
+                    new Dictionary<string, Dictionary<object, Assignment>>{ 
+                        { "LetterStates|HasZeroCount", assignments_has_zero_count },
+                        { "LetterStates|State", assignments_state} });
             }
 
             var guess_buttons = from elements in buttons where elements.Name.Contains("GB") select elements;
@@ -136,6 +189,18 @@ namespace WordGame
             for (int idx = 0; idx < previous_guess_buttons.Count(); idx++)
             {
                 previous_guess_buttons.ElementAt(idx).SetBinding(TextBox.TextProperty, $"PreviouslyGuessedLetterStates[{idx}].Letter");
+
+                var assignments_state = new Dictionary<object, Assignment>
+                {
+                    { 0, new Assignment(Button.BackgroundProperty, Brushes.LightBlue) },
+                    { 1, new Assignment(Button.BackgroundProperty, Brushes.Gray) },
+                    { 2, new Assignment(Button.BackgroundProperty, Brushes.Yellow) },
+                    { 3, new Assignment(Button.BackgroundProperty, Brushes.Green) }
+                };
+
+                previous_guess_buttons.ElementAt(idx).Style = CollectionStateStyleFactory(idx, previous_guess_buttons.ElementAt(idx).Style, typeof(TextBox),
+                new Dictionary<string, Dictionary<object, Assignment>>{
+                    { "PreviouslyGuessedLetterStates|State", assignments_state} });
             }
         }
 

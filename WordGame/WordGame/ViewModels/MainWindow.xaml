@@ -38,25 +38,25 @@
 
         <TextBox x:Name="title_box" 
                  Text="GROUP 4 WORD GAME"
-                 MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
-                 MinWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
+                 MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
+                 MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
                  TextWrapping="Wrap" TextAlignment="Center" FontSize="72" Padding="0,150,0,0"
                  Grid.Row="0" Grid.Column="0"
                  Grid.RowSpan="4" Grid.ColumnSpan="4"
                  Background="#0F0F2D" Foreground="White"/>
 
         <TextBox x:Name="instruction_box"
-                 Text="The goal is to find the &quot;winning word&quot; within the 5:00 minute time limit! You're given 6 guesses. &#xD;&#xA;If the letter turns red, it is the first letter of the winning word.&#xD;&#xA;If the letter turns green, it is found somewhere in the winning word.&#xD;&#xA;If the letter turns grey, it is not in the winning word.&#xD;&#xA;Your guesses must be a real word, and contain 5 letters.&#xD;&#xA;Once you finish the game, you can reset the board and search for a new word.&#xD;&#xA;" 
-                 Height="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.35'}" 
-                 Width="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.5'}"
+                 Text="The goal is to find the &quot;winning word&quot; within the time limit! &#xD;&#xA;You have a total of 6 tries to guess the correct word. &#xD;&#xA;If the letter turns grey, it is not in the winning word.&#xD;&#xA;If the letter turns yellow, it is found somewhere in the winning word.&#xD;&#xA;If the letter turns green, it is in the correct location within the winning word.&#xD;&#xA;Your guesses must be a real word, and contain 5 letters.&#xD;&#xA;Once you finish the game, you can reset the board and search for a new word.&#xD;&#xA;" 
+                 Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.35'}" 
+                 Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.5'}"
                  TextWrapping="Wrap" FontSize="28" FontWeight="Medium" TextAlignment="Center" Padding="0,75,0,0"
                  Grid.Row="0" Grid.Column="0"
                  Grid.RowSpan="4" Grid.ColumnSpan="4"
                  Background="#5467AB"/>
 
         <Button x:Name="newGame_button" Content="New Game"  
-                Height="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}" 
-                Width="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.25'}"
+                Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}" 
+                Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.25'}"
                 Grid.Row="3" Grid.Column="1"
                 Grid.RowSpan="4" Grid.ColumnSpan="2"
                 Background="LightBlue" FontSize="72" FontWeight="Bold"

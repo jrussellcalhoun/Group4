@@ -34,7 +34,7 @@ using WordGame.Utilities;
 
     or:
     
-    if(<<left-hand-operand>> == null) 
+    if(<<left-hand-operand>> != null) 
     { 
        return <<left-hand-operand>>;
     }
@@ -627,7 +627,6 @@ namespace WordGame
             Trace.WriteLine($"The WinningWord is: {WinningWord}");
 
             // These should be reset in this order.
-            RoundTime = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
             TimeElapsed = DateTime.UtcNow;
             RoundInProgress = true;
         }
@@ -833,6 +832,9 @@ namespace WordGame
             {
                 // Need to subtract 1 from the number of tries to make the math work here.
                 // This is because we increment Tries before we get here so that we can take advantage of short cirtuiting behavior.
+                PreviouslyGuessedLetterStates[idx + previous_guess_index].State = LetterStates[GuessedLetterStates[idx].State].State;
+                if (LetterStates[GuessedLetterStates[idx].State].State > 1)
+                    LetterStates[GuessedLetterStates[idx].State].State = 0;
                 PreviouslyGuessedLetterStates[idx + previous_guess_index].Letter = GuessedLetterStates[idx].Letter;
                 GuessedLetterStates[idx].Letter = "";
                 LetterStates[GuessedLetterStates[idx].State].Count = 0;

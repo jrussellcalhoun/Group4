@@ -8,47 +8,47 @@
       xmlns:sys="clr-namespace:System;assembly=mscorlib" 
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance Type=local:GameLogic, IsDesignTimeCreatable=True}"
-      Height="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
-      Width="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
-      MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
-      MinWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
+      Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
+      Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
+      MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
+      MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
       Title="Group 4 Word Game" Loaded="OnPageLoaded"  x:Name="FramePageNewRound">
 
     <Grid x:Name="MainGrid" Background="{StaticResource CetaceanBlue}" 
-          Height="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
-          Width="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
-          MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
-          MinWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}">
+          Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
+          Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
+          MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
+          MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.03'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.FullPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.03'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.03'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <ColumnDefinition MaxWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.03'}"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.075'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
-            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.075'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}"/>
+            <RowDefinition MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.055'}"/>
         </Grid.RowDefinitions>
 
         <!--                                                                                Grid Coordinates                            -->
@@ -92,25 +92,25 @@
         <TextBox x:Name="PG1_3" Grid.Column="10" Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG1_4" Grid.Column="11" Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG1_5" Grid.Column="12" Grid.Row="3" Style="{StaticResource PreviousGuessBox}"/>
-                          
+
         <TextBox x:Name="PG2_1" Grid.Column="8"  Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG2_2" Grid.Column="9"  Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG2_3" Grid.Column="10" Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG2_4" Grid.Column="11" Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG2_5" Grid.Column="12" Grid.Row="4" Style="{StaticResource PreviousGuessBox}"/>
-                          
+
         <TextBox x:Name="PG3_1" Grid.Column="8"  Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG3_2" Grid.Column="9"  Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG3_3" Grid.Column="10" Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG3_4" Grid.Column="11" Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG3_5" Grid.Column="12" Grid.Row="5" Style="{StaticResource PreviousGuessBox}"/>
-                          
+
         <TextBox x:Name="PG4_1" Grid.Column="8"  Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG4_2" Grid.Column="9"  Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG4_3" Grid.Column="10" Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG4_4" Grid.Column="11" Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG4_5" Grid.Column="12" Grid.Row="6" Style="{StaticResource PreviousGuessBox}"/>
-                          
+
         <TextBox x:Name="PG5_1" Grid.Column="8"  Grid.Row="7" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG5_2" Grid.Column="9"  Grid.Row="7" Style="{StaticResource PreviousGuessBox}"/>
         <TextBox x:Name="PG5_3" Grid.Column="10" Grid.Row="7" Style="{StaticResource PreviousGuessBox}"/>
@@ -119,36 +119,41 @@
 
         <Button x:Name="GuessButton" Content="Enter" 
                    Grid.Row="8" Grid.Column="3" Grid.ColumnSpan="3" 
-                   MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
-                   MinWidth="{Binding  Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
+                   MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
+                   MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
                    Style="{StaticResource ActionButton}" 
                    Command="{Binding Path=GuessCommand}"/>
 
         <Button x:Name="HintButton" Content="Click For A Hint!"
                  Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
-                 MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
-                 MinWidth="{Binding  Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
+                 MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                 MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
                  Style="{StaticResource ActionButton}" 
                  Command="{Binding Path=GetHintCommand}"/>
 
-        <TextBlock x:Name="HintBox" Text="{Binding Path=Hint, UpdateSourceTrigger=PropertyChanged}"
+        <Border Grid.Row="3" Grid.RowSpan="6" Grid.ColumnSpan="2"
+            Background="LightBlue" BorderThickness="4" CornerRadius="8"
+            Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.5'}" 
+            Width="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}">
+            <TextBlock x:Name="HintBox" Text="{Binding Path=Hint, UpdateSourceTrigger=PropertyChanged}"
                    Grid.Row="3" Grid.RowSpan="6" Grid.ColumnSpan="2"
-                   Height="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.5'}" 
-                   Width="{Binding  Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
+                   Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.5'}" 
+                   Width="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
                    Style="{StaticResource HintBox}"/>
+        </Border>
 
         <Button x:Name="StartRoundButton" Content="START ROUND"
                 Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" 
-                MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
-                MinWidth="{Binding  Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
+                MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.2'}"
                 Style="{StaticResource ActionButton}"
                 Button.Click="StartRoundButton_Click"
                 Command="{Binding Path=StartRoundCommand}"/>
 
         <Button x:Name="ResetGameButton" Content="Reset Game" 
                 Grid.Column="11" Grid.Row="0" Grid.ColumnSpan="2"
-                MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
-                MinWidth="{Binding  Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.05'}"
+                MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
+                MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.05'}"
                 Style="{StaticResource ActionButton}"
                 Command="{Binding Path=ResetGameCommand}"/>
 
@@ -173,27 +178,47 @@
         <MediaElement x:Name="SongPlayer" 
                       LoadedBehavior="Manual" UnloadedBehavior="Stop"
                       DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PageNewRound}}"
-                      Source="{Binding Path=Song}" Volume="{Binding Path=Volume, Converter={tools:RatioConverter}, ConverterParameter='0.01'}"/>
+                      Source="{Binding Path=Song, UpdateSourceTrigger=PropertyChanged}" 
+                      Volume="{Binding Path=Volume, Converter={tools:RatioConverter}, ConverterParameter='0.01'}"
+                      MediaEnded="SongPlayer_Ended"/>
 
         <ComboBox x:Name="MusicComboBox"
                   Grid.Column="9" Grid.ColumnSpan="2"
-                  MaxHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
-                  MaxWidth="{Binding  Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.1'}"
+                  MaxHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
+                  MaxWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.1'}"
                   FontFamily="Consolas" FontSize="30" FontWeight="Bold"
                   VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-                  SelectionChanged="MusicComboBox_SelectionChanged">
+                  SelectedValuePath="Content" SelectionChanged="MusicComboBox_SelectionChanged">
             <ComboBoxItem x:Name="song_one"   Content="Electronic" IsSelected="False"/>
             <ComboBoxItem x:Name="song_two"   Content="Jeopardy"   IsSelected="True"/>
             <ComboBoxItem x:Name="song_three" Content="Smooth"     IsSelected="False"/>
             <ComboBoxItem x:Name="no_sound"   Content="No sound"   IsSelected="False"/>
         </ComboBox>
 
+        <TextBlock x:Name="ClickIndicator" Text="Click Letters&#xD;&#xA; To Remove From Guess ☞"
+                   Grid.Row="9" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="2"
+                   MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                   MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
+                   Style="{StaticResource TimerStyle}"/>
+
+        <TextBlock x:Name="PreviousGuessLabel" Text="Previous Guesses&#xD;&#xA;⟱⟱⟱⟱"
+                   Grid.Row="1" Grid.Column="9" Grid.RowSpan="2" Grid.ColumnSpan="3"
+                   MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                   MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
+                   Style="{StaticResource TimerStyle}"/>
+
+        <Border Grid.Row="1" Grid.Column="3" Grid.RowSpan="1" Grid.ColumnSpan="3"
+                MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
+                Background="DarkOrange" BorderThickness="8" CornerRadius="12">
         <TextBlock x:Name="Timer" Text="{Binding Path=RoundTime, UpdateSourceTrigger=PropertyChanged}"
                    Grid.Row="1" Grid.Column="3" Grid.RowSpan="1" Grid.ColumnSpan="3"
-                   MinHeight="{Binding Source={x:Static SystemParameters.FullPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
-                   MinWidth="{Binding  Source={x:Static SystemParameters.FullPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
+                   MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                   MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
                    Style="{StaticResource TimerStyle}"/>
-        
+        </Border>
+
+
         <Border x:Name="NewRoundBorder" 
                 Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="14" Grid.RowSpan="11"
                 BorderThickness="8" 
