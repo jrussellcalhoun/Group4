@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WordGame"
         xmlns:tools="clr-namespace:WordGame.Tools" 
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:GameLogic, IsDesignTimeCreatable=True}"
         MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
         MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
         Top="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}"
@@ -29,7 +30,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Frame  x:Name="Frame" Content="Frame" 
+        <Frame  x:Name="GameFrame" Content="GameFrame" 
                 Grid.Row="0" Grid.Column="0"
                 Grid.RowSpan="4" Grid.ColumnSpan="4" 
                 NavigationUIVisibility="Hidden" Background="Black"
@@ -60,6 +61,7 @@
                 Grid.Row="3" Grid.Column="1"
                 Grid.RowSpan="4" Grid.ColumnSpan="2"
                 Background="LightBlue" FontSize="72" FontWeight="Bold"
-                Click="Button_Click"/>
+                Click="Button_Click"
+                Command="{Binding Path=LogicNavigateCommand}" CommandParameter="1"/>
     </Grid>
 </Window>
