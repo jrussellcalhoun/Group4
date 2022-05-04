@@ -8,14 +8,19 @@ using WordGame.Utilities;
 
 namespace WordGame
 {
-    public enum PageState
+    public enum PageState : uint
     {
-        MAIN_MENU, PAGE_NEW_ROUND, PAGE_END_ROUND, PAGE_SETTINGS, PAGE_LOGIN
+        MAIN_MENU = 0,
+        PAGE_NEW_ROUND = 1,
+        PAGE_END_ROUND = 2, 
+        PAGE_SETTINGS = 3,
+        PAGE_LOGIN = 4
     }
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Serializable]
     public partial class MainWindow : Window
     {
         // Frame Pages
@@ -24,21 +29,12 @@ namespace WordGame
         private PageNewRound  _page_new_round;
         private PageEndRound  _page_end_round;
 
-        private PageState _current_page;
-
-        public PageState Current_Page
-        {
-            get => _current_page;
-            set => _current_page = value;
-        }
-
         public MainWindow()
         {
             // Initialization of internal WPF controls. Always make sure this is called first.
             InitializeComponent();
 
             // Initialize references to lifetime game objects.
-            Current_Page = PageState.MAIN_MENU;
             _page_new_round = new PageNewRound();
             _page_end_round = new PageEndRound();
 
@@ -48,8 +44,12 @@ namespace WordGame
         public void ChangePage(object sender, EventArgs e)
         {
             var args = e as ChangePageEventArgs;
+
+            Trace.WriteLine($"Main Window-> ChangePage Method. Argument CurrentPage is {args.CurrentPage}");
             switch (args.CurrentPage)
             {
+                case PageState.MAIN_MENU:
+                    break;
                 case PageState.PAGE_LOGIN:
                     //Frame.Content = _login;
                     break;
@@ -57,16 +57,15 @@ namespace WordGame
                     //Frame.Content = _settings;
                     break;
                 case PageState.PAGE_NEW_ROUND:
-                    Trace.WriteLine("Navigating to New Round.");
-                    (DataContext as GameLogic)._current_page = Current_Page;
-                    Current_Page = PageState.PAGE_NEW_ROUND;
-                    Frame.Navigate(_page_new_round);
+                    Trace.WriteLine("Main Window-> Navigating to New Round.");
+
+                    //Current_Page = PageState.PAGE_NEW_ROUND;
+                    this.GameFrame.Navigate(_page_new_round);
                     break;
                 case PageState.PAGE_END_ROUND:
-                    Trace.WriteLine("Navigating to Play Again.");
-                    Current_Page = PageState.PAGE_END_ROUND;
-                    (DataContext as GameLogic)._current_page = Current_Page;
-                    Frame.Navigate(_page_end_round);
+                    Trace.WriteLine("Main Window-> Navigating to End Round.");
+                    //Current_Page = PageState.PAGE_END_ROUND;
+                    this.GameFrame.Navigate(_page_end_round);
                     break;
                 default:
                     break;
@@ -78,9 +77,13 @@ namespace WordGame
             title_box.Visibility = Visibility.Hidden;
             instruction_box.Visibility = Visibility.Hidden;
             newGame_button.Visibility = Visibility.Hidden;
-            Current_Page = PageState.PAGE_NEW_ROUND;
-            (DataContext as GameLogic)._current_page = Current_Page;
-            Frame.Navigate(_page_new_round);
+
+            var btn = sender as Button;
+            btn.Command.Execute(btn.CommandParameter);
+
+            //Current_Page = PageState.PAGE_NEW_ROUND;
+            //(DataContext as GameLogic)._current_page = Current_Page;
+            //GameFrame.Navigate(_page_new_round);
         }
 
         // The following are navigation events for the Frame element (and it's pages).
@@ -95,10 +98,18 @@ namespace WordGame
         }
         private void UpdateFrameDataContext(object sender, NavigationEventArgs e)
         {
-            var content = Frame.Content as FrameworkElement;
+            var content = GameFrame.Content as FrameworkElement;
             if (content == null)
+            {
+                Trace.WriteLine("GameFrame.Content is null!");
                 return;
-            content.DataContext = Frame.DataContext;
+            }
+            else
+            {
+                Trace.WriteLine($"Setting Frame Content DataContext to {content.DataContext}");
+                content.DataContext = GameFrame.DataContext;
+            }
+            
         }
 
         // Haven't decided if I want to keep this yet, uncomment to remove the border and system menu on the window.

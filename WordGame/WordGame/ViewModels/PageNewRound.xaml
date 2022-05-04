@@ -211,11 +211,11 @@
                 MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
                 MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
                 Background="DarkOrange" BorderThickness="8" CornerRadius="12">
-        <TextBlock x:Name="Timer" Text="{Binding Path=RoundTime, UpdateSourceTrigger=PropertyChanged}"
-                   Grid.Row="1" Grid.Column="3" Grid.RowSpan="1" Grid.ColumnSpan="3"
-                   MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
-                   MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
-                   Style="{StaticResource TimerStyle}"/>
+            <TextBlock x:Name="Timer" Text="{Binding Path=RoundTime, StringFormat={}{0:hh':'mm':'ss}, UpdateSourceTrigger=PropertyChanged}"
+                       Grid.Row="1" Grid.Column="3" Grid.RowSpan="1" Grid.ColumnSpan="3"
+                       MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+                       MinWidth="{Binding  Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},  Converter={tools:RatioConverter}, ConverterParameter='0.15'}"
+                       Style="{StaticResource TimerStyle}"/>
         </Border>
 
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Net.Http;
 using System.Diagnostics;
@@ -101,23 +100,20 @@ namespace WordGame
 
         private string _hint;
         private string _winning_word;
+        private string _win_or_lose_message;
 
         private int _wins;
         private int _tries;
         private int _letters_in_guess_count;
 
-        private bool _won;
-        private bool _game_over;
-        private bool _new_round;
-        private bool _round_start;
-        private bool _quit;
+        private bool _to_page_end_round;
+        private bool _to_page_new_round;
+        private bool _round_in_progress;
         private bool _is_first_round;
 
         private TimeSpan _total_time;
 
-        private readonly string[] _default_letters = new string[26] 
-        { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-          "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+        private const string YOU_LOSE = "YOU LOSE :P", YOU_WON = "YOU WON :D";
 
         private LetterStateCollection _letter_states;
         private LetterStateCollection _guessed_letter_states;
@@ -143,34 +139,22 @@ namespace WordGame
             set => SetProperty(ref _previously_guessed_letter_states, value);
         }
 
-        public bool Won 
+        public bool ToPageEndRound 
         {
-            get => _won;
-            private set => SetProperty(ref _won, value);
+            get => _to_page_end_round;
+            set => SetProperty(ref _to_page_end_round, value);
         }
 
-        public bool GameOver 
+        public bool ToPageNewRound
         {
-            get => _game_over;
-            private set => SetProperty(ref _game_over, value);
+            get => _to_page_new_round;
+            set => SetProperty(ref _to_page_new_round, value);
         }
-        
-        public bool NewRound 
-        {
-            get => _new_round;
-            private set => SetProperty(ref _new_round, value);
-        }
-        
+
         public bool RoundInProgress 
         { 
-            get => _round_start;
-            private set => SetProperty(ref _round_start, value);
-        }
-        
-        public bool Quit 
-        {
-            get => _quit;
-            private set => SetProperty(ref _quit, value);
+            get => _round_in_progress;
+            private set => SetProperty(ref _round_in_progress, value);
         }
 
         public string Hint
@@ -221,6 +205,12 @@ namespace WordGame
             private set => SetProperty(ref _round_time, value);
         }
 
+        public string WinOrLoseMessage
+        {
+            get => _win_or_lose_message;
+            private set => SetProperty(ref _win_or_lose_message, value);
+        }
+
         /// <summary>
         /// Not yet implemented! Will eventually hold the Dictionary of (keys=words, values=hints) when we have created our database files.
         /// </summary>
@@ -242,6 +232,8 @@ namespace WordGame
         private ICommand _start_round_command;
         private ICommand _guess_command;
         private ICommand _reset_game_command;
+        private ICommand _exit_command;
+        private ICommand _logic_navigate_command;
 
         public ICommand GetHintCommand
         {
@@ -272,6 +264,16 @@ namespace WordGame
             get => _reset_game_command ??= new RelayCommand(param => ResetGame(), param => CanResetGame());
         }
 
+        public ICommand ExitCommand
+        {
+            get => _exit_command ??= new RelayCommand(param => End(), param => true);
+        }
+
+        public ICommand LogicNavigateCommand
+        {
+            get => _logic_navigate_command ??= new RelayCommand(param => NavigatePage(param), param => CanNavigatePage());
+        }
+
         #endregion // End Events
 
         // Constants
@@ -283,6 +285,7 @@ namespace WordGame
         #region Game Logic Member Methods
         public GameLogic()
         {
+            _current_page = PageState.MAIN_MENU;
             _tick_timer = new DispatcherTimer();
             TotalTime = TimeSpan.Zero;
             Wins = 0;
@@ -313,9 +316,8 @@ namespace WordGame
             WinningWord = "";
             Hint = "";
             Tries = 0;
-            Won = false;
-            GameOver = false;
-            NewRound = false;
+            ToPageEndRound = false;
+            ToPageNewRound = false;
             RoundInProgress = false;
             _letters_in_guess_count = 0;
 
@@ -356,57 +358,80 @@ namespace WordGame
             // Assign the tick event handler to the "Run" method. This is our GameLoop, where logic should be updated each tick.
             // Game Logic ticks every 0.02 seconds i.e. a target of 50 executions per second. Dispatch timer interval resolution is only reliable up to 20 miliseconds.
             // Start the timer. We will use DispatchTimer.Stop() later to clean up when the GameLoop is finished executing (right before the application exits.
-            _tick_timer.Tick += Run;
-            _tick_timer.Interval = TimeSpan.FromMilliseconds(20);
-            _tick_timer.Start();
+            this._tick_timer.Tick += this.Run;
+            this._tick_timer.Interval = TimeSpan.FromMilliseconds(20);
+            this._tick_timer.Start();
         }
 
         // Runs every tick of the game (Every 20 milliseconds).
-        public void Run(object sender, EventArgs e)
+        private void Run(object sender, EventArgs e)
         {
-            if (Quit)
-            {
-                End();
-            }
-            else
-            {
-                switch (_current_page)
+                //Trace.WriteLine($"Run Loop-> case PageState.MAIN_MENU-> Current Page: {_current_page} ToPageEndRound: {ToPageEndRound} ToPageNewRound: {ToPageNewRound}");
+                if (ToPageNewRound == true)
                 {
-                    case PageState.PAGE_LOGIN:
-                        break;
-
-                    case PageState.PAGE_SETTINGS:
-                        break;
-
-                    case PageState.PAGE_NEW_ROUND:
-
-                        if (Won || GameOver)
-                        {
-                            _is_first_round = false;
-                            Trace.WriteLine("Changing Page to Play Again.");
-                            ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_END_ROUND));
-                            break;
-                        }
-
-                        if (RoundInProgress)
-                            UpdateRoundTime();
-
-                        break;
-
-                    case PageState.PAGE_END_ROUND:
-                        if (NewRound)
-                        {
-                            Trace.WriteLine("Starting a new round.");
-                            NewRound = false;
-                            ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_NEW_ROUND));
-                            break;
-                        }
-                        break;
-
-                    default:
-                        break;
+                    Trace.WriteLine("Run Loop-> Starting a new round.");
+                    ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_NEW_ROUND));
+                    ToPageNewRound = false;
                 }
-            }
+
+                //Trace.WriteLine($"Run Loop-> case PageState.PAGE_NEW_ROUND-> Current Page: {_current_page} ToPageEndRound: {ToPageEndRound} ToPageNewRound: {ToPageNewRound}");
+                if (ToPageEndRound == true)
+                {
+
+                    _is_first_round = false;
+                    Trace.WriteLine("Run Loop-> Changing Page End Round.");
+                    ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_END_ROUND));
+                    ToPageEndRound = false;
+                }
+
+                if (RoundInProgress) { UpdateRoundTime(); }
+
+            //switch (_current_page)
+            //{
+            //    case PageState.MAIN_MENU:
+            //        Trace.WriteLine($"Run Loop-> case PageState.MAIN_MENU-> Current Page: {_current_page} ToPageEndRound: {ToPageEndRound} ToPageNewRound: {ToPageNewRound}");
+            //        if (ToPageNewRound == true)
+            //        {       
+            //            Trace.WriteLine("Run Loop-> Starting a new round.");
+            //            ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_NEW_ROUND));
+            //            ToPageNewRound = false;
+            //        }
+            //        break;
+            //    case PageState.PAGE_LOGIN:
+            //        break;
+            //
+            //    case PageState.PAGE_SETTINGS:
+            //        break;
+            //
+            //    case PageState.PAGE_NEW_ROUND:
+            //        Trace.WriteLine($"Run Loop-> case PageState.PAGE_NEW_ROUND-> Current Page: {_current_page} ToPageEndRound: {ToPageEndRound} ToPageNewRound: {ToPageNewRound}");
+            //        if (ToPageEndRound == true)
+            //        {
+            //
+            //            _is_first_round = false;
+            //            Trace.WriteLine("Run Loop-> Changing Page End Round.");
+            //            ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_END_ROUND));
+            //            ToPageEndRound = false;
+            //        }
+            //
+            //        if (RoundInProgress) { UpdateRoundTime(); }
+            //
+            //        break;
+            //
+            //    case PageState.PAGE_END_ROUND:
+            //        Trace.WriteLine($"Run Loop-> case PageState.PAGE_END_ROUND-> Current Page: {_current_page} ToPageEndRound: {ToPageEndRound} ToPageNewRound: {ToPageNewRound}");
+            //        if (ToPageNewRound == true)
+            //        {
+            //            Trace.WriteLine("Run Loop-> Starting a new round.");
+            //            ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_NEW_ROUND));
+            //            ToPageNewRound = false;
+            //        }
+            //        break;
+            //
+            //    default:
+            //        break;
+            //}
+
         }
 
         /// <summary>
@@ -653,7 +678,7 @@ namespace WordGame
                 {
                     Trace.WriteLine("Out of Time! Game Over!");
                     TotalTime += (TimeSpan.FromSeconds(c_Starting_Round_Seconds) - RoundTime);
-                    GameOver = true;
+                    ToPageEndRound = true;
                     RoundInProgress = false;
                 }
             }
@@ -780,8 +805,9 @@ namespace WordGame
                 Trace.WriteLine($"Player Won! Current Number of Wins: {Wins}");
                 Hint = "";
                 Tries = 0;
-                Won = true;
                 Wins++;
+                WinOrLoseMessage = YOU_WON;
+                ToPageEndRound = true;
                 RoundInProgress = false;
             }
 
@@ -791,7 +817,8 @@ namespace WordGame
             {
                 Trace.WriteLine($"Out of Tries... Game Over!");
                 Hint = "";
-                GameOver = true;
+                WinOrLoseMessage = YOU_LOSE;
+                ToPageEndRound = true;
                 RoundInProgress = false;
                 return;
             }
@@ -830,8 +857,6 @@ namespace WordGame
             // Then we reset letters in the GuessedLetterStates collection and clear the count of the letters in the LetterStates collection.
             for (int idx = 0; idx < GuessedLetterStates.Count; idx++)
             {
-                // Need to subtract 1 from the number of tries to make the math work here.
-                // This is because we increment Tries before we get here so that we can take advantage of short cirtuiting behavior.
                 PreviouslyGuessedLetterStates[idx + previous_guess_index].State = LetterStates[GuessedLetterStates[idx].State].State;
                 if (LetterStates[GuessedLetterStates[idx].State].State > 1)
                     LetterStates[GuessedLetterStates[idx].State].State = 0;
@@ -854,6 +879,29 @@ namespace WordGame
 
             return false;
         }
+
+        private bool CanNavigatePage() => true;
+
+        private void NavigatePage(object param)
+        {
+            var page = (PageState)Convert.ToUInt32(param);
+            Trace.WriteLine($"Navigate Page-> Current Page is: {_current_page}. We are changing to: {page}");
+
+            if (page == PageState.PAGE_END_ROUND)
+            {
+                Trace.WriteLine("Navigate Page-> Setting ToPageEndRound to True.");
+                this.ToPageEndRound = true;
+            }
+            else if (page == PageState.PAGE_NEW_ROUND)
+            {
+                Trace.WriteLine("Navigate Page-> Setting ToPageNewRound to True.");
+                this.ToPageNewRound = true;
+            }
+
+            this._current_page = page;
+            Trace.WriteLine($"Navigate Page-> CurrentPage: {this._current_page}");
+        }
+
         #endregion // End Game Logic Member Methods
     }
 }
