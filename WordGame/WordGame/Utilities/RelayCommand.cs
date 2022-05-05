@@ -31,7 +31,7 @@ namespace WordGame.Utilities
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
             // .Net 6.0 static method null check this replaces if (execute == null) throw new ArgumentNullException();
-            if (execute is null) throw new ArgumentNullException(nameof(execute));
+            ArgumentNullException.ThrowIfNull(execute);
 
             _execute = execute;
             OnPropertyChanged(nameof(_execute));
