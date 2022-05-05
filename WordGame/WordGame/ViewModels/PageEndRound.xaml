@@ -15,8 +15,6 @@
       Title="PageEndRound" x:Name="FramePageEndRound">
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource CetaceanBlue}"
-        Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
-        Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
         MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
         MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}">
 
@@ -67,10 +65,8 @@
                 Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.12'}"
                 Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.35'}">
             <TextBlock x:Name="EndGameMessageBox" Text="Would you like to play again?"
-                 MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.12'}" 
-                 MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.35'}"
-                 HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,30,0,0"
-                 FontSize="48" TextAlignment="Center" TextWrapping="Wrap" 
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                 FontSize="40" TextAlignment="Center" TextWrapping="Wrap" 
                  Background="LightBlue">
             </TextBlock>
         </Border>

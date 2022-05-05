@@ -193,15 +193,15 @@
 
         <TextBlock x:Name="ClickIndicator" Text="Click Letters&#xD;&#xA; To Remove From Guess ☞"
                    Grid.Row="9" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="2" Margin="0,0,0,20"
-                   Style="{StaticResource TimerStyle}"/>
+                   Style="{StaticResource IndicatorStyle}"/>
 
-        <TextBlock x:Name="PreviousGuessLabel" Text="Previous Guesses" Margin="0,20,50,0"
-                   Grid.Row="2" Grid.Column="9" Grid.RowSpan="1" Grid.ColumnSpan="4"
-                   Style="{StaticResource TimerStyle}"/>
+        <TextBlock x:Name="PreviousGuessLabel" Text="Previous Guesses" Margin="0,20,20,0"
+                   Grid.Row="2" Grid.Column="8" Grid.RowSpan="1" Grid.ColumnSpan="6"
+                   Style="{StaticResource IndicatorStyle}"/>
 
         <TextBlock x:Name="RemainingGuesses" Text="{Binding Path=GuessesRemaining, UpdateSourceTrigger=PropertyChanged}"
-                   Grid.Row="1" Grid.Column="8" Grid.RowSpan="2" Grid.ColumnSpan="5" Margin="0,0,0,20"
-                   Style="{StaticResource TimerStyle}"/>
+                   Grid.Row="1" Grid.Column="8" Grid.RowSpan="2" Grid.ColumnSpan="6" Margin="0,0,20,20"
+                   Style="{StaticResource IndicatorStyle}"/>
 
         <StackPanel x:Name="LegendVertical" Grid.Column="8"  Grid.Row="8" Grid.RowSpan="3" Grid.ColumnSpan="6" Orientation="Vertical" >
             <Grid x:Name="LegendHorizontal1">
