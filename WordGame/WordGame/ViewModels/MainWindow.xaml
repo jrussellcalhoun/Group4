@@ -7,10 +7,10 @@
         xmlns:tools="clr-namespace:WordGame.Tools" 
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:GameLogic, IsDesignTimeCreatable=True}"
-        MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
-        MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
-        Top="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}"
-        Left="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.05'}" 
+        MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.95'}" 
+        MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.915'}"
+        Top="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}"
+        Left="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
         Title="MainWindow" Visibility="Visible" x:Name="WordGameMainWindow">
     <!--Uncomment the event handler below if you want use the native methods in code behind to change the window's hardcoded visuals.-->
     <!--Loaded="Window_Loaded"-->
