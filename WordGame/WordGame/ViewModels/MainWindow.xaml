@@ -44,7 +44,7 @@
                  TextWrapping="Wrap" TextAlignment="Center" FontSize="72" Padding="0,150,0,0"
                  Grid.Row="0" Grid.Column="0"
                  Grid.RowSpan="4" Grid.ColumnSpan="4"
-                 Background="#0F0F2D" Foreground="White"/>
+                 Background="#0F0F2D" Foreground="GhostWhite"/>
 
         <TextBox x:Name="instruction_box"
                  Text="The goal is to find the &quot;winning word&quot; within the time limit! &#xD;&#xA;You have a total of 6 tries to guess the correct word. &#xD;&#xA;If the letter turns grey, it is not in the winning word.&#xD;&#xA;If the letter turns yellow, it is found somewhere in the winning word.&#xD;&#xA;If the letter turns green, it is in the correct location within the winning word.&#xD;&#xA;Your guesses must be a real word, and contain 5 letters.&#xD;&#xA;Once you finish the game, you can reset the board and search for a new word.&#xD;&#xA;" 
@@ -53,7 +53,7 @@
                  TextWrapping="Wrap" FontSize="28" FontWeight="Medium" TextAlignment="Center" Padding="0,75,0,0"
                  Grid.Row="0" Grid.Column="0"
                  Grid.RowSpan="4" Grid.ColumnSpan="4"
-                 Background="#5467AB"/>
+                 Background="#5467AB" Foreground="GhostWhite"/>
 
         <Button x:Name="newGame_button" Content="New Game"  
                 Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}" 

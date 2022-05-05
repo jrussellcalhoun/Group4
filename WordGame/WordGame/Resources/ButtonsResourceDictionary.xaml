@@ -30,8 +30,8 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" Value="#002060" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="#5467AB" />
+        <Setter Property="Foreground" Value="GhostWhite" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontFamily" Value="Consolas" />
     </Style>
@@ -58,8 +58,8 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" Value="#002060" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="#5467AB" />
+        <Setter Property="Foreground" Value="GhostWhite" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontFamily" Value="Consolas" />
     </Style>

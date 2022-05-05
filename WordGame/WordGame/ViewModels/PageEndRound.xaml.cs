@@ -15,15 +15,5 @@ namespace WordGame
             InitializeComponent();
         }
 
-        //private void NewRoundButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var btn = sender as Button;
-        //    btn.Command.Execute(btn.CommandParameter);
-        //}
-
-        private void settings_button_Click(object sender, RoutedEventArgs e)
-        {
-            Trace.WriteLine("Not Yet Implemented!");
-        }
     }
 }

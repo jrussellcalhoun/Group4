@@ -28,7 +28,7 @@
                     Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.5'}"
                     HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                <TextBlock Text="{Binding WinOrLoseMessage}" Margin="50,50,0,0" 
+                <TextBlock Text="{Binding WinOrLoseMessage, UpdateSourceTrigger=PropertyChanged}" Margin="50,50,0,0" 
                            FontSize="36" FontFamily="Consolas" FontWeight="Medium" 
                            TextAlignment="Center" TextWrapping="Wrap" Foreground="Black"/>
 
@@ -36,7 +36,7 @@
                     <TextBlock Text="The Winning Word Was: " Margin="0,0,0,0" 
                            FontSize="36" FontFamily="Consolas" FontWeight="Medium" 
                            TextAlignment="Center" TextWrapping="Wrap" Foreground="Black"/>
-                    <TextBlock Text="{Binding WinningWord}" Margin="0,0,0,0" 
+                    <TextBlock Text="{Binding WinningWord, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" 
                            FontSize="36" FontFamily="Consolas" FontWeight="Medium" 
                            TextAlignment="Center" TextWrapping="Wrap" Foreground="Black"/>
                 </StackPanel>
@@ -45,7 +45,7 @@
                     <TextBlock Text="Total Wins: " Margin="0,0,0,0" 
                            FontSize="36" FontFamily="Consolas" FontWeight="Medium" 
                            TextAlignment="Center" TextWrapping="Wrap" Foreground="Black"/>
-                    <TextBlock Text="{Binding Wins}" Margin="0,0,0,0" 
+                    <TextBlock Text="{Binding Wins, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" 
                            FontSize="36" FontFamily="Consolas" FontWeight="Medium" 
                            TextAlignment="Center" TextWrapping="Wrap" Foreground="Black"/>
                 </StackPanel>
@@ -55,7 +55,7 @@
                            FontSize="36" FontFamily="Consolas" FontWeight="Medium" 
                            TextAlignment="Center" TextWrapping="Wrap" Foreground="Black"/>
 
-                    <TextBlock Text="{Binding TotalTime}" Margin="0,0,0,0" 
+                    <TextBlock Text="{Binding TotalTime, StringFormat=mm\\:ss, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" 
                            FontSize="36" FontFamily="Consolas" FontWeight="Medium" 
                            TextAlignment="Center" TextWrapping="Wrap" Foreground="Black"/>
                 </StackPanel>
@@ -63,29 +63,27 @@
             </StackPanel>
         </Border>
 
-        <TextBox x:Name="EndGameMessageBox" Text="Would you like to play again?"
+        <Border BorderBrush="Chocolate" Background="LightBlue" BorderThickness="8" CornerRadius="12,12,12,12" Margin="0,-50,0,0"
+                Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.12'}"
+                Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.35'}">
+            <TextBlock x:Name="EndGameMessageBox" Text="Would you like to play again?"
                  MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.12'}" 
                  MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.35'}"
-                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-50,0,0"
-                 FontSize="48" TextAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TextWrapping="Wrap" 
-                 IsReadOnly="True" IsReadOnlyCaretVisible="False"
-                 Background="LightBlue" BorderThickness="8" BorderBrush="Chocolate">
-            <TextBox.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="12,12,12,12"/>
-                </Style>
-            </TextBox.Resources>
-        </TextBox>
+                 HorizontalAlignment="Center" VerticalAlignment="Center" Padding="0,30,0,0"
+                 FontSize="48" TextAlignment="Center" TextWrapping="Wrap" 
+                 Background="LightBlue">
+            </TextBlock>
+        </Border>
 
         <Button x:Name="NewRoundButton" Content="Start New Round ☆"  Style="{StaticResource RoundedButtonStyle}" 
                 MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.06'}" 
                 MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.25'}"
                 Margin="0,10,0,0" FontWeight="Bold" FontSize="36" Command="{Binding LogicNavigateCommand}" CommandParameter="1"/>
         
-        <Button x:Name="SettingsButton"  Content="Settings ⚙"        Style="{StaticResource RoundedButtonStyle}" 
+        <!--Button x:Name="SettingsButton"  Content="Settings ⚙"        Style="{StaticResource RoundedButtonStyle}" 
                 MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.06'}" 
                 MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.25'}"
-                Margin="0,10,0,0" FontWeight="Bold" FontSize="36" Click="settings_button_Click"/>
+                Margin="0,10,0,0" FontWeight="Bold" FontSize="36" Click="settings_button_Click"/-->
         
         <Button x:Name="ExitButton"      Content="Exit 🚪"             Style="{StaticResource RoundedButtonStyle}" 
                 MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.06'}" 

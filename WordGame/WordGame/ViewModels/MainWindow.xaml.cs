@@ -80,10 +80,6 @@ namespace WordGame
 
             var btn = sender as Button;
             btn.Command.Execute(btn.CommandParameter);
-
-            //Current_Page = PageState.PAGE_NEW_ROUND;
-            //(DataContext as GameLogic)._current_page = Current_Page;
-            //GameFrame.Navigate(_page_new_round);
         }
 
         // The following are navigation events for the Frame element (and it's pages).

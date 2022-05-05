@@ -99,30 +99,6 @@ namespace WordGame
                 player.Position = TimeSpan.Zero;
             }
         }
-
-
-        //var dt1 = new DataTrigger() { Value = "True", Binding = new Binding($"LetterStates[{idx}].HasZeroCount") };
-        //dt1.Setters.Add(new Setter { Property = Border.BorderBrushProperty, Value = Brushes.LightBlue });
-        //var dt2 = new DataTrigger() { Value = "False", Binding = new Binding($"LetterStates[{idx}].HasZeroCount") };
-        //dt2.Setters.Add(new Setter { Property = Border.BorderBrushProperty, Value = Brushes.Red });
-        //var dt3 = new DataTrigger() { Value = 0, Binding = new Binding($"LetterStates[{idx}].State") };
-        //dt3.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.LightBlue });
-        //var dt4 = new DataTrigger() { Value = 1, Binding = new Binding($"LetterStates[{idx}].State") };
-        //dt4.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Gray });
-        //var dt5 = new DataTrigger() { Value = 2, Binding = new Binding($"LetterStates[{idx}].State") };
-        //dt5.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Yellow });
-        //var dt6 = new DataTrigger() { Value = 3, Binding = new Binding($"LetterStates[{idx}].State") };
-        //dt6.Setters.Add(new Setter { Property = Button.BackgroundProperty, Value = Brushes.Green });
-        //
-        //Style style = new Style() { BasedOn = based_on_style, TargetType = target_type };
-        //style.Triggers.Add(dt1);
-        //style.Triggers.Add(dt2);
-        //style.Triggers.Add(dt3);
-        //style.Triggers.Add(dt4);
-        //style.Triggers.Add(dt5);
-        //style.Triggers.Add(dt6);
-
-
         private Style CollectionStateStyleFactory(int idx_of_control, Style based_on_style, Type target_type, Dictionary<string, Dictionary<object, Assignment>> bindings)
         {
             var style = new Style() { BasedOn = based_on_style, TargetType = target_type };

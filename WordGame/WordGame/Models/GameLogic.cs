@@ -92,6 +92,8 @@ namespace WordGame
         /// </summary>
         private TimeSpan _check_second;
 
+        private TimeSpan _total_time;
+
         /// <summary>
         /// Game logic ticker, targeted to be called every 20 milliseconds or 50 times per second.
         /// The resolution of DispatchTimer is not reliable beyond 20 milliseconds.
@@ -101,17 +103,16 @@ namespace WordGame
         private string _hint;
         private string _winning_word;
         private string _win_or_lose_message;
+        private string _guesses_remaining;
 
         private int _wins;
-        private int _tries;
+        private int _guess_count;
         private int _letters_in_guess_count;
 
         private bool _to_page_end_round;
         private bool _to_page_new_round;
         private bool _round_in_progress;
         private bool _is_first_round;
-
-        private TimeSpan _total_time;
 
         private const string YOU_LOSE = "YOU LOSE :P", YOU_WON = "YOU WON :D";
 
@@ -175,11 +176,18 @@ namespace WordGame
         /// <summary>
         /// The total number of tries used during the current round. Displayed on the End Round Page.
         /// </summary>
-        public int Tries
+        public int GuessCount
         {
-            get => _tries;
-            private set => SetProperty(ref _tries, value);
+            get => _guess_count;
+            private set => SetProperty(ref _guess_count, value);
         }
+
+        public string GuessesRemaining
+        {
+            get => _guesses_remaining;
+            private set => SetProperty(ref _guesses_remaining, value);
+        }
+
 
         /// <summary>
         /// The total time used by the player during the current round. Displayed on the End Round Page.
@@ -315,9 +323,8 @@ namespace WordGame
             RoundTime = TimeSpan.FromSeconds(c_Starting_Round_Seconds);
             WinningWord = "";
             Hint = "";
-            Tries = 0;
-            ToPageEndRound = false;
-            ToPageNewRound = false;
+            GuessCount = 0;
+            GuessesRemaining = "Guesses Remaining: " + GuessCount + " / 6";
             RoundInProgress = false;
             _letters_in_guess_count = 0;
 
@@ -369,6 +376,7 @@ namespace WordGame
                 //Trace.WriteLine($"Run Loop-> case PageState.MAIN_MENU-> Current Page: {_current_page} ToPageEndRound: {ToPageEndRound} ToPageNewRound: {ToPageNewRound}");
                 if (ToPageNewRound == true)
                 {
+                    Reset();
                     Trace.WriteLine("Run Loop-> Starting a new round.");
                     ChangePageEvent?.Invoke(this, new ChangePageEventArgs(PageState.PAGE_NEW_ROUND));
                     ToPageNewRound = false;
@@ -794,18 +802,18 @@ namespace WordGame
 
         private void Guess()
         {
-            int previous_guess_index = 5 * Tries;
-            Tries++;
+            int previous_guess_index = 5 * GuessCount;
+            GuessCount++;
             var guess = GuessedLetterStates.LettersToString().ToLower();
-            Trace.WriteLine($"Guess made: {guess}, Tries left: {Tries}.");
+            Trace.WriteLine($"Guess made: {guess}, Tries left: {GuessCount}.");
 
             // Player wins so we set the appropriate flags, which will be picked up by the rest of our logic automatically in the game loop.
             if (WinningWord == guess)
             {
                 Trace.WriteLine($"Player Won! Current Number of Wins: {Wins}");
-                Hint = "";
-                Tries = 0;
                 Wins++;
+                TotalTime += (TimeSpan.FromSeconds(c_Starting_Round_Seconds) - RoundTime);
+                Hint = "";
                 WinOrLoseMessage = YOU_WON;
                 ToPageEndRound = true;
                 RoundInProgress = false;
@@ -813,9 +821,10 @@ namespace WordGame
 
             // The player only gets 6 tries per round so if this is true it's game over.
             // So if this is try number 6 and it wasn't the winning word then we don't need to evaluate the rest.
-            if (Tries > 5)
+            if (GuessCount > 5)
             {
                 Trace.WriteLine($"Out of Tries... Game Over!");
+                TotalTime += (TimeSpan.FromSeconds(c_Starting_Round_Seconds) - RoundTime);
                 Hint = "";
                 WinOrLoseMessage = YOU_LOSE;
                 ToPageEndRound = true;
@@ -835,36 +844,38 @@ namespace WordGame
                     if(c == WinningWord[idx])
                     {
                         // The letter is in the word and in the correct location within the word.
-                        LetterStates[GuessedLetterStates[idx].State].State = 3; // Green
+                        PreviouslyGuessedLetterStates[idx + previous_guess_index].State = 3; // Green
+                        PreviouslyGuessedLetterStates[idx + previous_guess_index].Letter = GuessedLetterStates[idx].Letter;
+                        GuessedLetterStates[idx].Letter = "";
+                        LetterStates[GuessedLetterStates[idx].State].Count = 0;
+                        LetterStates[GuessedLetterStates[idx].State].HasZeroCount = true;
                         Trace.WriteLine($"The Letter {c} is in the WinningWord and in the correct location.");
                     }
                     else
                     {
                         // The letter is in the word but not in the correct location within the word.
-                        LetterStates[GuessedLetterStates[idx].State].State = 2; // Yellow
+                        PreviouslyGuessedLetterStates[idx + previous_guess_index].State = 2; // Yellow
+                        PreviouslyGuessedLetterStates[idx + previous_guess_index].Letter = GuessedLetterStates[idx].Letter;
+                        GuessedLetterStates[idx].Letter = "";
+                        LetterStates[GuessedLetterStates[idx].State].Count = 0;
+                        LetterStates[GuessedLetterStates[idx].State].HasZeroCount = true;
                         Trace.WriteLine($"The Letter {c} is in the WinningWord but not in the correct location.");
                     }
                 }
                 else
                 {
                     // Not in the word but has been tested.
+                    PreviouslyGuessedLetterStates[idx + previous_guess_index].State = 1;
+                    PreviouslyGuessedLetterStates[idx + previous_guess_index].Letter = GuessedLetterStates[idx].Letter;
                     LetterStates[GuessedLetterStates[idx].State].State = 1; // Gray
+                    GuessedLetterStates[idx].Letter = "";
+                    LetterStates[GuessedLetterStates[idx].State].Count = 0;
+                    LetterStates[GuessedLetterStates[idx].State].HasZeroCount = true;
                     Trace.WriteLine($"The Letter {c} is not in the WinningWord.");
                 }
             }
 
-            // After we are done checking for needed changes to the LetterStates we pass the letters in the current guess into our PreviouslyGuessedLetterStates collection.
-            // Then we reset letters in the GuessedLetterStates collection and clear the count of the letters in the LetterStates collection.
-            for (int idx = 0; idx < GuessedLetterStates.Count; idx++)
-            {
-                PreviouslyGuessedLetterStates[idx + previous_guess_index].State = LetterStates[GuessedLetterStates[idx].State].State;
-                if (LetterStates[GuessedLetterStates[idx].State].State > 1)
-                    LetterStates[GuessedLetterStates[idx].State].State = 0;
-                PreviouslyGuessedLetterStates[idx + previous_guess_index].Letter = GuessedLetterStates[idx].Letter;
-                GuessedLetterStates[idx].Letter = "";
-                LetterStates[GuessedLetterStates[idx].State].Count = 0;
-                LetterStates[GuessedLetterStates[idx].State].HasZeroCount = true;
-            }
+            GuessesRemaining = "Guesses Remaining: " + GuessCount + " / 6";
 
             // Also reset the letter guess count otherwise the player won't be able to make any more guesses.
             _letters_in_guess_count = 0;
