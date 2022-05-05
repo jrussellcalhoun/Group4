@@ -16,7 +16,7 @@ namespace WordGame.Objects
 
         protected bool SetProperty<T>(ref T field, T newValue, string propertyName = default)
         {
-            ArgumentNullException.ThrowIfNull(newValue);
+            if (newValue is null) throw new ArgumentNullException(nameof(newValue));
 
             field ??= newValue;
 
