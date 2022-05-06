@@ -685,6 +685,7 @@ namespace WordGame
                 if (RoundTime == TimeSpan.Zero)
                 {
                     Trace.WriteLine("Out of Time! Game Over!");
+                    WinOrLoseMessage = YOU_LOSE;
                     TotalTime += (TimeSpan.FromSeconds(c_Starting_Round_Seconds) - RoundTime);
                     ToPageEndRound = true;
                     RoundInProgress = false;
