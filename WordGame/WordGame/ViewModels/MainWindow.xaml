@@ -1,0 +1,67 @@
+﻿<Window x:Class="WordGame.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WordGame"
+        xmlns:tools="clr-namespace:WordGame.Utilities" 
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=local:GameLogic, IsDesignTimeCreatable=True}"
+        MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.95'}" 
+        MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.915'}"
+        Top="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}"
+        Left="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth}, Converter={tools:RatioConverter}, ConverterParameter='0.04'}" 
+        Title="MainWindow" Visibility="Visible" x:Name="WordGameMainWindow">
+    <!--Uncomment the event handler below if you want use the native methods in code behind to change the window's hardcoded visuals.-->
+    <!--Loaded="Window_Loaded"-->
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Frame  x:Name="GameFrame" Content="GameFrame" 
+                Grid.Row="0" Grid.Column="0"
+                Grid.RowSpan="4" Grid.ColumnSpan="4" 
+                NavigationUIVisibility="Hidden" Background="Black"
+                LoadCompleted="Frame_LoadCompleted"
+                DataContextChanged="Frame_DataContextChanged"/>
+
+        <TextBox x:Name="title_box" 
+                 Text="GROUP 4 WORD GAME"
+                 MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.9'}" 
+                 MinWidth="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.9'}"
+                 TextWrapping="Wrap" TextAlignment="Center" FontSize="72" Padding="0,150,0,0"
+                 Grid.Row="0" Grid.Column="0"
+                 Grid.RowSpan="4" Grid.ColumnSpan="4"
+                 Background="#0F0F2D" Foreground="GhostWhite"/>
+
+        <TextBox x:Name="instruction_box"
+                 Text="The goal is to find the &quot;winning word&quot; within the time limit! &#xD;&#xA;You have a total of 6 tries to guess the correct word. &#xD;&#xA;If the letter turns grey, it is not in the winning word.&#xD;&#xA;If the letter turns yellow, it is found somewhere in the winning word.&#xD;&#xA;If the letter turns green, it is in the correct location within the winning word.&#xD;&#xA;Your guesses must be a real word, and contain 5 letters.&#xD;&#xA;Once you finish the game, you can reset the board and search for a new word.&#xD;&#xA;" 
+                 Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.35'}" 
+                 Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.5'}"
+                 TextWrapping="Wrap" FontSize="28" FontWeight="Medium" TextAlignment="Center" Padding="0,75,0,0"
+                 Grid.Row="0" Grid.Column="0"
+                 Grid.RowSpan="4" Grid.ColumnSpan="4"
+                 Background="#5467AB" Foreground="GhostWhite"/>
+
+        <Button x:Name="newGame_button" Content="New Game"  
+                Height="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.1'}" 
+                Width="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenWidth},   Converter={tools:RatioConverter}, ConverterParameter='0.25'}"
+                Grid.Row="3" Grid.Column="1"
+                Grid.RowSpan="4" Grid.ColumnSpan="2"
+                Background="LightBlue" FontSize="72" FontWeight="Bold"
+                Click="Button_Click"
+                Command="{Binding Path=LogicNavigateCommand}" CommandParameter="1"/>
+    </Grid>
+</Window>

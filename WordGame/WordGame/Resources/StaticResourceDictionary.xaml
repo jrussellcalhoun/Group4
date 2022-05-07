@@ -1,0 +1,21 @@
+﻿<ResourceDictionary x:Class="WordGame.StaticResourceDictionary"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    xmlns:local="clr-namespace:WordGame"
+                    xmlns:tools="clr-namespace:WordGame.Utilities"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    mc:Ignorable="d">
+
+    <tools:RatioConverter x:Name="RatioConverterName" x:Key="RatioConverter"/>
+    
+    <Brush x:Key="CetaceanBlue">#001440</Brush>
+
+    <sys:UInt32 x:Key="Uint_MAIN_MENU">0</sys:UInt32>
+    <sys:UInt32 x:Key="Uint_PAGE_NEW_ROUND">1</sys:UInt32>
+    <sys:UInt32 x:Key="Uint_PAGE_END_ROUND">2</sys:UInt32>
+    <sys:UInt32 x:Key="Uint_PAGE_SETTINGS">3</sys:UInt32>
+    <sys:UInt32 x:Key="Uint_PAGE_LOGIN">4</sys:UInt32>
+
+</ResourceDictionary>
