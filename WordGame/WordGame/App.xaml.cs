@@ -11,10 +11,14 @@ namespace WordGame
     /// </summary>
     public partial class WordGameApp : Application
     {
+        // The Logic Model and MainWindow ViewModel are owned instances by the Application
         public GameLogic Logic { get; private set; }
         public MainWindow WordGameMainWindow { get; private set; }
-        //public static double SystemWidthDPIAware { get; private set; }
-        //public static double SystemHeightDPIAware { get; private set; }
+
+        // Overriden OnStartup method we instantiate the instances of our Window view model and Logic.
+        // Then we subscribe the WordGameMainWindow instance to the ChangePageEvent of the logic class.
+        // We also utilize our ConsoleHelper class here if we are in debug mode. Otherwise we don't call
+        // the CreateDebugConsole() method.
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -26,6 +30,7 @@ namespace WordGame
             Logic.ChangePageEvent += WordGameMainWindow.ChangePage;
             WordGameMainWindow.Show();
         }
+
 
         protected override void OnExit(ExitEventArgs e)
         {
@@ -39,17 +44,5 @@ namespace WordGame
             }
         }
 
-        private void CacheScreenSizeDPI()
-        {
-            var dpiXProperty = typeof(SystemParameters).GetProperty("DpiX", BindingFlags.NonPublic | BindingFlags.Static);
-            var dpiYProperty = typeof(SystemParameters).GetProperty("Dpi", BindingFlags.NonPublic | BindingFlags.Static);
-
-            var dpiX = (int)dpiXProperty.GetValue(null, null);
-            var dpiY = (int)dpiYProperty.GetValue(null, null);
-
-            //SystemWidthDPIAware = SystemParameters.PrimaryScreenWidth * dpiX / 96.0;
-            //SystemHeightDPIAware = SystemParameters.PrimaryScreenHeight * dpiY / 96.0;
-            Trace.Write("DpiX: " + dpiX + " DpiY: " + dpiY + "\n");
-        }
     }
 }

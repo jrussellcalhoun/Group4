@@ -8,6 +8,10 @@ using WordGame.Utilities;
 
 namespace WordGame
 {
+    /// <summary>
+    /// An enum to store the various page states of our application
+    /// Unfortunately we are out of time to implement the other two planned pages.
+    /// </summary>
     public enum PageState : uint
     {
         MAIN_MENU = 0,
@@ -50,12 +54,12 @@ namespace WordGame
             {
                 case PageState.MAIN_MENU:
                     break;
-                case PageState.PAGE_LOGIN:
+                //case PageState.PAGE_LOGIN:
                     //Frame.Content = _login;
-                    break;
-                case PageState.PAGE_SETTINGS:
+                    //break;
+                //case PageState.PAGE_SETTINGS:
                     //Frame.Content = _settings;
-                    break;
+                    //break;
                 case PageState.PAGE_NEW_ROUND:
                     Trace.WriteLine("Main Window-> Navigating to New Round.");
 
@@ -72,6 +76,11 @@ namespace WordGame
             }
         }
 
+        /// <summary>
+        /// This is a Button Click event bound to our New Game button on the Main Window. We need to 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             title_box.Visibility = Visibility.Hidden;
@@ -83,7 +92,6 @@ namespace WordGame
         }
 
         // The following are navigation events for the Frame element (and it's pages).
-        // Here we are manually setting the DataContext of the frames to be our GameLogic instance (so that it's shared).
         private void Frame_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             UpdateFrameDataContext(sender, null);
@@ -92,6 +100,9 @@ namespace WordGame
         {
             UpdateFrameDataContext(sender, e);
         }
+
+        // Here we are manually setting the DataContext of the frames to be our GameLogic instance (so that it's shared).
+        // In WPF Frame child pages do not automatically inherit the DataContext of the parent control.
         private void UpdateFrameDataContext(object sender, NavigationEventArgs e)
         {
             var content = GameFrame.Content as FrameworkElement;
@@ -108,7 +119,8 @@ namespace WordGame
             
         }
 
-        // Haven't decided if I want to keep this yet, uncomment to remove the border and system menu on the window.
+        // This is commented out, but I am leaving it here to show what might be done to change the style of the window at run time.
+        // Uncomment this to see the window without a border and title bar.
         //private void Window_Loaded(object sender, RoutedEventArgs e)
         //{
         //    Trace.WriteLine("Window Loaded");
