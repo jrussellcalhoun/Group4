@@ -4,16 +4,10 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                     xmlns:local="clr-namespace:WordGame"
-                    xmlns:tools="clr-namespace:WordGame.Tools"
+                    xmlns:tools="clr-namespace:WordGame.Utilities"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     mc:Ignorable="d">
-    
-    <!--<Color x:Key="CBlackRussian">#0F0F2D</Color>
-    <Color x:Key="CMaire">#2B2A24</Color>
-    <Color x:Key="CCinder">#24282B</Color-->
 
-    <local:LetterStateToBoolStateConverter x:Name="LetterStateToBoolStateConverterName" x:Key="LetterStateToBoolStateConverter"/>
-    <local:LetterStateConverter x:Name="IntStateConverterName" x:Key="IntStateConverter"/>
     <tools:RatioConverter x:Name="RatioConverterName" x:Key="RatioConverter"/>
     
     <Brush x:Key="CetaceanBlue">#001440</Brush>

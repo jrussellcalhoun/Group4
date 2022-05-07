@@ -3,11 +3,13 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-// Namespace WordGame.Tools should contain utility classes which provide specific solutions to UI element use cases.
-namespace WordGame.Tools
+namespace WordGame.Utilities
 {
-    // This is a ratio converter used to scale our UI elements to be a portion of some value and return that value
-    // with a type that can be consumed by xaml control elements.
+    /// <summary>
+    /// This is a ratio converter used to scale our UI elements to be a portion of some value and return that value
+    /// with a type that can be consumed by xaml control elements. It is used in our application to scale individual
+    /// WPF controls to a portion of the user's screen size.
+    /// </summary>
     [ValueConversion(typeof(string), typeof(string))]
     public class RatioConverter : MarkupExtension, IValueConverter
     {
@@ -24,7 +26,6 @@ namespace WordGame.Tools
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            // read only converter...
             throw new NotImplementedException();
         }
 

@@ -2,6 +2,13 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
+/// <summary>
+/// This is actually not currently used by our program but I am leaving it here as an optional feature that a future developer could turn
+/// on if they wanted to go further with this project. Basically this calls external windows libraries to modify the window style
+/// of an already running application and add or remove style elements. I was considering using this to remove the border and
+/// title bar to make our window feel less like wpf window application and more game-like. If you'd like to see it in action uncomment
+/// the corresponding code App.xaml.cs.
+/// </summary>
 namespace WordGame.Utilities
 {
     /*  The following flag values and code snippets were adapted from MSDN Documentation

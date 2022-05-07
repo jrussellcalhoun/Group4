@@ -66,6 +66,9 @@ namespace WordGame
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// New round constructor
+        /// </summary>
         public PageNewRound()
         {
             // Setup for WPF component controls always make sure this is called first.
@@ -80,6 +83,11 @@ namespace WordGame
             Debug.WriteLine("AppDomain: " + c_Directory);
         }
 
+        /// <summary>
+        /// This is an event handler for when the music selection has changed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MusicComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             var combo_box = sender as ComboBox;
@@ -99,7 +107,18 @@ namespace WordGame
                 player.Position = TimeSpan.Zero;
             }
         }
-        private Style CollectionStateStyleFactory(int idx_of_control, Style based_on_style, Type target_type, Dictionary<string, Dictionary<object, Assignment>> bindings)
+
+        /// <summary>
+        /// This method is a factory pattern implementation that constructs styles with data triggers based on input parameters.
+        /// 
+        /// </summary>
+        /// <param name="idx_of_control"></param>
+        /// <param name="based_on_style"></param>
+        /// <param name="target_type"></param>
+        /// <param name="bindings"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        private Style StateCollectionStyleFactory(int idx_of_control, Style based_on_style, Type target_type, Dictionary<string, Dictionary<object, Assignment>> bindings)
         {
             var style = new Style() { BasedOn = based_on_style, TargetType = target_type };
 
@@ -125,15 +144,27 @@ namespace WordGame
             return style;
         }
 
+        /// <summary>
+        /// This is an overloaded event handler for the OnPageLoaded event.
+        /// We are overloading this so that we can iteratively bind our letter states from our observable colletions onto our individual buttons.
+        /// This method utilizes a factory pattern style implementation in order to create our bindings with custom data triggers iteratively.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnPageLoaded(object sender, RoutedEventArgs e)
         {
+            // Cache the data context for processing.
             var data_context = DataContext as GameLogic;
 
+            // This code utilizes Linq query syntax in order to make specific selections from the children of our MainGrid control.
+            // We only want to select buttons here, we place them into a temporary list in order to iterate over them.
             var buttons = from elements in MainGrid.Children.OfType<Button>().ToList() select elements;
+
+            // Here we select all buttons from our temporary buttons list but we select only the elements whose name contains the prefixed
+            // characters "LB". This corresponds to the names of our letter buttons.
             var letter_buttons = from elements in buttons where elements.Name.Contains("LB") select elements;
             for (int idx = 0; idx < letter_buttons.Count(); idx++)
             {
-                //var lb = letter_buttons.ElementAt(idx);
                 letter_buttons.ElementAt(idx).SetBinding(ContentProperty, $"LetterStates[{idx}].Letter");
                 Trace.WriteLine($"Button Content: {letter_buttons.ElementAt(idx).Content}, Index: {idx}");
 
@@ -151,16 +182,20 @@ namespace WordGame
                     { 3, new Assignment(Button.BackgroundProperty, Brushes.Green) }
                 };
 
-                letter_buttons.ElementAt(idx).Style = CollectionStateStyleFactory(idx, letter_buttons.ElementAt(idx).Style, typeof(Button),
+                letter_buttons.ElementAt(idx).Style = StateCollectionStyleFactory(idx, letter_buttons.ElementAt(idx).Style, typeof(Button),
                     new Dictionary<string, Dictionary<object, Assignment>>{ 
                         { "LetterStates|HasZeroCount", assignments_has_zero_count },
                         { "LetterStates|State", assignments_state} });
             }
 
+            // Here we select all buttons from our temporary buttons list but we select only the elements whose name contains the prefixed
+            // characters "GB". This corresponds to the names of our guess letter buttons.
             var guess_buttons = from elements in buttons where elements.Name.Contains("GB") select elements;
             for (int idx = 0; idx < guess_buttons.Count(); idx++)
                 guess_buttons.ElementAt(idx).SetBinding(ContentProperty, $"GuessedLetterStates[{idx}].Letter");
 
+            // Here we select all buttons from our temporary buttons list but we select only the elements whose name contains the prefixed
+            // characters "PG". This corresponds to the names of our previously guessed letter buttons.
             var previous_guess_buttons = from elements in MainGrid.Children.OfType<TextBox>().ToList() where elements.Name.Contains("PG") select elements;
             for (int idx = 0; idx < previous_guess_buttons.Count(); idx++)
             {
@@ -174,12 +209,17 @@ namespace WordGame
                     { 3, new Assignment(Button.BackgroundProperty, Brushes.Green) }
                 };
 
-                previous_guess_buttons.ElementAt(idx).Style = CollectionStateStyleFactory(idx, previous_guess_buttons.ElementAt(idx).Style, typeof(TextBox),
+                previous_guess_buttons.ElementAt(idx).Style = StateCollectionStyleFactory(idx, previous_guess_buttons.ElementAt(idx).Style, typeof(TextBox),
                 new Dictionary<string, Dictionary<object, Assignment>>{
                     { "PreviouslyGuessedLetterStates|State", assignments_state} });
             }
         }
 
+        /// <summary>
+        /// Event handler for when the start round button has been clicked. It passes to the attached command.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void StartRoundButton_Click(object sender, RoutedEventArgs e)
         {
             var btn = sender as Button;
@@ -187,10 +227,21 @@ namespace WordGame
             btn.Command.Execute(btn.CommandParameter);
         }
 
+        /// <summary>
+        /// The following delegate event handler turns the volume slider visible when the mouse enters the bound border box surrounding it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void VolumeSliderUncollapse_MouseEnter(object sender, MouseEventArgs e)
         {
             VolumeSliderVisibility = Visibility.Visible;
         }
+
+        /// <summary>
+        /// The following delegate event handler turns the volume slider invisible when the mouse leaves the bound border box surrounding it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void VolumeSliderCollapse_MouseLeave(object sender, MouseEventArgs e)
         {
             VolumeSliderVisibility = Visibility.Collapsed;

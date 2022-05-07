@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WordGame"
-        xmlns:tools="clr-namespace:WordGame.Tools" 
+        xmlns:tools="clr-namespace:WordGame.Utilities" 
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:GameLogic, IsDesignTimeCreatable=True}"
         MinHeight="{Binding Source={x:Static SystemParameters.MaximizedPrimaryScreenHeight}, Converter={tools:RatioConverter}, ConverterParameter='0.95'}" 
